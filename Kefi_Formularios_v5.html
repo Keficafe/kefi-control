@@ -10,6 +10,32 @@
 body, select, input, button { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
 .icon-svg { display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; }
 .icon-svg svg { display:block; }
+
+/* ── CONSULTAS ── */
+.cons-filters{display:flex;flex-direction:column;gap:10px;padding:16px;background:#fff;border-bottom:0.5px solid var(--brd);}
+.cons-filters select,.cons-filters input[type=date]{width:100%;padding:10px 12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);font-size:14px;color:var(--txt);background:#fff;-webkit-appearance:none;}
+.cons-row{display:flex;gap:8px;}
+.cons-row select{flex:1;}
+.btn-buscar{background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:12px;font-size:14px;font-weight:600;width:100%;cursor:pointer;margin-top:4px;}
+.cons-results{padding:16px;display:flex;flex-direction:column;gap:12px;}
+.cons-card{background:#fff;border:0.5px solid var(--brd);border-radius:var(--rad);padding:14px;border-left:3px solid var(--c);}
+.cons-card.bitacora{border-left-color:#9B1C35;}
+.cons-card.caja{border-left-color:#1A6B3C;}
+.cons-card.limpieza{border-left-color:#854F0B;}
+.cons-card.mermas{border-left-color:#A32D2D;}
+.cons-card.stock{border-left-color:#1A4B8C;}
+.cons-card.pedido{border-left-color:#6B3C8C;}
+.cons-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.cons-card-tipo{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:20px;background:var(--cl);color:var(--c);}
+.cons-card-fecha{font-size:11px;color:var(--txt2);}
+.cons-srow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--brd);font-size:13px;}
+.cons-srow:last-child{border-bottom:none;}
+.cons-sl{color:var(--txt2);}
+.cons-sv{font-weight:500;color:var(--txt);text-align:right;max-width:60%;}
+.cons-empty{text-align:center;padding:40px 20px;color:var(--txt2);}
+.cons-empty-icon{font-size:40px;margin-bottom:8px;}
+.cons-loading{text-align:center;padding:30px;color:var(--txt2);font-size:14px;}
+.cons-count{font-size:12px;color:var(--txt2);padding:0 16px 8px;}
 </style>
 <style>
 :root{--c:#9B1C35;--cd:#7A1428;--cl:#F0EAD6;--cll:#FAF6EF;--txt:#2C0A12;--txt2:#7A4050;--brd:#E8D0D4;--ok:#1A6B3C;--okl:#D4EDDA;--warn:#854F0B;--warnl:#FFF3CD;--danger:#A32D2D;--dangerl:#FADADD;--rad:12px;--rad-sm:8px;--rad-xs:6px;}
@@ -142,6 +168,32 @@ html,body{height:100%;background:#f8f4f0;font-family:-apple-system,BlinkMacSyste
 .search-wrap{position:relative}
 .search-wrap i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--txt2);font-size:16px;pointer-events:none}
 .search-wrap input{padding-left:36px}
+
+/* ── CONSULTAS ── */
+.cons-filters{display:flex;flex-direction:column;gap:10px;padding:16px;background:#fff;border-bottom:0.5px solid var(--brd);}
+.cons-filters select,.cons-filters input[type=date]{width:100%;padding:10px 12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);font-size:14px;color:var(--txt);background:#fff;-webkit-appearance:none;}
+.cons-row{display:flex;gap:8px;}
+.cons-row select{flex:1;}
+.btn-buscar{background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:12px;font-size:14px;font-weight:600;width:100%;cursor:pointer;margin-top:4px;}
+.cons-results{padding:16px;display:flex;flex-direction:column;gap:12px;}
+.cons-card{background:#fff;border:0.5px solid var(--brd);border-radius:var(--rad);padding:14px;border-left:3px solid var(--c);}
+.cons-card.bitacora{border-left-color:#9B1C35;}
+.cons-card.caja{border-left-color:#1A6B3C;}
+.cons-card.limpieza{border-left-color:#854F0B;}
+.cons-card.mermas{border-left-color:#A32D2D;}
+.cons-card.stock{border-left-color:#1A4B8C;}
+.cons-card.pedido{border-left-color:#6B3C8C;}
+.cons-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.cons-card-tipo{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:20px;background:var(--cl);color:var(--c);}
+.cons-card-fecha{font-size:11px;color:var(--txt2);}
+.cons-srow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--brd);font-size:13px;}
+.cons-srow:last-child{border-bottom:none;}
+.cons-sl{color:var(--txt2);}
+.cons-sv{font-weight:500;color:var(--txt);text-align:right;max-width:60%;}
+.cons-empty{text-align:center;padding:40px 20px;color:var(--txt2);}
+.cons-empty-icon{font-size:40px;margin-bottom:8px;}
+.cons-loading{text-align:center;padding:30px;color:var(--txt2);font-size:14px;}
+.cons-count{font-size:12px;color:var(--txt2);padding:0 16px 8px;}
 </style>
 </head>
 <body>
@@ -206,6 +258,7 @@ html,body{height:100%;background:#f8f4f0;font-family:-apple-system,BlinkMacSyste
     <div class="fcard" onclick="showView('mermas')"><div class="fcard-icon"><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></span></div><div class="fcard-info"><div class="fcard-title">Registro de merma</div><div class="fcard-sub">Registrar en el momento</div></div><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
     <div class="fcard" onclick="showView('stock')"><div class="fcard-icon"><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5v9L12 21l-9-4.5v-9z"/><polyline points="3.29 7 12 11.5 20.71 7"/><line x1="12" y1="21" x2="12" y2="11.5"/></svg></span></div><div class="fcard-info"><div class="fcard-title">Stock del dia</div><div class="fcard-sub">Insumos y materiales</div></div><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
     <div class="sec-label">ABASTECIMIENTO</div>
+    <div class="fcard" id="fcard-consultas" onclick="showView('consultas')" style="border-left-color:#1A6B3C"><div class="fcard-icon" style="background:#D4EDDA"><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span></div><div class="fcard-info"><div class="fcard-title">Consultar registros</div><div class="fcard-sub">Buscar por fecha, turno o persona</div></div><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
     <div class="fcard" id="fcard-pedido" onclick="showView('pedido')"><div class="fcard-icon"><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg></span></div><div class="fcard-info"><div class="fcard-title">Pedido CBB a RC</div><div class="fcard-sub">Enviar antes de las 20:00 hrs</div></div><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
   </div>
 </div>
@@ -984,6 +1037,160 @@ stepNext = function(form) {
   }
   _stepNextOrig(form);
 };
+
+// ============================================================
+// KEFI — MÓDULO DE CONSULTAS
+// ============================================================
+
+// Mapa de columnas por tipo de formulario (orden en Sheets)
+var COLS = {
+  bitacora : ['Timestamp','Sucursal','Turno','HB Saliente','HB Entrante','Formularios','Novedad','Hora','Firma Sale','Firma Entra','Usuario'],
+  caja     : ['Timestamp','Sucursal','Turno','Head Barista','Efectivo','SumUp','Diferencia','Débito/Créd','Total Ventas','Sencillo','Devolución','Usuario'],
+  limpieza : ['Timestamp','Sucursal','Head Barista','Momento','Completadas','Total','%','Críticas Pend','Usuario'],
+  mermas   : ['Timestamp','Sucursal','Quien','Turno','Producto','Cantidad','Costo Unit','Costo Total','Causa','Alerta','Usuario'],
+  stock    : ['Timestamp','Sucursal','Head Barista','Momento','Items Contados','Detalle','Usuario'],
+  pedido   : ['Timestamp','Quien Pide','Total Items','Detalle Pedido','Usuario']
+};
+
+var TIPO_LABELS = {
+  bitacora:'Bitácora', caja:'Caja', limpieza:'Limpieza',
+  mermas:'Mermas', stock:'Stock', pedido:'Pedido'
+};
+
+// Campos que contienen persona/sucursal para filtrar
+var PERSONA_COLS = {
+  bitacora: [3,4,10], caja:[3,11], limpieza:[2,8],
+  mermas:[2,10], stock:[2,6], pedido:[1,4]
+};
+var SUC_COLS = {
+  bitacora:1, caja:1, limpieza:1, mermas:1, stock:1, pedido:-1
+};
+
+function buscarRegistros() {
+  var tipo    = $('cons-tipo').value;
+  var suc     = $('cons-suc').value;
+  var desde   = $('cons-desde').value;
+  var hasta   = $('cons-hasta').value;
+  var persona = $('cons-persona').value.toLowerCase();
+  var el      = $('cons-results');
+
+  el.innerHTML = '<div class="cons-loading">Buscando registros...</div>';
+
+  var tipos = tipo ? [tipo] : Object.keys(COLS);
+  var promises = tipos.map(function(t) {
+    return fetch(SCRIPT_URL + '?action=leer&tipo=' + t)
+      .then(function(r) { return r.json(); })
+      .then(function(data) { return { tipo: t, filas: data.filas || [] }; })
+      .catch(function() { return { tipo: t, filas: [] }; });
+  });
+
+  Promise.all(promises).then(function(results) {
+    var todos = [];
+    results.forEach(function(r) {
+      r.filas.forEach(function(fila) {
+        todos.push({ tipo: r.tipo, fila: fila });
+      });
+    });
+
+    // Filtrar
+    var filtrados = todos.filter(function(item) {
+      var fila = item.fila;
+      var ts   = fila[0] || '';
+
+      // Filtro fecha desde
+      if (desde) {
+        var d = parseFecha(ts);
+        if (d && d < new Date(desde)) return false;
+      }
+      // Filtro fecha hasta
+      if (hasta) {
+        var d2 = parseFecha(ts);
+        var hastaD = new Date(hasta); hastaD.setDate(hastaD.getDate()+1);
+        if (d2 && d2 > hastaD) return false;
+      }
+      // Filtro sucursal
+      if (suc) {
+        var sc = SUC_COLS[item.tipo];
+        if (sc >= 0 && fila[sc] && fila[sc].indexOf(suc === 'Ramon Carrasco' ? 'Ramon' : 'Bio') === -1) return false;
+      }
+      // Filtro persona
+      if (persona) {
+        var pcols = PERSONA_COLS[item.tipo] || [];
+        var encontrado = pcols.some(function(c) {
+          return fila[c] && fila[c].toLowerCase().indexOf(persona) >= 0;
+        });
+        if (!encontrado) return false;
+      }
+      return true;
+    });
+
+    // Ordenar por fecha desc
+    filtrados.sort(function(a,b) {
+      var da = parseFecha(a.fila[0]), db = parseFecha(b.fila[0]);
+      return (db||0) - (da||0);
+    });
+
+    if (!filtrados.length) {
+      el.innerHTML = '<div class="cons-empty"><div class="cons-empty-icon">📭</div><div>Sin registros para estos filtros</div></div>';
+      return;
+    }
+
+    var html = '<div class="cons-count">' + filtrados.length + ' registro(s) encontrado(s)</div>';
+    filtrados.forEach(function(item) {
+      html += renderConsCard(item.tipo, item.fila);
+    });
+    el.innerHTML = html;
+  }).catch(function(err) {
+    el.innerHTML = '<div class="cons-empty"><div class="cons-empty-icon">⚠️</div><div>Error al consultar. Verifica conexión.</div></div>';
+  });
+}
+
+function parseFecha(str) {
+  if (!str) return null;
+  // Format: DD-MM-YYYY HH:MM:SS or similar
+  var parts = str.split(/[\s,\/\-]/);
+  if (parts.length >= 3) {
+    try {
+      // Try parsing as-is
+      var d = new Date(str);
+      if (!isNaN(d)) return d;
+      // Try DD/MM/YYYY
+      return new Date(parts[2]+'-'+parts[1]+'-'+parts[0]);
+    } catch(e) { return null; }
+  }
+  return null;
+}
+
+function renderConsCard(tipo, fila) {
+  var cols = COLS[tipo] || [];
+  var label = TIPO_LABELS[tipo] || tipo;
+  var ts = fila[0] || '';
+  var rows = '';
+
+  // Skip timestamp (col 0) in detail, show as header
+  for (var i = 1; i < cols.length && i < fila.length; i++) {
+    var val = fila[i];
+    if (!val && val !== 0) continue;
+    // Highlight diferencia caja
+    var style = '';
+    if (tipo === 'caja' && cols[i] === 'Diferencia') {
+      var n = parseFloat(String(val).replace(/[^0-9\-]/g,''));
+      style = n === 0 ? 'color:var(--ok)' : Math.abs(n) <= 2000 ? 'color:var(--warn)' : 'color:var(--danger)';
+    }
+    if (tipo === 'mermas' && cols[i] === 'Alerta') {
+      style = val === '⚠️ Sí' ? 'color:var(--danger);font-weight:600' : '';
+    }
+    rows += '<div class="cons-srow"><span class="cons-sl">'+cols[i]+'</span><span class="cons-sv" style="'+style+'">'+val+'</span></div>';
+  }
+
+  return '<div class="cons-card '+tipo+'">'
+    + '<div class="cons-card-header">'
+    + '<span class="cons-card-tipo">'+label+'</span>'
+    + '<span class="cons-card-fecha">'+ts+'</span>'
+    + '</div>'
+    + rows
+    + '</div>';
+}
 
 </script>
 </body>
