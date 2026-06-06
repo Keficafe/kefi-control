@@ -925,21 +925,62 @@ var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZ7ua9zq1nsS7MnORv7Sp
 
 function enviarASheets(tipo, datos) {
   if (SCRIPT_URL === "SCRIPT_URL_AQUI") {
-    console.warn("Google Sheets no configurado aún.");
     return Promise.resolve({ ok: false, msg: "URL no configurada" });
   }
   datos.tipo    = tipo;
   datos.usuario = USER ? USER.nombre : "desconocido";
-  var payload   = JSON.stringify(datos);
-  return fetch(SCRIPT_URL, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain" },
-    body: payload
-  })
-  .then(function(r) { return r.json(); })
-  .catch(function(err) {
-    console.error("Error enviando a Sheets:", err);
-    return { ok: false, msg: err.message };
+
+  return new Promise(function(resolve) {
+    try {
+      // Usar iframe oculto + form POST — único método 100% compatible con iOS Safari
+      var iframeId = 'kefi_iframe_' + Date.now();
+      var formId   = 'kefi_form_'   + Date.now();
+
+      // Crear iframe oculto como destino
+      var iframe = document.createElement('iframe');
+      iframe.name = iframeId;
+      iframe.id   = iframeId;
+      iframe.style.cssText = 'display:none;width:0;height:0;border:0;position:absolute;';
+      document.body.appendChild(iframe);
+
+      // Crear form oculto
+      var form = document.createElement('form');
+      form.method  = 'POST';
+      form.action  = SCRIPT_URL;
+      form.target  = iframeId;
+      form.id      = formId;
+      form.style.cssText = 'display:none;';
+
+      // Campo con el payload JSON
+      var input = document.createElement('input');
+      input.type  = 'hidden';
+      input.name  = 'payload';
+      input.value = JSON.stringify(datos);
+      form.appendChild(input);
+      document.body.appendChild(form);
+
+      // Timeout: limpiar después de 8 segundos
+      var timer = setTimeout(function() {
+        try { document.body.removeChild(form); } catch(e){}
+        try { document.body.removeChild(iframe); } catch(e){}
+        resolve({ ok: true, msg: "Enviado" });
+      }, 8000);
+
+      // Detectar cuando el iframe carga (respuesta recibida)
+      iframe.onload = function() {
+        clearTimeout(timer);
+        try { document.body.removeChild(form); } catch(e){}
+        setTimeout(function() {
+          try { document.body.removeChild(iframe); } catch(e){}
+        }, 1000);
+        resolve({ ok: true, msg: "Guardado en Sheets" });
+      };
+
+      form.submit();
+
+    } catch(err) {
+      resolve({ ok: false, msg: err.message });
+    }
   });
 }
 
@@ -1119,6 +1160,32 @@ var SUC_COLS = {
   bitacora:1, caja:1, limpieza:1, mermas:1, stock:1, pedido:-1
 };
 
+
+function fetchJSONP(url) {
+  return new Promise(function(resolve, reject) {
+    var cbName = 'kefi_cb_' + Math.random().toString(36).substr(2,6);
+    var script = document.createElement('script');
+    var timer = setTimeout(function() {
+      delete window[cbName];
+      document.body.removeChild(script);
+      reject(new Error('Timeout'));
+    }, 10000);
+    window[cbName] = function(data) {
+      clearTimeout(timer);
+      delete window[cbName];
+      document.body.removeChild(script);
+      resolve(data);
+    };
+    script.src = url + '&callback=' + cbName;
+    script.onerror = function() {
+      clearTimeout(timer);
+      delete window[cbName];
+      reject(new Error('Script error'));
+    };
+    document.body.appendChild(script);
+  });
+}
+
 function buscarRegistros() {
   var tipo    = $('cons-tipo').value;
   var suc     = $('cons-suc').value;
@@ -1131,8 +1198,7 @@ function buscarRegistros() {
 
   var tipos = tipo ? [tipo] : Object.keys(COLS);
   var promises = tipos.map(function(t) {
-    return fetch(SCRIPT_URL + '?action=leer&tipo=' + t)
-      .then(function(r) { return r.json(); })
+    return fetchJSONP(SCRIPT_URL + '?action=leer&tipo=' + t)
       .then(function(data) { return { tipo: t, filas: data.filas || [] }; })
       .catch(function() { return { tipo: t, filas: [] }; });
   });
