@@ -332,6 +332,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
 </div>
 
 <!-- BITÁCORA -->
+
+<!-- BITÁCORA -->
 <div id="bitacora" class="view">
   <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Bitácora de turno</div><div class="nav-sub" id="bit-sub">Paso 1 de 4</div></div></div>
   <div class="progress-strip"><div class="progress-fill" id="bit-prog" style="width:25%"></div></div>
@@ -347,21 +349,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field" id="bit-nov-text" style="display:none"><label>Describe la novedad</label><textarea id="bit-novedad" placeholder="Describe qué ocurrió..."></textarea></div>
     </div>
     <div class="step" id="bit-s4"><div id="bit-resumen"></div></div>
-    <h3>Bitácora registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('bitacora')">Nueva bitácora</button></div>
-  </div>
-    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Bitácora registrada</h3>
-    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nueva bitácora</button>
   </div>
   <div id="bit-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="bit-nav" style="display:none"><button class="btn-back-nav" id="bit-back" type="button" onclick="stepPrev('bitacora');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('bitacora');return false;">Siguiente</button></div>
+  <div class="bottom-nav" id="bit-nav" style="display:none">
+    <button class="btn-back-nav" id="bit-back" type="button" onclick="stepPrev('bitacora');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('bitacora');return false;">Siguiente</button>
+  </div>
   <div id="bit-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
-    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Bitácora registrada</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('bitacora');return false;">Nueva bitácora</button>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('bitacora');return false;">Nueva bitácora</button>
   </div>
-
 </div>
 
 <!-- CAJA -->
@@ -388,27 +387,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
         <span class="calc-total-val" id="calc-total-display">$0</span>
       </div>
       <div class="field" style="margin-top:12px"><label>Devolución a cliente ($)</label><div class="amt-wrap"><span>$</span><input type="number" id="caj-devolucion" placeholder="0" inputmode="numeric"></div></div>
-      <!-- Hidden fields for compatibility -->
       <input type="hidden" id="caj-monedas" value="0">
       <input type="hidden" id="caj-b1000" value="0">
       <input type="hidden" id="caj-b2000" value="0">
     </div>
     <div class="step" id="caj-s4"><div id="caj-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="caj-obs" placeholder="Novedades, diferencias..."></textarea></div></div>
-    <h3>Arqueo registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('caja')">Nuevo arqueo</button></div>
-  </div>
-    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Arqueo registrado</h3>
-    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo arqueo</button>
   </div>
   <div id="caj-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="caj-nav" style="display:none"><button class="btn-back-nav" id="caj-back" type="button" onclick="stepPrev('caja');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('caja');return false;">Siguiente</button></div>
+  <div class="bottom-nav" id="caj-nav" style="display:none">
+    <button class="btn-back-nav" id="caj-back" type="button" onclick="stepPrev('caja');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('caja');return false;">Siguiente</button>
+  </div>
   <div id="caj-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
-    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Arqueo registrado</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('caja');return false;">Nuevo arqueo</button>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('caja');return false;">Nuevo arqueo</button>
   </div>
-
 </div>
 
 <!-- LIMPIEZA -->
@@ -421,28 +416,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>Turno</label><div class="chip-row"><div class="chip" onclick="selChip(this,'limp-momento')">AM — Apertura</div><div class="chip" onclick="selChip(this,'limp-momento')">PM — Cierre</div></div></div>
     </div>
     <div class="step" id="limp-s2">
-  <div style="display:flex;gap:8px;margin-bottom:8px">
-    <button type="button" onclick="stepPrev('limpieza');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button>
-    <button type="button" onclick="stepNext('limpieza');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button>
-  </div>
-  <div id="limp-lista" style="display:flex;flex-direction:column;gap:8px"></div>
-</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <button type="button" onclick="stepPrev('limpieza');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button>
+        <button type="button" onclick="stepNext('limpieza');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button>
+      </div>
+      <div id="limp-lista" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
     <div class="step" id="limp-s3"><div id="limp-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="limp-obs" placeholder="Tareas no realizadas y motivo..."></textarea></div></div>
-    <h3>Checklist enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('limpieza')">Nuevo checklist</button></div>
-  </div>
-    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Checklist enviado</h3>
-    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo checklist</button>
   </div>
   <div id="limp-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="limp-nav" style="display:none"><button class="btn-back-nav" id="limp-back" type="button" onclick="stepPrev('limpieza');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('limpieza');return false;">Siguiente</button></div>
+  <div class="bottom-nav" id="limp-nav" style="display:none">
+    <button class="btn-back-nav" id="limp-back" type="button" onclick="stepPrev('limpieza');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('limpieza');return false;">Siguiente</button>
+  </div>
   <div id="limp-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
-    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Checklist enviado</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('limpieza');return false;">Nuevo checklist</button>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('limpieza');return false;">Nuevo checklist</button>
   </div>
-
 </div>
 
 <!-- MERMAS -->
@@ -463,21 +455,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>Causa</label><div class="chip-row"><div class="chip" onclick="selChip(this,'mer-causa')">Vencimiento</div><div class="chip" onclick="selChip(this,'mer-causa')">Error preparación</div><div class="chip" onclick="selChip(this,'mer-causa')">Caída/accidente</div><div class="chip" onclick="selChip(this,'mer-causa')">Otro</div></div></div>
     </div>
     <div class="step" id="mer-s4"><div id="mer-resumen"></div><div id="mer-alerta" style="margin-top:8px"></div></div>
-    <h3>Merma registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('mermas')">Nueva merma</button></div>
-  </div>
-    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Merma registrada</h3>
-    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nueva merma</button>
   </div>
   <div id="mer-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="mer-nav" style="display:none"><button class="btn-back-nav" id="mer-back" type="button" onclick="stepPrev('mermas');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('mermas');return false;">Siguiente</button></div>
+  <div class="bottom-nav" id="mer-nav" style="display:none">
+    <button class="btn-back-nav" id="mer-back" type="button" onclick="stepPrev('mermas');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('mermas');return false;">Siguiente</button>
+  </div>
   <div id="mer-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
-    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Merma registrada</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('mermas');return false;">Nueva merma</button>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('mermas');return false;">Nueva merma</button>
   </div>
-
 </div>
 
 <!-- STOCK -->
@@ -491,30 +480,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>¿Qué bodega vas a contar?</label><select id="bodega-selector" onchange="seleccionarBodega(this.value)"><option value="">Seleccionar bodega...</option></select></div>
     </div>
     <div class="step" id="stk-s2">
-  <div id="stk-bodega-titulo" style="font-size:13px;font-weight:700;color:var(--c);padding:4px 0 8px"></div>
-  <div style="display:flex;gap:8px;margin-bottom:8px">
-    <button type="button" onclick="stepPrev('stock');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button>
-    <button type="button" onclick="stepNext('stock');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button>
-  </div>
-  <input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)">
-  <div id="stk-barra-section"></div>
-</div>
-    <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-resumen" style="margin-top:4px"></div></div>
-    <h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
-  </div>
-    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Stock registrado</h3>
-    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo conteo</button>
+      <div id="stk-bodega-titulo" style="font-size:13px;font-weight:700;color:var(--c);padding:4px 0 8px"></div>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <button type="button" onclick="stepPrev('stock');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button>
+        <button type="button" onclick="stepNext('stock');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button>
+      </div>
+      <input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)">
+      <div id="stk-barra-section"></div>
+    </div>
+    <div class="step" id="stk-s3"><div id="stk-resumen"></div></div>
   </div>
   <div id="stk-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="stk-nav" style="display:none"><button class="btn-back-nav" id="stk-back" type="button" onclick="stepPrev('stock');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('stock');return false;">Siguiente</button></div>
+  <div class="bottom-nav" id="stk-nav" style="display:none">
+    <button class="btn-back-nav" id="stk-back" type="button" onclick="stepPrev('stock');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('stock');return false;">Siguiente</button>
+  </div>
   <div id="stk-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
-    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Stock registrado</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('stock');return false;">Nuevo conteo</button>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('stock');return false;">Nuevo conteo</button>
   </div>
-
 </div>
 
 <!-- PEDIDO -->
@@ -528,24 +514,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     </div>
     <div class="step" id="ped-s2"><input class="stk-search" type="search" placeholder="Buscar producto..." oninput="filterPedido(this.value)"><div id="ped-lista"></div></div>
     <div class="step" id="ped-s3"><div id="ped-resumen"></div></div>
-    <h3>Pedido enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('pedido')">Nuevo pedido</button></div>
-  </div>
-    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Pedido enviado</h3>
-    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo pedido</button>
   </div>
   <div id="ped-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="ped-nav" style="display:none"><button class="btn-back-nav" id="ped-back" type="button" onclick="stepPrev('pedido');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('pedido');return false;">Siguiente</button></div>
+  <div class="bottom-nav" id="ped-nav" style="display:none">
+    <button class="btn-back-nav" id="ped-back" type="button" onclick="stepPrev('pedido');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('pedido');return false;">Siguiente</button>
+  </div>
   <div id="ped-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
-    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Pedido enviado</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
-    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('pedido');return false;">Nuevo pedido</button>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('pedido');return false;">Nuevo pedido</button>
   </div>
-
 </div>
-
-<!-- TRASLADO -->
 <div id="traslado" class="view">
   <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Traslado de bodega</div><div class="nav-sub" id="tras-sub">Selecciona el flujo</div></div></div>
   <div class="form-body">
@@ -866,7 +847,11 @@ var FORMS={bitacora:{steps:4,cur:1,pref:'bit'},caja:{steps:4,cur:1,pref:'caj'},l
 var LABELS={bitacora:['Identificación','Formularios','Novedades','Resumen'],caja:['Datos','Ventas','Sencillo','Resumen'],limpieza:['Datos','Tareas','Resumen'],mermas:['Quién','Producto','Causa','Resumen'],stock:['Datos','Conteo','Resumen'],pedido:['Datos','Pedido','Resumen']};
 
 function showForm(form){
-  var f=FORMS[form];f.cur=1;
+  var f=FORMS[form];
+  // Ocultar done y restaurar form-body SIEMPRE
+  var donEl=$(f.pref+'-done');if(donEl)donEl.style.display='none';
+  var fbEl=document.querySelector('#'+form+' .form-body');
+  if(fbEl){fbEl.style.display='';fbEl.style.flexDirection='column';}f.cur=1;
   document.querySelectorAll('#'+form+' .step').forEach(function(s,i){s.style.display=i===0?'flex':'none';s.className='step'+(i===0?' active':'');});
   var done=$(form+'-done');if(done)done.style.display='none';
   var dots=$(form+'-dots');if(dots)dots.style.display='flex';
@@ -931,15 +916,15 @@ function actualizarPasos(form){
 }
 
 function resetForm(form){
-  // Reiniciar el formulario correctamente
   var f=FORMS[form];
   f.cur=1;
   BODEGA_SELECCIONADA=null;
   qtys={};
   Object.keys(opts).forEach(function(k){opts[k]='';});
-  // Mostrar form-body nuevamente
+  // CRÍTICO: ocultar done y mostrar form-body
+  var done=$(f.pref+'-done');if(done)done.style.display='none';
   var fb=document.querySelector('#'+form+' .form-body');
-  if(fb) fb.style.display='';
+  if(fb){fb.style.display='';fb.style.flexDirection='column';}
   // Reiniciar pasos
   document.querySelectorAll('#'+form+' .step').forEach(function(s,i){
     s.style.display=i===0?'flex':'none';
