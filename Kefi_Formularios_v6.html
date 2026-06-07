@@ -345,7 +345,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field" id="bit-nov-text" style="display:none"><label>Describe la novedad</label><textarea id="bit-novedad" placeholder="Describe qué ocurrió..."></textarea></div>
     </div>
     <div class="step" id="bit-s4"><div id="bit-resumen"></div></div>
-    <div class="success" id="bit-done"><div class="success-ring">✓</div><h3>Bitácora registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('bitacora')">Nueva bitácora</button></div>
+    <h3>Bitácora registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('bitacora')">Nueva bitácora</button></div>
+  </div>
+  <div id="bit-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
+    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Bitácora registrada</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nueva bitácora</button>
   </div>
   <div id="bit-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="bit-nav"><button class="btn-back-nav" id="bit-back" type="button" onclick="stepPrev('bitacora');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('bitacora');return false;">Siguiente</button></div>
@@ -381,7 +387,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <input type="hidden" id="caj-b2000" value="0">
     </div>
     <div class="step" id="caj-s4"><div id="caj-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="caj-obs" placeholder="Novedades, diferencias..."></textarea></div></div>
-    <div class="success" id="caj-done"><div class="success-ring">✓</div><h3>Arqueo registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('caja')">Nuevo arqueo</button></div>
+    <h3>Arqueo registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('caja')">Nuevo arqueo</button></div>
+  </div>
+  <div id="caj-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
+    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Arqueo registrado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo arqueo</button>
   </div>
   <div id="caj-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="caj-nav"><button class="btn-back-nav" id="caj-back" type="button" onclick="stepPrev('caja');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('caja');return false;">Siguiente</button></div>
@@ -396,9 +408,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>Head Barista</label><select id="limp-hb"><option value="">Seleccionar...</option></select></div>
       <div class="field"><label>Turno</label><div class="chip-row"><div class="chip" onclick="selChip(this,'limp-momento')">AM — Apertura</div><div class="chip" onclick="selChip(this,'limp-momento')">PM — Cierre</div></div></div>
     </div>
-    <div class="step" id="limp-s2"><div id="limp-lista" style="display:flex;flex-direction:column;gap:8px"></div></div>
+    <div class="step" id="limp-s2">
+  <div style="display:flex;gap:8px;margin-bottom:8px">
+    <button type="button" onclick="stepPrev('limpieza');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button>
+    <button type="button" onclick="stepNext('limpieza');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button>
+  </div>
+  <div id="limp-lista" style="display:flex;flex-direction:column;gap:8px"></div>
+</div>
     <div class="step" id="limp-s3"><div id="limp-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="limp-obs" placeholder="Tareas no realizadas y motivo..."></textarea></div></div>
-    <div class="success" id="limp-done"><div class="success-ring">✓</div><h3>Checklist enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('limpieza')">Nuevo checklist</button></div>
+    <h3>Checklist enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('limpieza')">Nuevo checklist</button></div>
+  </div>
+  <div id="limp-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
+    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Checklist enviado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo checklist</button>
   </div>
   <div id="limp-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="limp-nav"><button class="btn-back-nav" id="limp-back" type="button" onclick="stepPrev('limpieza');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('limpieza');return false;">Siguiente</button></div>
@@ -422,7 +446,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>Causa</label><div class="chip-row"><div class="chip" onclick="selChip(this,'mer-causa')">Vencimiento</div><div class="chip" onclick="selChip(this,'mer-causa')">Error preparación</div><div class="chip" onclick="selChip(this,'mer-causa')">Caída/accidente</div><div class="chip" onclick="selChip(this,'mer-causa')">Otro</div></div></div>
     </div>
     <div class="step" id="mer-s4"><div id="mer-resumen"></div><div id="mer-alerta" style="margin-top:8px"></div></div>
-    <div class="success" id="mer-done"><div class="success-ring">✓</div><h3>Merma registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('mermas')">Nueva merma</button></div>
+    <h3>Merma registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('mermas')">Nueva merma</button></div>
+  </div>
+  <div id="mer-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
+    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Merma registrada</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nueva merma</button>
   </div>
   <div id="mer-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="mer-nav"><button class="btn-back-nav" id="mer-back" type="button" onclick="stepPrev('mermas');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('mermas');return false;">Siguiente</button></div>
@@ -438,9 +468,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>Momento</label><div class="chip-row"><div class="chip" onclick="selChip(this,'stk-momento')">Apertura</div><div class="chip" onclick="selChip(this,'stk-momento')">Cierre</div></div></div>
       <div class="field"><label>¿Qué bodega vas a contar?</label><select id="bodega-selector" onchange="seleccionarBodega(this.value)"><option value="">Seleccionar bodega...</option></select></div>
     </div>
-    <div class="step" id="stk-s2"><div id="stk-bodega-titulo" style="font-size:13px;font-weight:700;color:var(--c);padding:4px 0 8px"></div><input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)"><div id="stk-barra-section"></div></div>
+    <div class="step" id="stk-s2">
+  <div id="stk-bodega-titulo" style="font-size:13px;font-weight:700;color:var(--c);padding:4px 0 8px"></div>
+  <div style="display:flex;gap:8px;margin-bottom:8px">
+    <button type="button" onclick="stepPrev('stock');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button>
+    <button type="button" onclick="stepNext('stock');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button>
+  </div>
+  <input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)">
+  <div id="stk-barra-section"></div>
+</div>
     <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-resumen" style="margin-top:4px"></div></div>
-    <div class="success" id="stk-done"><div class="success-ring">✓</div><h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
+    <h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
+  </div>
+  <div id="stk-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
+    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Stock registrado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo conteo</button>
   </div>
   <div id="stk-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="stk-nav"><button class="btn-back-nav" id="stk-back" type="button" onclick="stepPrev('stock');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('stock');return false;">Siguiente</button></div>
@@ -457,7 +501,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     </div>
     <div class="step" id="ped-s2"><input class="stk-search" type="search" placeholder="Buscar producto..." oninput="filterPedido(this.value)"><div id="ped-lista"></div></div>
     <div class="step" id="ped-s3"><div id="ped-resumen"></div></div>
-    <div class="success" id="ped-done"><div class="success-ring">✓</div><h3>Pedido enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('pedido')">Nuevo pedido</button></div>
+    <h3>Pedido enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('pedido')">Nuevo pedido</button></div>
+  </div>
+  <div id="ped-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
+    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Pedido enviado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo pedido</button>
   </div>
   <div id="ped-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="ped-nav"><button class="btn-back-nav" id="ped-back" type="button" onclick="stepPrev('pedido');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('pedido');return false;">Siguiente</button></div>
@@ -539,7 +589,11 @@ function showView(id){
     else history.pushState({view:id},'',location.href);
   }catch(e){}
 }
-function goHome(){showView('home');}
+function goHome(){
+  // Reset any hidden form-body elements before going home
+  document.querySelectorAll('.form-body').forEach(function(fb){fb.style.display='';});
+  showView('home');
+}
 
 // Intercept browser back button - stay in app
 window.addEventListener('popstate', function(e){
@@ -786,28 +840,14 @@ function stepNext(form){
   if(form==='caja'&&f.cur===1) initCalc();
   if(f.cur===f.steps){
     enviarFormulario(form);
-    // Ocultar todos los pasos
-    document.querySelectorAll('#'+form+' .step').forEach(function(s){
-      s.style.display='none';
-      s.classList.remove('active');
-    });
-    // Mostrar pantalla de éxito
-    var done=$(form+'-done');
-    if(done){
-      done.style.display='flex';
-      done.style.flexDirection='column';
-      done.style.alignItems='center';
-      done.style.justifyContent='center';
-      done.style.padding='40px 20px';
-      done.style.textAlign='center';
-      done.style.gap='12px';
-      done.style.minHeight='300px';
-    }
+    // Ocultar pasos, dots y nav
+    document.querySelectorAll('#'+form+' .step').forEach(function(s){s.style.display='none';s.classList.remove('active');});
+    var fb=document.querySelector('#'+form+' .form-body');if(fb)fb.style.display='none';
     var dots=$(form+'-dots');if(dots)dots.style.display='none';
     var nav=$(form+'-nav');if(nav)nav.style.display='none';
-    // Scroll al inicio de la pantalla de éxito
-    var fb=document.querySelector('#'+form+' .form-body');
-    if(fb) fb.scrollTop=0;
+    // Mostrar pantalla de éxito (está fuera de form-body)
+    var done=$(f.pref+'-done');
+    if(done) done.style.display='flex';
     return;
   }
   f.cur++;actualizarPasos(form);
@@ -986,7 +1026,14 @@ function renderStockItems(){
   var b=BODEGA_SELECCIONADA;
   var titulo=$('stk-bodega-titulo');
   if(titulo) titulo.textContent=b.icon+' '+b.label+' — '+b.sub;
-  var items=INSUMOS[b.suc].filter(function(i){return b.bodega?i.b:!i.b;});
+  // Si es bodega pero no hay items marcados con b=true, usar todos los items
+  var items;
+  if(b.bodega){
+    var bodItems=INSUMOS[b.suc].filter(function(i){return i.b;});
+    items = bodItems.length > 0 ? bodItems : INSUMOS[b.suc]; // fallback a todos
+  } else {
+    items = INSUMOS[b.suc].filter(function(i){return !i.b;});
+  }
   var sec=$('stk-barra-section');sec.innerHTML='';
   var prefix=b.id.replace('-','_');
   [{label:'⚡ Revisión diaria',key:'diario'},{label:'📅 Revisión semanal',key:'semanal'},{label:'🗓 Revisión quincenal',key:'quincenal'}].forEach(function(g){
@@ -1023,14 +1070,36 @@ function renderStockBodega(){
   buildStockResumen();
 }
 function buildStockResumen(){
-  var b=BODEGA_SELECCIONADA||{label:'--',suc:USER?USER.suc:'cbb',bodega:false};
-  var items=INSUMOS[b.suc]?INSUMOS[b.suc].filter(function(i){return b.bodega?i.b:!i.b;}):[];
-  var con=Object.values(qtys).filter(function(v){return v>0;}).length;
+  var b=BODEGA_SELECCIONADA||{id:'sb',label:'--',suc:USER?USER.suc:'cbb',bodega:false};
+  var allItems;
+  if(b.bodega){
+    var bi=INSUMOS[b.suc]?INSUMOS[b.suc].filter(function(i){return i.b;}):[]; 
+    allItems=bi.length>0?bi:(INSUMOS[b.suc]||[]);
+  } else {
+    allItems=INSUMOS[b.suc]?INSUMOS[b.suc].filter(function(i){return !i.b;}):[]; 
+  }
+  var prefix=b.id?b.id.replace('-','_'):'sb';
+  // Count by category
+  var cats=[{key:'diario',label:'⚡ Diario'},{key:'semanal',label:'📅 Semanal'},{key:'quincenal',label:'🗓 Quincenal'}];
+  var catRows='';
+  cats.forEach(function(cat){
+    var catItems=allItems.filter(function(i){return i.s===cat.key;});
+    if(!catItems.length)return;
+    var contados=catItems.filter(function(item){
+      var idx=allItems.indexOf(item);
+      return (qtys[prefix+'-'+idx]||0)>0;
+    }).length;
+    var pct=Math.round(contados/catItems.length*100);
+    var color=pct===100?'var(--ok)':pct>50?'var(--warn)':'var(--danger)';
+    catRows+='<div class="srow"><span class="sl">'+cat.label+'</span><span class="sv" style="color:'+color+'">'+contados+'/'+catItems.length+' ('+pct+'%)</span></div>';
+  });
+  var totalCon=Object.values(qtys).filter(function(v){return v>0;}).length;
   $('stk-resumen').innerHTML='<div class="summary">'
     +'<div class="srow"><span class="sl">Bodega</span><span class="sv">'+b.label+'</span></div>'
     +'<div class="srow"><span class="sl">HB</span><span class="sv">'+($('stk-hb').value||'--')+'</span></div>'
     +'<div class="srow"><span class="sl">Momento</span><span class="sv">'+(opts['stk-momento']||'--')+'</span></div>'
-    +'<div class="srow"><span class="sl">Items contados</span><span class="sv">'+con+' de '+items.length+'</span></div>'
+    +'<div class="srow" style="font-weight:700"><span class="sl">Total contados</span><span class="sv">'+totalCon+'/'+allItems.length+'</span></div>'
+    +catRows
     +'</div>';
 }
 function filterStock(q){var query=(q||'').toLowerCase();document.querySelectorAll('#stk-barra-section .qty-row').forEach(function(row){var n=row.querySelector('.qty-name');row.style.display=(!query||n.textContent.toLowerCase().indexOf(query)>=0)?'flex':'none';});}
@@ -1178,8 +1247,19 @@ function buscarRegistros(){
     var todos=[];results.forEach(function(r){r.filas.forEach(function(f){todos.push({tipo:r.tipo,fila:f});});});
     var filtrados=todos.filter(function(item){
       var f=item.fila,ts=f[0]||'';
-      if(desde&&new Date(ts)<new Date(desde))return false;
-      if(hasta){var hd=new Date(hasta);hd.setDate(hd.getDate()+1);if(new Date(ts)>hd)return false;}
+      // Date filter — skip if no dates selected
+      if(desde||hasta){
+        // Parse timestamp from Sheets format dd-MM-yyyy HH:mm
+        var parts=ts.split(/[\-\s,:]/);
+        var tsDate=null;
+        if(parts.length>=3){
+          // Try dd-MM-yyyy format
+          try{tsDate=new Date(parts[2]+'-'+parts[1]+'-'+parts[0]);}catch(e){}
+        }
+        if(!tsDate||isNaN(tsDate.getTime())) tsDate=new Date(ts);
+        if(desde&&tsDate<new Date(desde))return false;
+        if(hasta){var hd=new Date(hasta);hd.setDate(hd.getDate()+1);if(tsDate>hd)return false;}
+      }
       if(suc&&f[1]&&f[1].indexOf(suc==='Bio Bio'?'Bio':'Ramon')<0)return false;
       if(persona){var ok=[1,2,3,4,10].some(function(c){return f[c]&&f[c].toString().toLowerCase().indexOf(persona)>=0;});if(!ok)return false;}
       return true;
