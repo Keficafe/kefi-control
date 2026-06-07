@@ -349,14 +349,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="step" id="bit-s4"><div id="bit-resumen"></div></div>
     <h3>Bitácora registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('bitacora')">Nueva bitácora</button></div>
   </div>
-  <div id="bit-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
-    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Bitácora registrada</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
     <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nueva bitácora</button>
   </div>
   <div id="bit-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="bit-nav" style="display:none"><button class="btn-back-nav" id="bit-back" type="button" onclick="stepPrev('bitacora');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('bitacora');return false;">Siguiente</button></div>
+  <div id="bit-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Bitácora registrada</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('bitacora');return false;">Nueva bitácora</button>
+  </div>
+
 </div>
 
 <!-- CAJA -->
@@ -391,14 +396,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="step" id="caj-s4"><div id="caj-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="caj-obs" placeholder="Novedades, diferencias..."></textarea></div></div>
     <h3>Arqueo registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('caja')">Nuevo arqueo</button></div>
   </div>
-  <div id="caj-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
-    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Arqueo registrado</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
     <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo arqueo</button>
   </div>
   <div id="caj-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="caj-nav" style="display:none"><button class="btn-back-nav" id="caj-back" type="button" onclick="stepPrev('caja');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('caja');return false;">Siguiente</button></div>
+  <div id="caj-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Arqueo registrado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('caja');return false;">Nuevo arqueo</button>
+  </div>
+
 </div>
 
 <!-- LIMPIEZA -->
@@ -420,14 +430,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="step" id="limp-s3"><div id="limp-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="limp-obs" placeholder="Tareas no realizadas y motivo..."></textarea></div></div>
     <h3>Checklist enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('limpieza')">Nuevo checklist</button></div>
   </div>
-  <div id="limp-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
-    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Checklist enviado</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
     <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo checklist</button>
   </div>
   <div id="limp-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="limp-nav" style="display:none"><button class="btn-back-nav" id="limp-back" type="button" onclick="stepPrev('limpieza');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('limpieza');return false;">Siguiente</button></div>
+  <div id="limp-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Checklist enviado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('limpieza');return false;">Nuevo checklist</button>
+  </div>
+
 </div>
 
 <!-- MERMAS -->
@@ -450,14 +465,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="step" id="mer-s4"><div id="mer-resumen"></div><div id="mer-alerta" style="margin-top:8px"></div></div>
     <h3>Merma registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('mermas')">Nueva merma</button></div>
   </div>
-  <div id="mer-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
-    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Merma registrada</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
     <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nueva merma</button>
   </div>
   <div id="mer-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="mer-nav" style="display:none"><button class="btn-back-nav" id="mer-back" type="button" onclick="stepPrev('mermas');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('mermas');return false;">Siguiente</button></div>
+  <div id="mer-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Merma registrada</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('mermas');return false;">Nueva merma</button>
+  </div>
+
 </div>
 
 <!-- STOCK -->
@@ -482,14 +502,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-resumen" style="margin-top:4px"></div></div>
     <h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
   </div>
-  <div id="stk-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
-    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Stock registrado</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
     <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo conteo</button>
   </div>
   <div id="stk-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="stk-nav" style="display:none"><button class="btn-back-nav" id="stk-back" type="button" onclick="stepPrev('stock');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('stock');return false;">Siguiente</button></div>
+  <div id="stk-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Stock registrado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('stock');return false;">Nuevo conteo</button>
+  </div>
+
 </div>
 
 <!-- PEDIDO -->
@@ -505,14 +530,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="step" id="ped-s3"><div id="ped-resumen"></div></div>
     <h3>Pedido enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('pedido')">Nuevo pedido</button></div>
   </div>
-  <div id="ped-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;flex:1;background:var(--cll)">
-    <div class="success-ring" style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
     <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Pedido enviado</h3>
     <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
     <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="goHome();return false;">Nuevo pedido</button>
   </div>
   <div id="ped-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="ped-nav" style="display:none"><button class="btn-back-nav" id="ped-back" type="button" onclick="stepPrev('pedido');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('pedido');return false;">Siguiente</button></div>
+  <div id="ped-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Pedido enviado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px" onclick="resetForm('pedido');return false;">Nuevo pedido</button>
+  </div>
+
 </div>
 
 <!-- TRASLADO -->
