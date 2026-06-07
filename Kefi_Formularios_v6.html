@@ -849,8 +849,8 @@ function showForm(form){
   Object.keys(opts).forEach(function(k){opts[k]=''});
   qtys={};
   showView(form);
-  if(form==='stock') setTimeout(renderStock, 50);
-  if(form==='pedido') setTimeout(renderPedido, 50);
+  if(form==='stock') renderStock();
+  if(form==='pedido') renderPedido();
   if(form==='bitacora') renderBitChecks();
   if(form==='limpieza') renderLimpieza();
 }
@@ -900,7 +900,37 @@ function actualizarPasos(form){
   document.querySelectorAll('#'+pref+'-dots .dot').forEach(function(d,i){d.className='dot'+(i===f.cur-1?' act':'');});
 }
 
-function resetForm(form){goHome();}
+function resetForm(form){
+  // Reiniciar el formulario correctamente
+  var f=FORMS[form];
+  f.cur=1;
+  BODEGA_SELECCIONADA=null;
+  qtys={};
+  Object.keys(opts).forEach(function(k){opts[k]='';});
+  // Mostrar form-body nuevamente
+  var fb=document.querySelector('#'+form+' .form-body');
+  if(fb) fb.style.display='';
+  // Reiniciar pasos
+  document.querySelectorAll('#'+form+' .step').forEach(function(s,i){
+    s.style.display=i===0?'flex':'none';
+    s.className='step'+(i===0?' active':'');
+  });
+  // Reiniciar chips
+  document.querySelectorAll('#'+form+' .chip').forEach(function(c){c.classList.remove('sel');});
+  // Ocultar done, mostrar dots y nav
+  var done=$(f.pref+'-done');if(done)done.style.display='none';
+  var dots=$(f.pref+'-dots');if(dots)dots.style.display='flex';
+  var nav=$(f.pref+'-nav');if(nav)nav.style.display='flex';
+  // Reiniciar progress
+  var prog=$(f.pref+'-prog');if(prog)prog.style.width=Math.round(1/f.steps*100)+'%';
+  var sub=$(f.pref+'-sub');if(sub)sub.textContent='Paso 1 de '+f.steps+' — '+(LABELS[form][0]||'');
+  var back=$(f.pref+'-back');if(back)back.style.display='none';
+  // Re-render dinámicos
+  if(form==='stock') renderStock();
+  if(form==='pedido') renderPedido();
+  if(form==='bitacora') renderBitChecks();
+  if(form==='limpieza') renderLimpieza();
+}
 
 function renderBitChecks(){
   var el=$('bit-checks');if(!el)return;el.innerHTML='';
