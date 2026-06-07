@@ -117,8 +117,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
 .qv{width:52px;height:32px;border-top:0.5px solid var(--brd);border-bottom:0.5px solid var(--brd);border-left:none;border-right:none;background:#fff;text-align:center;font-size:14px;font-weight:500;color:var(--txt);outline:none;padding:0;-webkit-appearance:none;}
 .qv.has{background:var(--cl);color:var(--c);font-weight:700;}
 .sem-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:8px;margin-top:2px;}
-.sem-tag.d{background:#FFE5B4;color:#8B5A00;}
-.sem-tag.s{background:#D4EDDA;color:#1A6B3C;}
+.sem-tag.d{background:#D4EDDA;color:#1A6B3C;}
+.sem-tag.s{background:#FFE5B4;color:#8B5A00;}
 .sem-tag.q{background:#EBF3FC;color:var(--blue);}
 .bodega-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:8px;background:var(--dangerl);color:var(--danger);margin-top:2px;}
 .stk-search{width:100%;padding:10px 12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);font-size:14px;background:#fff;outline:none;margin-bottom:8px;}
@@ -436,12 +436,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="step active" id="stk-s1">
       <div class="field"><label>Head Barista</label><select id="stk-hb"><option value="">Seleccionar...</option></select></div>
       <div class="field"><label>Momento</label><div class="chip-row"><div class="chip" onclick="selChip(this,'stk-momento')">Apertura</div><div class="chip" onclick="selChip(this,'stk-momento')">Cierre</div></div></div>
+      <div class="field"><label>¿Qué bodega vas a contar?</label><div class="bodega-selector" id="bodega-selector"></div></div>
     </div>
-    <div class="step" id="stk-s2"><input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)"><div id="stk-barra-section"></div></div>
-    <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-bodega-section"></div><div id="stk-resumen" style="margin-top:8px"></div></div>
+    <div class="step" id="stk-s2"><div id="stk-bodega-titulo" style="font-size:13px;font-weight:700;color:var(--c);padding:4px 0 8px"></div><input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)"><div id="stk-barra-section"></div></div>
+    <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-resumen"></div></div>
     <div class="success" id="stk-done"><div class="success-ring">✓</div><h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
   </div>
-  <div id="stk-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
+  <div id="stk-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="stk-nav"><button class="btn-back-nav" id="stk-back" type="button" onclick="stepPrev('stock');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('stock');return false;">Siguiente</button></div>
 </div>
 
@@ -741,8 +742,8 @@ function poblarSelects(){
   var mp=$('mer-prod');if(mp){mp.innerHTML='<option value="">Seleccionar...</option>';INSUMOS_MERMAS.forEach(function(n){var o=document.createElement('option');o.value=n;o.textContent=n;mp.appendChild(o);});}
 }
 
-var FORMS={bitacora:{steps:4,cur:1,pref:'bit'},caja:{steps:4,cur:1,pref:'caj'},limpieza:{steps:3,cur:1,pref:'limp'},mermas:{steps:4,cur:1,pref:'mer'},stock:{steps:3,cur:1,pref:'stk'},pedido:{steps:3,cur:1,pref:'ped'}};
-var LABELS={bitacora:['Identificación','Formularios','Novedades','Resumen'],caja:['Datos','Ventas','Sencillo','Resumen'],limpieza:['Datos','Tareas','Resumen'],mermas:['Quién','Producto','Causa','Resumen'],stock:['Datos','Barra','Bodega'],pedido:['Datos','Pedido','Resumen']};
+var FORMS={bitacora:{steps:4,cur:1,pref:'bit'},caja:{steps:4,cur:1,pref:'caj'},limpieza:{steps:3,cur:1,pref:'limp'},mermas:{steps:4,cur:1,pref:'mer'},stock:{steps:2,cur:1,pref:'stk'},pedido:{steps:3,cur:1,pref:'ped'}};
+var LABELS={bitacora:['Identificación','Formularios','Novedades','Resumen'],caja:['Datos','Ventas','Sencillo','Resumen'],limpieza:['Datos','Tareas','Resumen'],mermas:['Quién','Producto','Causa','Resumen'],stock:['Datos','Conteo','Resumen'],pedido:['Datos','Pedido','Resumen']};
 
 function showForm(form){
   var f=FORMS[form];f.cur=1;
@@ -774,8 +775,10 @@ function selChip(el,key){
 function stepNext(form){
   var f=FORMS[form];
   if(f.cur===f.steps-1) buildResumen(form);
-  if(form==='stock'&&f.cur===2) renderStockBodega();
-  if(form==='caja'&&f.cur===2) initCalc();
+  if(form==='stock'&&f.cur===1){
+    if(!renderStockItems()) return;
+  }
+  if(form==='caja'&&f.cur===1) initCalc();
   if(f.cur===f.steps){
     enviarFormulario(form);
     document.querySelectorAll('#'+form+' .step').forEach(function(s){s.style.display='none';});
@@ -897,17 +900,88 @@ function makeQtyRow(item,prefix,idx){
 function changeQty(id,delta){if(!qtys[id])qtys[id]=0;qtys[id]=Math.round((Math.max(0,qtys[id]+delta))*10)/10;var el=$(id+'-v');if(el){el.value=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}}
 function setQty(id,val){qtys[id]=Math.max(0,Math.round((parseFloat(val)||0)*10)/10);var el=$(id+'-v');if(el){el.value=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}}
 
+var BODEGA_SELECCIONADA = null;
+
+function getBodegasDisponibles(){
+  if(!USER) return [];
+  var suc=USER.suc, rol=USER.rol;
+  var bodegas=[];
+  if(rol==='dir'){
+    bodegas=[
+      {id:'barra-rc', label:'Barra RC', sub:'Ramón Carrasco', icon:'☕', suc:'rc', bodega:false},
+      {id:'bodega-rc', label:'Bodega Principal RC', sub:'Ramón Carrasco', icon:'📦', suc:'rc', bodega:true},
+      {id:'barra-cbb', label:'Barra CBB', sub:'Clínica Bio Bio', icon:'☕', suc:'cbb', bodega:false},
+      {id:'bodega-cbb', label:'Bodega CBB abajo', sub:'Clínica Bio Bio', icon:'📦', suc:'cbb', bodega:true}
+    ];
+  } else if(suc==='rc'){
+    bodegas=[
+      {id:'barra-rc', label:'Barra RC', sub:'Ramón Carrasco', icon:'☕', suc:'rc', bodega:false},
+      {id:'bodega-rc', label:'Bodega Principal RC', sub:'Ramón Carrasco', icon:'📦', suc:'rc', bodega:true}
+    ];
+  } else {
+    bodegas=[
+      {id:'barra-cbb', label:'Barra CBB', sub:'Clínica Bio Bio', icon:'☕', suc:'cbb', bodega:false},
+      {id:'bodega-cbb', label:'Bodega CBB abajo', sub:'Clínica Bio Bio', icon:'📦', suc:'cbb', bodega:true}
+    ];
+  }
+  return bodegas;
+}
+
 function renderStock(){
-  var suc=USER?USER.suc:'cbb';
-  var items=INSUMOS[suc].filter(function(i){return!i.b;});
+  BODEGA_SELECCIONADA=null;
+  qtys={};
+  var bodegas=getBodegasDisponibles();
+  var sel=$('bodega-selector');
+  if(!sel)return;
+  sel.innerHTML='';
+  bodegas.forEach(function(b){
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.className='bodega-btn';
+    btn.innerHTML='<div class="bodega-btn-icon">'+b.icon+'</div>'
+      +'<div class="bodega-btn-info">'
+      +'<div class="bodega-btn-titulo">'+b.label+'</div>'
+      +'<div class="bodega-btn-sub">'+b.sub+'</div>'
+      +'</div>';
+    btn.onclick=function(){
+      sel.querySelectorAll('.bodega-btn').forEach(function(x){x.classList.remove('activa');});
+      btn.classList.add('activa');
+      BODEGA_SELECCIONADA=b;
+    };
+    sel.appendChild(btn);
+  });
+  // Auto-select first if only one option
+  if(bodegas.length===1){
+    sel.querySelector('.bodega-btn').classList.add('activa');
+    BODEGA_SELECCIONADA=bodegas[0];
+  }
+}
+
+function renderStockItems(){
+  if(!BODEGA_SELECCIONADA){
+    alert('Selecciona una bodega primero');
+    return false;
+  }
+  var b=BODEGA_SELECCIONADA;
+  var titulo=$('stk-bodega-titulo');
+  if(titulo) titulo.textContent=b.icon+' '+b.label+' — '+b.sub;
+  var items=INSUMOS[b.suc].filter(function(i){return b.bodega?i.b:!i.b;});
   var sec=$('stk-barra-section');sec.innerHTML='';
+  var prefix=b.id.replace('-','_');
   [{label:'⚡ Revisión diaria',key:'diario'},{label:'📅 Revisión semanal',key:'semanal'},{label:'🗓 Revisión quincenal',key:'quincenal'}].forEach(function(g){
     var gItems=items.filter(function(i){return i.s===g.key;});if(!gItems.length)return;
     var grp=document.createElement('div');grp.className='stk-grupo';
     var tit=document.createElement('div');tit.className='stk-grupo-titulo';tit.textContent=g.label+' ('+gItems.length+')';grp.appendChild(tit);
-    gItems.forEach(function(item){grp.appendChild(makeQtyRow(item,'sb',items.indexOf(item)));});
+    gItems.forEach(function(item){grp.appendChild(makeQtyRow(item,prefix,items.indexOf(item)));});
     sec.appendChild(grp);
   });
+  // If bodega has no frequency-tagged items, show all
+  if(!sec.children.length){
+    var grp2=document.createElement('div');grp2.className='stk-grupo';
+    items.forEach(function(item,i){grp2.appendChild(makeQtyRow(item,prefix,i));});
+    sec.appendChild(grp2);
+  }
+  return true;
 }
 function renderStockBodega(){
   var suc=USER?USER.suc:'cbb';
@@ -928,11 +1002,15 @@ function renderStockBodega(){
   buildStockResumen();
 }
 function buildStockResumen(){
-  var suc=USER?USER.suc:'cbb';
-  var items=INSUMOS[suc];
+  var b=BODEGA_SELECCIONADA||{label:'--',suc:USER?USER.suc:'cbb',bodega:false};
+  var items=INSUMOS[b.suc]?INSUMOS[b.suc].filter(function(i){return b.bodega?i.b:!i.b;}):[];
   var con=Object.values(qtys).filter(function(v){return v>0;}).length;
-  var sucN=suc==='cbb'?'Clínica Bio Bio':'Ramón Carrasco';
-  $('stk-resumen').innerHTML='<div class="summary"><div class="srow"><span class="sl">Sucursal</span><span class="sv">'+sucN+'</span></div><div class="srow"><span class="sl">HB</span><span class="sv">'+($('stk-hb').value||'--')+'</span></div><div class="srow"><span class="sl">Momento</span><span class="sv">'+(opts['stk-momento']||'--')+'</span></div><div class="srow"><span class="sl">Items contados</span><span class="sv">'+con+' de '+items.length+'</span></div></div>';
+  $('stk-resumen').innerHTML='<div class="summary">'
+    +'<div class="srow"><span class="sl">Bodega</span><span class="sv">'+b.label+'</span></div>'
+    +'<div class="srow"><span class="sl">HB</span><span class="sv">'+($('stk-hb').value||'--')+'</span></div>'
+    +'<div class="srow"><span class="sl">Momento</span><span class="sv">'+(opts['stk-momento']||'--')+'</span></div>'
+    +'<div class="srow"><span class="sl">Items contados</span><span class="sv">'+con+' de '+items.length+'</span></div>'
+    +'</div>';
 }
 function filterStock(q){var query=(q||'').toLowerCase();document.querySelectorAll('#stk-barra-section .qty-row').forEach(function(row){var n=row.querySelector('.qty-name');row.style.display=(!query||n.textContent.toLowerCase().indexOf(query)>=0)?'flex':'none';});}
 
@@ -1017,12 +1095,11 @@ function enviarFormulario(form){
     var cant=parseFloat($('mer-cant').value)||0,cu=parseFloat($('mer-costo').value)||0;
     datos={sucursal:suc,quien:$('mer-quien').value||'',turno:opts['mer-turno']||'',producto:prodN,cantidad:cant,costo_unit:cu,costo_total:cant*cu,causa:opts['mer-causa']||'',alerta:(cant*cu)>=5000};
   }else if(form==='stock'){
-    var stksuc=USER?USER.suc:'cbb';
-    var sitems=INSUMOS[stksuc];
-    var arr=[];
-    sitems.filter(function(i){return!i.b;}).forEach(function(item,idx){arr.push({n:item.n,u:item.u,barra:qtys['sb-'+idx]||0,bodega:qtys['sbod-'+idx]||0});});
-    if(stksuc==='cbb') sitems.filter(function(i){return i.b;}).forEach(function(item,idx){arr.push({n:item.n,u:item.u,barra:0,bodega:qtys['sbod-'+idx]||0});});
-    datos={sucursal:stksuc==='cbb'?'Clinica Bio Bio':'Ramon Carrasco',hb:$('stk-hb').value||'',momento:opts['stk-momento']||'',contados:arr.filter(function(i){return(i.barra+i.bodega)>0;}).length,items:JSON.stringify(arr)};
+    var b=BODEGA_SELECCIONADA||{id:'sb',label:'--',suc:USER?USER.suc:'cbb',bodega:false};
+    var sitems=INSUMOS[b.suc]?INSUMOS[b.suc].filter(function(i){return b.bodega?i.b:!i.b;}):[];
+    var prefix=b.id.replace('-','_');
+    var arr=sitems.map(function(item,idx){return{n:item.n,u:item.u,cantidad:qtys[prefix+'-'+idx]||0};});
+    datos={sucursal:b.suc==='cbb'?'Clinica Bio Bio':'Ramon Carrasco',bodega:b.label,hb:$('stk-hb').value||'',momento:opts['stk-momento']||'',contados:arr.filter(function(i){return i.cantidad>0;}).length,items:JSON.stringify(arr)};
   }else if(form==='pedido'){
     var pitems=INSUMOS['cbb'];
     var ped=pitems.map(function(item,i){var q=qtys['pp-'+i]||0;return q>0?{n:item.n,u:item.u,q:q}:null;}).filter(Boolean);
