@@ -224,7 +224,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
           </optgroup>
         </select>
       </div>
-      <div id="pin-section" style="display:none;flex-direction:column;gap:10px">
+      <div id="pin-section" style="display:flex;flex-direction:column;gap:10px">
         <div class="login-field">
           <label id="pin-label">Tu PIN de acceso</label>
           <input id="pin-input" type="password" inputmode="numeric" maxlength="6" placeholder="••••" class="pin-input" onkeydown="if(event.key==='Enter')doLogin()">
@@ -542,17 +542,25 @@ function resetearPIN(){
 
 function onSelectUsuario(){
   var val=$('login-nombre').value;
-  var ps=$('pin-section');
   $('login-msg').style.display='none';
   $('pin-input').value='';$('pin-confirm').value='';
-  if(!val){ps.style.display='none';return;}
-  ps.style.display='flex';
+  if(!val){
+    $('pin-label').textContent='Tu PIN de acceso';
+    $('pin-confirm-wrap').style.display='none';
+    $('suc-wrap').style.display='none';
+    return;
+  }
   var parts=val.split('|');
   var nombre=parts[0],base=parts[1];
   $('suc-wrap').style.display=(base==='dir'||base==='ambos')?'block':'none';
   var pin=getPIN(nombre);
-  if(!pin){$('pin-label').textContent='Elige tu PIN (primera vez)';$('pin-confirm-wrap').style.display='block';}
-  else{$('pin-label').textContent='Tu PIN de acceso';$('pin-confirm-wrap').style.display='none';}
+  if(!pin){
+    $('pin-label').textContent='Elige tu PIN (primera vez — mín. 4 dígitos)';
+    $('pin-confirm-wrap').style.display='block';
+  } else {
+    $('pin-label').textContent='Tu PIN de acceso';
+    $('pin-confirm-wrap').style.display='none';
+  }
 }
 
 function showMsg(txt,esErr){
@@ -605,7 +613,7 @@ function doLogin(){
 function doLogout(){
   USER=null;
   $('login-nombre').value='';
-  $('pin-section').style.display='none';
+  // pin-section always visible
   $('pin-input').value='';$('pin-confirm').value='';
   $('login-msg').style.display='none';
   var rs=$('reset-section');if(rs)rs.style.display='none';
