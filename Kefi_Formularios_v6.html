@@ -759,8 +759,8 @@ function showForm(form){
   Object.keys(opts).forEach(function(k){opts[k]=''});
   qtys={};
   showView(form);
-  if(form==='stock') renderStock();
-  if(form==='pedido') renderPedido();
+  if(form==='stock') setTimeout(renderStock, 50);
+  if(form==='pedido') setTimeout(renderPedido, 50);
   if(form==='bitacora') renderBitChecks();
   if(form==='limpieza') renderLimpieza();
 }
@@ -943,11 +943,15 @@ function renderStock(){
       +'<div class="bodega-btn-titulo">'+b.label+'</div>'
       +'<div class="bodega-btn-sub">'+b.sub+'</div>'
       +'</div>';
-    btn.onclick=function(){
-      sel.querySelectorAll('.bodega-btn').forEach(function(x){x.classList.remove('activa');});
-      btn.classList.add('activa');
-      BODEGA_SELECCIONADA=b;
-    };
+    (function(btn, b){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        sel.querySelectorAll('.bodega-btn').forEach(function(x){x.classList.remove('activa');});
+        btn.classList.add('activa');
+        BODEGA_SELECCIONADA=b;
+      }, false);
+    })(btn, b);
     sel.appendChild(btn);
   });
   // Auto-select first if only one option
