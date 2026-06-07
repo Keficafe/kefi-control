@@ -11,6 +11,41 @@ body, select, input, button { font-family: -apple-system, BlinkMacSystemFont, "H
 .icon-svg { display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; }
 .icon-svg svg { display:block; }
 
+
+/* ── MODAL PENDIENTES ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(44,10,18,0.55);z-index:999;display:flex;align-items:flex-end;justify-content:center;}
+.modal-overlay.hidden{display:none;}
+.modal-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-height:85vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom);}
+.modal-header{padding:16px 16px 8px;border-bottom:0.5px solid var(--brd);position:sticky;top:0;background:#fff;z-index:1;}
+.modal-title{font-size:17px;font-weight:700;color:var(--txt);}
+.modal-sub{font-size:12px;color:var(--txt2);margin-top:2px;}
+.modal-body{padding:16px;}
+.modal-suc-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--c);padding:8px 0 4px;border-bottom:2px solid var(--c);margin-bottom:8px;}
+.pend-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--brd);}
+.pend-item:last-child{border-bottom:none;}
+.pend-icon{font-size:18px;flex-shrink:0;}
+.pend-texto{flex:1;}
+.pend-tipo{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--txt2);margin-bottom:2px;}
+.pend-detalle{font-size:13px;color:var(--txt);font-weight:500;}
+.pend-ok{text-align:center;padding:20px;color:var(--ok);font-size:14px;}
+.modal-btn{width:calc(100% - 32px);margin:0 16px 16px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px;font-size:15px;font-weight:600;cursor:pointer;}
+.modal-cargando{text-align:center;padding:30px;color:var(--txt2);}
+.pend-loading{text-align:center;padding:20px;color:var(--txt2);font-size:13px;}
+
+
+/* ── TRASLADO ── */
+.traslado-flujo{display:flex;flex-direction:column;gap:8px;padding:16px;}
+.flujo-btn{padding:14px 16px;border:1.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;text-align:left;cursor:pointer;width:100%;}
+.flujo-btn.activo{border-color:#1A4B8C;background:#EBF3FC;}
+.flujo-btn .fl-title{font-size:14px;font-weight:600;color:var(--txt);}
+.flujo-btn .fl-sub{font-size:12px;color:var(--txt2);margin-top:2px;}
+.traslado-items{padding:0 16px 16px;}
+.tras-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--brd);}
+.tras-item:last-child{border-bottom:none;}
+.tras-nombre{font-size:13px;color:var(--txt);flex:1;}
+.tras-unidad{font-size:11px;color:var(--txt2);margin:0 8px;}
+.tras-input{width:70px;padding:6px;border:0.5px solid var(--brd);border-radius:var(--rad-xs);font-size:14px;text-align:center;}
+
 /* ── CONSULTAS ── */
 .cons-filters{display:flex;flex-direction:column;gap:10px;padding:16px;background:#fff;border-bottom:0.5px solid var(--brd);}
 .cons-filters select,.cons-filters input[type=date]{width:100%;padding:10px 12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);font-size:14px;color:var(--txt);background:#fff;-webkit-appearance:none;}
@@ -118,7 +153,7 @@ html,body{height:100%;background:#f8f4f0;font-family:-apple-system,BlinkMacSyste
 .qb:first-child{border-radius:var(--rad-xs) 0 0 var(--rad-xs)}
 .qb:last-child{border-radius:0 var(--rad-xs) var(--rad-xs) 0}
 .qb:active{background:var(--c);color:#fff}
-.qv{width:36px;height:30px;border-top:0.5px solid var(--brd);border-bottom:0.5px solid var(--brd);background:#fff;text-align:center;font-size:14px;font-weight:500;color:var(--txt);display:flex;align-items:center;justify-content:center}
+.qv{width:48px;height:30px;border-top:0.5px solid var(--brd);border-bottom:0.5px solid var(--brd);background:#fff;text-align:center;font-size:14px;font-weight:500;color:var(--txt);display:flex;align-items:center;justify-content:center;border-left:none;border-right:none;outline:none;padding:0;-webkit-appearance:none;}
 .qv.has{background:var(--cl);color:var(--c);font-weight:600}
 .bodega-tag{background:#D6EAF8;color:#1A5276;font-size:10px;padding:1px 7px;border-radius:20px;margin-top:3px;display:inline-block}
 .alert{border-radius:var(--rad-sm);padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
@@ -169,6 +204,41 @@ html,body{height:100%;background:#f8f4f0;font-family:-apple-system,BlinkMacSyste
 .search-wrap i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--txt2);font-size:16px;pointer-events:none}
 .search-wrap input{padding-left:36px}
 
+
+/* ── MODAL PENDIENTES ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(44,10,18,0.55);z-index:999;display:flex;align-items:flex-end;justify-content:center;}
+.modal-overlay.hidden{display:none;}
+.modal-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-height:85vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom);}
+.modal-header{padding:16px 16px 8px;border-bottom:0.5px solid var(--brd);position:sticky;top:0;background:#fff;z-index:1;}
+.modal-title{font-size:17px;font-weight:700;color:var(--txt);}
+.modal-sub{font-size:12px;color:var(--txt2);margin-top:2px;}
+.modal-body{padding:16px;}
+.modal-suc-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--c);padding:8px 0 4px;border-bottom:2px solid var(--c);margin-bottom:8px;}
+.pend-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--brd);}
+.pend-item:last-child{border-bottom:none;}
+.pend-icon{font-size:18px;flex-shrink:0;}
+.pend-texto{flex:1;}
+.pend-tipo{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--txt2);margin-bottom:2px;}
+.pend-detalle{font-size:13px;color:var(--txt);font-weight:500;}
+.pend-ok{text-align:center;padding:20px;color:var(--ok);font-size:14px;}
+.modal-btn{width:calc(100% - 32px);margin:0 16px 16px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px;font-size:15px;font-weight:600;cursor:pointer;}
+.modal-cargando{text-align:center;padding:30px;color:var(--txt2);}
+.pend-loading{text-align:center;padding:20px;color:var(--txt2);font-size:13px;}
+
+
+/* ── TRASLADO ── */
+.traslado-flujo{display:flex;flex-direction:column;gap:8px;padding:16px;}
+.flujo-btn{padding:14px 16px;border:1.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;text-align:left;cursor:pointer;width:100%;}
+.flujo-btn.activo{border-color:#1A4B8C;background:#EBF3FC;}
+.flujo-btn .fl-title{font-size:14px;font-weight:600;color:var(--txt);}
+.flujo-btn .fl-sub{font-size:12px;color:var(--txt2);margin-top:2px;}
+.traslado-items{padding:0 16px 16px;}
+.tras-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--brd);}
+.tras-item:last-child{border-bottom:none;}
+.tras-nombre{font-size:13px;color:var(--txt);flex:1;}
+.tras-unidad{font-size:11px;color:var(--txt2);margin:0 8px;}
+.tras-input{width:70px;padding:6px;border:0.5px solid var(--brd);border-radius:var(--rad-xs);font-size:14px;text-align:center;}
+
 /* ── CONSULTAS ── */
 .cons-filters{display:flex;flex-direction:column;gap:10px;padding:16px;background:#fff;border-bottom:0.5px solid var(--brd);}
 .cons-filters select,.cons-filters input[type=date]{width:100%;padding:10px 12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);font-size:14px;color:var(--txt);background:#fff;-webkit-appearance:none;}
@@ -205,36 +275,74 @@ html,body{height:100%;background:#f8f4f0;font-family:-apple-system,BlinkMacSyste
     <div class="login-logo">Kefi</div>
     <p class="login-sub">Control Operacional</p>
     <div class="login-field">
-      <label>Quien eres?</label>
+      <label>¿Quién eres?</label>
       <select id="login-nombre" onchange="checkDirSelect()">
         <option value="">Seleccionar...</option>
-        <optgroup label="Head Baristas">
-          <option value="Aileen|cbb">Aileen - Clinica Bio Bio</option>
-          <option value="Francisco|cbb">Francisco - Clinica Bio Bio</option>
-          <option value="Valezka|rc">Valezka - Ramon Carrasco</option>
+        <optgroup label="Dirección">
+          <option value="Fabian|dir">Fabián — Dirección</option>
+          <option value="Genesis|dir">Génesis — Dirección</option>
         </optgroup>
-        <optgroup label="Direccion">
-          <option value="Fabian|dir" class="dir-option">Fabian - Direccion</option>
-          <option value="Genesis|dir" class="dir-option">Genesis - Direccion</option>
+        <optgroup label="Head Baristas">
+          <option value="Valezka|rc">Valezka — Ramón Carrasco</option>
+          <option value="Aileen|cbb">Aileen — Clínica Bio Bio</option>
+          <option value="Francisco|cbb">Francisco — Clínica Bio Bio</option>
+        </optgroup>
+        <optgroup label="Baristas">
+          <option value="Sebastian|cbb">Sebastián — Clínica Bio Bio</option>
+          <option value="Ari|rc">Ari — Ramón Carrasco</option>
+        </optgroup>
+        <optgroup label="Part-time">
+          <option value="Cristobal|rc">Cristóbal — RC/CBB</option>
+          <option value="Antonia|rc">Antonia — Ramón Carrasco</option>
+          <option value="Gissela|rc">Gissela — Ramón Carrasco</option>
         </optgroup>
       </select>
     </div>
-    <div id="dir-fields" style="display:none;width:100%;flex-direction:column;gap:16px">
+    <!-- PIN personal -->
+    <div id="pin-fields" style="display:none;width:100%;flex-direction:column;gap:12px">
       <div class="login-field">
-        <label>Codigo de acceso</label>
-        <input id="dir-pin" type="password" inputmode="numeric" maxlength="4" placeholder="****"
-          style="border:0.5px solid #E8D0D4;border-radius:8px;padding:14px;font-size:22px;letter-spacing:8px;text-align:center;width:100%;background:#fff;">
+        <label id="pin-label">Tu PIN de acceso</label>
+        <input id="user-pin" type="password" inputmode="numeric" maxlength="6" placeholder="••••"
+          style="border:0.5px solid #E8D0D4;border-radius:8px;padding:14px;font-size:22px;letter-spacing:8px;text-align:center;width:100%;background:#fff;" onkeydown="if(event.key==='Enter')doLogin()">
       </div>
-      <div class="login-field">
-        <label>En que sucursal estas hoy?</label>
-        <select id="dir-suc">
-          <option value="cbb">Clinica Bio Bio</option>
-          <option value="rc">Ramon Carrasco</option>
-        </select>
+      <div id="pin-nuevo-confirm" style="display:none">
+        <div class="login-field">
+          <label>Confirmar PIN</label>
+          <input id="user-pin2" type="password" inputmode="numeric" maxlength="6" placeholder="••••"
+            style="border:0.5px solid #E8D0D4;border-radius:8px;padding:14px;font-size:22px;letter-spacing:8px;text-align:center;width:100%;background:#fff;">
+        </div>
+      </div>
+      <!-- Sucursal solo para Cristobal y Dirección -->
+      <div id="suc-selector" style="display:none">
+        <div class="login-field">
+          <label>¿En qué local estás hoy?</label>
+          <select id="dir-suc">
+            <option value="cbb">Clínica Bio Bio</option>
+            <option value="rc">Ramón Carrasco</option>
+          </select>
+        </div>
       </div>
     </div>
     <div id="dir-error" style="display:none;background:#FADADD;border-radius:8px;padding:10px 14px;font-size:13px;color:#A32D2D;text-align:center;width:100%"></div>
     <button class="login-btn" onclick="doLogin()">Entrar</button>
+    <!-- Reset PIN solo dirección -->
+    <div id="reset-pin-section" style="display:none;margin-top:8px;text-align:center">
+      <div class="login-field">
+        <label>Resetear PIN de usuario (solo dirección)</label>
+        <select id="reset-quien">
+          <option value="">Seleccionar usuario...</option>
+          <option value="Valezka">Valezka</option>
+          <option value="Aileen">Aileen</option>
+          <option value="Francisco">Francisco</option>
+          <option value="Sebastian">Sebastián</option>
+          <option value="Ari">Ari</option>
+          <option value="Cristobal">Cristóbal</option>
+          <option value="Antonia">Antonia</option>
+          <option value="Gissela">Gissela</option>
+        </select>
+      </div>
+      <button onclick="resetearPIN()" style="background:var(--cd);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:13px;cursor:pointer;margin-top:4px">Resetear PIN seleccionado</button>
+    </div>
   </div>
 </div>
 
@@ -259,6 +367,7 @@ html,body{height:100%;background:#f8f4f0;font-family:-apple-system,BlinkMacSyste
     <div class="fcard" onclick="showView('stock')"><div class="fcard-icon"><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5v9L12 21l-9-4.5v-9z"/><polyline points="3.29 7 12 11.5 20.71 7"/><line x1="12" y1="21" x2="12" y2="11.5"/></svg></span></div><div class="fcard-info"><div class="fcard-title">Stock del dia</div><div class="fcard-sub">Insumos y materiales</div></div><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
     <div class="sec-label">ABASTECIMIENTO</div>
     <div class="fcard" id="fcard-consultas" onclick="showRaw('consultas')" style="border-left-color:#1A6B3C"><div class="fcard-icon" style="background:#D4EDDA"><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span></div><div class="fcard-info"><div class="fcard-title">Consultar registros</div><div class="fcard-sub">Buscar por fecha, turno o persona</div></div><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+    <div class="fcard" id="fcard-traslado" onclick="showRaw('traslado')" style="display:none;border-left-color:#1A4B8C"><div class="fcard-icon" style="background:#D0E4F7"><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A4B8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg></span></div><div class="fcard-info"><div class="fcard-title">Traslado de bodega</div><div class="fcard-sub">Mover productos entre bodegas</div></div><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
     <div class="fcard" id="fcard-pedido" onclick="showView('pedido')"><div class="fcard-icon"><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg></span></div><div class="fcard-info"><div class="fcard-title">Pedido CBB a RC</div><div class="fcard-sub">Enviar antes de las 20:00 hrs</div></div><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
   </div>
 </div>
@@ -431,6 +540,71 @@ html,body{height:100%;background:#f8f4f0;font-family:-apple-system,BlinkMacSyste
 </div>
 
 
+
+<!-- ── MODAL PENDIENTES TURNO ── -->
+<div id="modal-pendientes" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <div class="modal-title">📋 Pendientes del turno anterior</div>
+      <div class="modal-sub" id="modal-sub">Consultando registros recientes...</div>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <div class="pend-loading">Cargando...</div>
+    </div>
+    <button class="modal-btn" onclick="cerrarPendientes()">Entendido, comenzar turno</button>
+  </div>
+</div>
+
+
+<!-- ── TRASLADO DE BODEGA ── -->
+<div id="traslado" class="view">
+  <div class="nav">
+    <button class="nav-back" onclick="goHome()"><span class="icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span></button>
+    <div><div class="nav-title">Traslado de bodega</div><div class="nav-sub" id="traslado-sub">Selecciona el flujo</div></div>
+  </div>
+  <div class="form-body">
+    <!-- Paso 1: elegir flujo -->
+    <div id="traslado-s1">
+      <div style="padding:16px 16px 8px;font-size:13px;color:var(--txt2)">¿De dónde a dónde?</div>
+      <div class="traslado-flujo">
+        <button class="flujo-btn" onclick="elegirFlujo('rc-barra')">
+          <div class="fl-title">📦 Bodega RC → Barra RC</div>
+          <div class="fl-sub">Reabastecer barra de Ramón Carrasco</div>
+        </button>
+        <button class="flujo-btn" onclick="elegirFlujo('rc-cbb')">
+          <div class="fl-title">🚚 Bodega RC → Bodega CBB abajo</div>
+          <div class="fl-sub">Enviar productos a Clínica Bio Bio</div>
+        </button>
+        <button class="flujo-btn" onclick="elegirFlujo('cbb-barra')">
+          <div class="fl-title">⬆️ Bodega CBB abajo → Barra CBB</div>
+          <div class="fl-sub">Reabastecer barra de Clínica Bio Bio</div>
+        </button>
+      </div>
+    </div>
+    <!-- Paso 2: elegir productos y cantidades -->
+    <div id="traslado-s2" style="display:none">
+      <div style="padding:12px 16px 4px">
+        <div id="traslado-flujo-label" style="font-size:13px;font-weight:600;color:#1A4B8C;margin-bottom:4px"></div>
+        <div style="font-size:12px;color:var(--txt2)">Ingresa la cantidad de cada producto trasladado (0 = no se movió)</div>
+      </div>
+      <div class="traslado-items" id="traslado-lista"></div>
+      <div style="padding:16px">
+        <button class="btn-buscar" onclick="enviarTraslado()">✅ Registrar traslado</button>
+        <button onclick="showRaw('traslado')" style="width:100%;margin-top:8px;padding:12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Volver a elegir flujo</button>
+      </div>
+    </div>
+    <!-- Paso 3: confirmación -->
+    <div id="traslado-s3" style="display:none;text-align:center;padding:40px 20px">
+      <div style="width:64px;height:64px;border-radius:50%;background:#D4EDDA;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1A6B3C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div style="font-size:20px;font-weight:700;color:var(--txt);margin-bottom:8px">Traslado registrado</div>
+      <div style="font-size:14px;color:var(--txt2);margin-bottom:24px">Fabián puede verlo en Google Sheets</div>
+      <button class="btn-buscar" onclick="goHome()">Volver al inicio</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── CONSULTAS ── -->
 <div id="consultas" class="view">
   <div class="nav">
@@ -448,6 +622,7 @@ html,body{height:100%;background:#f8f4f0;font-family:-apple-system,BlinkMacSyste
           <option value="mermas">Mermas</option>
           <option value="stock">Stock</option>
           <option value="pedido">Pedido</option>
+          <option value="traslado">Traslados</option>
         </select>
         <select id="cons-suc">
           <option value="">Ambas sucursales</option>
@@ -500,55 +675,151 @@ function fmtP(n){return '$'+Math.round(n||0).toLocaleString('es-CL');}
 function today(){return new Date().toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'});}
 function semLabel(s){if(s==='diario')return '<span class="qty-sem sem-diario">Diario</span>';if(s==='semanal')return '<span class="qty-sem sem-semanal">Semanal</span>';return '<span class="qty-sem sem-quincenal">Quincenal</span>';}
 
+// ── PIN PERSONAL POR USUARIO (localStorage por dispositivo)
+var PIN_PREFIX = 'kefi_pin_';
+var INTENTOS_PREFIX = 'kefi_int_';
+
+function getPIN(nombre){ return localStorage.getItem(PIN_PREFIX+nombre)||null; }
+function setPIN(nombre,pin){ localStorage.setItem(PIN_PREFIX+nombre,pin); }
+function getIntentos(nombre){ return parseInt(localStorage.getItem(INTENTOS_PREFIX+nombre)||'0'); }
+function setIntentos(nombre,n){ localStorage.setItem(INTENTOS_PREFIX+nombre,String(n)); }
+function resetIntentos(nombre){ localStorage.removeItem(INTENTOS_PREFIX+nombre); }
+
+function resetearPIN(){
+  var quien=$('reset-quien').value;
+  if(!quien){alert('Elige un usuario primero');return;}
+  localStorage.removeItem(PIN_PREFIX+quien);
+  resetIntentos(quien);
+  mostrarError('PIN de '+quien+' reseteado. Podrá crear uno nuevo al entrar.',false);
+}
+
+function mostrarError(msg, esError){
+  var el=$('dir-error');
+  el.style.display='block';
+  el.style.background=esError?'#FADADD':'#D4EDDA';
+  el.style.color=esError?'#A32D2D':'#1A6B3C';
+  el.textContent=msg;
+}
+
 function doLogin(){
   var val=$('login-nombre').value;
   if(!val){alert('Elige tu nombre');return;}
   var parts=val.split('|');
-  var suc=parts[1];
-  var rol=suc==='dir'?'dir':'hb';
-  if(suc==='dir'){
-    var pin=$('dir-pin').value;
-    var intentos=parseInt($('dir-pin').getAttribute('data-intentos')||'0');
-    if(pin!=='0365'){
-      intentos++;
-      $('dir-pin').setAttribute('data-intentos',intentos);
-      if(intentos>=3){
-        $('dir-error').style.display='block';
-        $('dir-error').textContent='Demasiados intentos fallidos. Contacta a Fabian.';
-        $('dir-pin').disabled=true;
-      } else {
-        $('dir-error').style.display='block';
-        $('dir-error').textContent='Codigo incorrecto. Intento '+intentos+' de 3.';
-      }
-      $('dir-pin').value='';
+  var nombre=parts[0];
+  var sucBase=parts[1];
+  var rol=sucBase==='dir'?'dir':'hb';
+
+  var pinIngresado=$('user-pin').value;
+  if(!pinIngresado){mostrarError('Ingresa tu PIN',true);return;}
+
+  // Verificar intentos fallidos
+  var intentos=getIntentos(nombre);
+  if(intentos>=5){
+    mostrarError('PIN bloqueado. Pide a Fabián o Génesis que lo reseteen.',true);
+    return;
+  }
+
+  var pinGuardado=getPIN(nombre);
+
+  // PIN nuevo: primer acceso o reseteado
+  if(!pinGuardado){
+    var pin2=$('user-pin2').value;
+    if(!pin2){
+      // Mostrar campo de confirmación
+      $('pin-nuevo-confirm').style.display='block';
+      $('pin-label').textContent='Elige tu PIN (primera vez)';
+      mostrarError('Elige un PIN de 4-6 dígitos y confírmalo abajo',false);
       return;
     }
-    $('dir-error').style.display='none';
+    if(pinIngresado!==pin2){
+      mostrarError('Los PINs no coinciden. Intenta de nuevo.',true);
+      $('user-pin').value='';$('user-pin2').value='';
+      return;
+    }
+    if(pinIngresado.length<4){
+      mostrarError('El PIN debe tener al menos 4 dígitos.',true);
+      return;
+    }
+    setPIN(nombre,pinIngresado);
+    resetIntentos(nombre);
+    $('pin-nuevo-confirm').style.display='none';
+  } else {
+    // PIN existente: verificar
+    if(pinIngresado!==pinGuardado){
+      intentos++;
+      setIntentos(nombre,intentos);
+      var restantes=5-intentos;
+      if(restantes<=0){
+        mostrarError('PIN bloqueado. Pide a Fabián o Génesis que lo reseteen.',true);
+      } else {
+        mostrarError('PIN incorrecto. '+restantes+' intento(s) restante(s).',true);
+      }
+      $('user-pin').value='';
+      return;
+    }
+    resetIntentos(nombre);
+  }
+
+  // Login exitoso
+  $('dir-error').style.display='none';
+  var suc=sucBase;
+  if(sucBase==='dir'||nombre==='Cristobal'){
     suc=$('dir-suc').value||'cbb';
   }
-  USER={nombre:parts[0],suc:suc,rol:rol};
+  USER={nombre:nombre,suc:suc,rol:rol};
   poblarSelects();
-  $('nav-user').textContent=USER.nombre+' - Salir';
+  $('nav-user').textContent=USER.nombre+' ·  Salir';
   $('home-titulo').textContent='Hola, '+USER.nombre;
-  var sn=suc==='cbb'?'Clinica Bio Bio':'Ramon Carrasco';
-  $('home-sub').textContent=sn+(rol==='dir'?' (Direccion)':'')+' - '+today();
+  var sn=suc==='cbb'?'Clínica Bio Bio':'Ramón Carrasco';
+  $('home-sub').textContent=sn+(rol==='dir'?' · Dirección':'')+' — '+today();
   $('today-date').textContent=today();
   $('fcard-pedido').style.display=suc==='cbb'?'flex':'none';
+  // Mostrar traslado solo para RC o dirección
+  var fTraslado=$('fcard-traslado');
+  if(fTraslado) fTraslado.style.display=(suc==='rc'||rol==='dir')?'flex':'none';
+  // Mostrar reset PIN solo si es dirección
+  $('reset-pin-section').style.display=rol==='dir'?'block':'none';
   showRaw('home');
 }
-function doLogout(){USER=null;showRaw('login');}
+
+function doLogout(){
+  USER=null;
+  $('user-pin').value='';
+  $('user-pin2').value='';
+  $('pin-nuevo-confirm').style.display='none';
+  $('pin-label').textContent='Tu PIN de acceso';
+  $('dir-error').style.display='none';
+  $('pin-fields').style.display='none';
+  $('suc-selector').style.display='none';
+  $('reset-pin-section').style.display='none';
+  $('login-nombre').value='';
+  showRaw('login');
+}
 
 function checkDirSelect(){
   var val=$('login-nombre').value;
   var parts=val?val.split('|'):['',''];
+  var nombre=parts[0]||'';
   var suc=parts[1]||'';
-  var df=$('dir-fields');
-  if(suc==='dir'){
-    df.style.display='flex';
-  } else {
-    df.style.display='none';
-    $('dir-error').style.display='none';
-  }
+  var pf=$('pin-fields');
+  var ss=$('suc-selector');
+  var rps=$('reset-pin-section');
+  $('dir-error').style.display='none';
+  $('pin-nuevo-confirm').style.display='none';
+  $('user-pin').value='';
+  $('user-pin2').value='';
+  if(!val){ pf.style.display='none'; ss.style.display='none'; return; }
+  pf.style.display='flex';
+  // Mostrar selector de sucursal para dirección y Cristóbal
+  var needSuc=(suc==='dir'||nombre==='Cristobal');
+  ss.style.display=needSuc?'block':'none';
+  // Mostrar reset solo si ya es dirección logueada
+  rps.style.display='none';
+  // Actualizar label según si tiene PIN
+  var pinGuardado=getPIN(nombre);
+  $('pin-label').textContent=pinGuardado?'Tu PIN de acceso':'Elige tu PIN (primera vez)';
+  if(!pinGuardado) $('pin-nuevo-confirm').style.display='block';
+  else $('pin-nuevo-confirm').style.display='none';
 }
 
 function poblarSelects(){
@@ -817,16 +1088,22 @@ function makeQtyRow(item,prefix,idx){
   var d=document.createElement('div');d.className='qty-row';
   var id=prefix+'-'+idx;
   var bodTag=item.b?'<span class="bodega-tag">Bodega abajo</span>':'';
-  d.innerHTML='<div class="qty-left"><div class="qty-name">'+item.n+'</div><div class="qty-unit">'+item.u+'</div>'+semLabel(item.s)+bodTag+'</div><div class="qty-ctrl"><div class="qb" id="qb-m-'+id+'">-</div><div class="qv" id="'+id+'-v">0</div><div class="qb" id="qb-p-'+id+'">+</div></div>';
-  d.querySelector('#qb-m-'+id).onclick=function(){changeQty(id,-1);};
-  d.querySelector('#qb-p-'+id).onclick=function(){changeQty(id,1);};
+  d.innerHTML='<div class="qty-left"><div class="qty-name">'+item.n+'</div><div class="qty-unit">'+item.u+'</div>'+semLabel(item.s)+bodTag+'</div><div class="qty-ctrl"><div class="qb" id="qb-m-'+id+'">-</div><input class="qv" id="'+id+'-v" type="number" min="0" step="0.5" value="0" inputmode="decimal" onchange="setQty(''+id+'',this.value)" onfocus="this.select()"/><div class="qb" id="qb-p-'+id+'">+</div></div>';
+  d.querySelector('#qb-m-'+id).onclick=function(){changeQty(id,-0.5);};
+  d.querySelector('#qb-p-'+id).onclick=function(){changeQty(id,0.5);};
   return d;
 }
 function changeQty(id,delta){
   if(!qtys[id])qtys[id]=0;
-  qtys[id]=Math.max(0,qtys[id]+delta);
+  qtys[id]=Math.round((Math.max(0,qtys[id]+delta))*10)/10;
   var el=$(id+'-v');
-  if(el){el.textContent=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}
+  if(el){el.value=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}
+}
+function setQty(id,val){
+  var n=parseFloat(val)||0;
+  qtys[id]=Math.max(0,Math.round(n*10)/10);
+  var el=$(id+'-v');
+  if(el){el.value=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}
 }
 function renderStock(){
   var suc=USER?USER.suc:'cbb';
@@ -836,7 +1113,25 @@ function renderStock(){
   var h=document.createElement('div');h.className='sec-div';
   h.innerHTML='Barra '+(suc==='rc'?'RC':'CBB')+' <span class="sc">'+barra.length+' insumos</span>';
   sec.appendChild(h);
-  barra.forEach(function(item,i){sec.appendChild(makeQtyRow(item,'sb',i));});
+  // Agrupar por frecuencia
+  var grupos=[
+    {label:'⚡ Revisión diaria', key:'diario'},
+    {label:'📅 Revisión semanal', key:'semanal'},
+    {label:'🗓 Revisión quincenal', key:'quincenal'}
+  ];
+  grupos.forEach(function(g){
+    var gItems=barra.filter(function(item){return item.s===g.key;});
+    if(!gItems.length)return;
+    var grp=document.createElement('div');grp.className='stk-grupo';
+    var tit=document.createElement('div');tit.className='stk-grupo-titulo';
+    tit.textContent=g.label+' ('+gItems.length+')';
+    grp.appendChild(tit);
+    gItems.forEach(function(item){
+      var idx=barra.indexOf(item);
+      grp.appendChild(makeQtyRow(item,'sb',idx));
+    });
+    sec.appendChild(grp);
+  });
 }
 function renderStockBodega(){
   var suc=USER?USER.suc:'cbb';
@@ -897,9 +1192,7 @@ $('today-date').textContent=today();
 // Render chips de limpieza segun sucursal al hacer login
 function renderLimpiezaChips(){
   var suc=USER?USER.suc:'cbb';
-  var chips=suc==='cbb'
-    ?['Apertura','13:00 hrs','15:00 hrs','Cierre']
-    :['Apertura','Cierre'];
+  var chips=['AM — Apertura','PM — Cierre'];
   var el=$('limp-chips');
   el.innerHTML='';
   chips.forEach(function(label){
@@ -994,7 +1287,7 @@ function recolectarBitacora() {
     turno         : opts['bit-turno'] || '',
     hb_sale       : $('bit-sale').value || '',
     hb_entra      : $('bit-entra').value || '',
-    formularios   : done + '/' + BIT_CHECKS.length,
+    formularios   : String(done) + '/' + String(BIT_CHECKS.length) + ' completados',
     novedad       : opts['bit-nov'] || '',
     hora          : hora,
     firmado_sale  : FORMS.bitacora.firmado.sale,
@@ -1138,6 +1431,7 @@ stepNext = function(form) {
 
 // Mapa de columnas por tipo de formulario (orden en Sheets)
 var COLS = {
+  traslado : ['Timestamp','Flujo','Items','Detalle','Usuario'],
   bitacora : ['Timestamp','Sucursal','Turno','HB Saliente','HB Entrante','Formularios','Novedad','Hora','Firma Sale','Firma Entra','Usuario'],
   caja     : ['Timestamp','Sucursal','Turno','Head Barista','Efectivo','SumUp','Diferencia','Débito/Créd','Total Ventas','Sencillo','Devolución','Usuario'],
   limpieza : ['Timestamp','Sucursal','Head Barista','Momento','Completadas','Total','%','Críticas Pend','Usuario'],
@@ -1148,7 +1442,7 @@ var COLS = {
 
 var TIPO_LABELS = {
   bitacora:'Bitácora', caja:'Caja', limpieza:'Limpieza',
-  mermas:'Mermas', stock:'Stock', pedido:'Pedido'
+  mermas:'Mermas', stock:'Stock', pedido:'Pedido', traslado:'Traslado'
 };
 
 // Campos que contienen persona/sucursal para filtrar
@@ -1299,6 +1593,23 @@ function renderConsCard(tipo, fila) {
     if (tipo === 'mermas' && cols[i] === 'Alerta') {
       style = val === '⚠️ Sí' ? 'color:var(--danger);font-weight:600' : '';
     }
+    // Stock detalle especial
+    if (tipo === 'stock' && cols[i] === 'Detalle') {
+      var stockItems = String(val).split(' | ').filter(Boolean);
+      var stockHtml = '<div class="cons-srow"><span class="cons-sl">Detalle</span></div>';
+      stockHtml += '<div class="cons-stock-detalle">';
+      stockItems.slice(0,20).forEach(function(si){
+        var partes = si.split(': ');
+        var nombre = partes[0]||'';
+        var qty = partes[1]||'';
+        var esQuiebre = qty.startsWith('0 ');
+        stockHtml += '<div class="cons-stock-item'+(esQuiebre?' quiebre':'')+'"><span class="cons-stock-nombre">'+nombre+'</span><span class="cons-stock-qty">'+qty+'</span></div>';
+      });
+      if(stockItems.length>20) stockHtml+='<div style="font-size:11px;color:var(--txt2);padding:4px 8px">...y '+(stockItems.length-20)+' más</div>';
+      stockHtml += '</div>';
+      rows += stockHtml;
+      continue;
+    }
     rows += '<div class="cons-srow"><span class="cons-sl">'+cols[i]+'</span><span class="cons-sv" style="'+style+'">'+val+'</span></div>';
   }
 
@@ -1310,6 +1621,221 @@ function renderConsCard(tipo, fila) {
     + rows
     + '</div>';
 }
+
+// ══════════════════════════════════════════════════
+// MÓDULO PENDIENTES DE TURNO
+// ══════════════════════════════════════════════════
+
+function cerrarPendientes(){
+  $('modal-pendientes').classList.add('hidden');
+}
+
+function mostrarPendientes(){
+  if(SCRIPT_URL==='SCRIPT_URL_AQUI') return;
+  var suc = USER ? USER.suc : null;
+  if(!suc) return;
+  var sucNombre = suc==='cbb' ? 'Clinica Bio Bio' : 'Ramon Carrasco';
+
+  $('modal-pendientes').classList.remove('hidden');
+  $('modal-sub').textContent = 'Revisando último turno en '+sucNombre+'...';
+  $('modal-body').innerHTML = '<div class="pend-loading">⏳ Consultando registros...</div>';
+
+  // Consultar los 4 formularios relevantes
+  var tipos = ['limpieza','stock','caja','bitacora'];
+  var promises = tipos.map(function(t){
+    return fetchJSONP(SCRIPT_URL+'?action=leer&tipo='+t)
+      .then(function(d){ return {tipo:t, filas:d.filas||[]}; })
+      .catch(function(){ return {tipo:t, filas:[]}; });
+  });
+
+  Promise.all(promises).then(function(results){
+    var pendientes = [];
+    var sucFilter = suc==='cbb' ? 'Bio Bio' : 'Ramon';
+
+    results.forEach(function(r){
+      // Filtrar por sucursal y tomar el más reciente
+      var filtradas = r.filas.filter(function(f){
+        return !f[1] || f[1].indexOf(sucFilter) >= 0;
+      });
+      if(!filtradas.length) return;
+      var ultima = filtradas[0]; // ya viene ordenado desc
+
+      if(r.tipo==='limpieza'){
+        var criticas = parseInt(ultima[7])||0;
+        if(criticas > 0){
+          pendientes.push({
+            icon:'🧹',
+            tipo:'Limpieza',
+            detalle: criticas+' tarea(s) crítica(s) sin completar',
+            urgente: true
+          });
+        }
+      }
+
+      if(r.tipo==='stock'){
+        // Detectar quiebres: items con 0 en barra
+        var detalle = ultima[5]||'';
+        var quiebres = [];
+        detalle.split(' | ').forEach(function(item){
+          if(!item) return;
+          var match = item.match(/^(.+):\s*0\s/);
+          if(match) quiebres.push(match[1].trim());
+        });
+        if(quiebres.length > 0){
+          pendientes.push({
+            icon:'📦',
+            tipo:'Stock — Quiebre',
+            detalle: quiebres.slice(0,5).join(', ')+(quiebres.length>5?' y '+(quiebres.length-5)+' más':''),
+            urgente: true
+          });
+        }
+      }
+
+      if(r.tipo==='caja'){
+        var dif = parseFloat(ultima[6])||0;
+        if(Math.abs(dif) > 2000){
+          pendientes.push({
+            icon:'💰',
+            tipo:'Caja — Diferencia',
+            detalle: 'Diferencia de $'+Math.abs(dif).toLocaleString('es-CL')+' en arqueo anterior',
+            urgente: Math.abs(dif)>5000
+          });
+        }
+      }
+
+      if(r.tipo==='bitacora'){
+        var novedad = ultima[6]||'';
+        if(novedad && novedad.toLowerCase()!=='sin novedades' && novedad.trim()!==''){
+          pendientes.push({
+            icon:'📝',
+            tipo:'Novedad de turno',
+            detalle: novedad,
+            urgente: false
+          });
+        }
+      }
+    });
+
+    // Renderizar
+    var ts = new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+    $('modal-sub').textContent = sucNombre+' · Consultado '+ts;
+
+    if(!pendientes.length){
+      $('modal-body').innerHTML = '<div class="pend-ok">✅ Sin pendientes críticos del turno anterior.<br>¡Todo en orden!</div>';
+      return;
+    }
+
+    var html2 = '<div class="modal-suc-titulo" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--c);padding:4px 0 8px;border-bottom:2px solid var(--c);margin-bottom:12px;">'+sucNombre+'</div>';
+    pendientes.forEach(function(p){
+      html2 += '<div class="pend-item">'
+        +'<div class="pend-icon">'+p.icon+'</div>'
+        +'<div class="pend-texto">'
+        +'<div class="pend-tipo">'+p.tipo+(p.urgente?' ⚠️':'')+'</div>'
+        +'<div class="pend-detalle">'+p.detalle+'</div>'
+        +'</div></div>';
+    });
+    $('modal-body').innerHTML = html2;
+  }).catch(function(){
+    $('modal-body').innerHTML = '<div class="pend-ok">No se pudo consultar. Verifica conexión.</div>';
+  });
+}
+
+// Override doLogin para mostrar pendientes al entrar
+var _origDoLoginPend = doLogin;
+doLogin = function(){
+  _origDoLoginPend();
+  // Solo mostrar si el usuario NO es dirección (ellos tienen visión completa)
+  setTimeout(function(){
+    if(USER && USER.rol !== 'dir'){
+      mostrarPendientes();
+    }
+  }, 300);
+};
+
+// ══════════════════════════════════════════════════
+// TRASLADO DE BODEGA
+// ══════════════════════════════════════════════════
+var FLUJO_ACTUAL = null;
+
+var FLUJO_LABELS = {
+  'rc-barra': 'Bodega RC → Barra RC',
+  'rc-cbb':   'Bodega RC → Bodega CBB abajo',
+  'cbb-barra':'Bodega CBB abajo → Barra CBB'
+};
+
+function elegirFlujo(flujo){
+  FLUJO_ACTUAL = flujo;
+  $('traslado-s1').style.display='none';
+  $('traslado-s2').style.display='block';
+  $('traslado-s3').style.display='none';
+  $('traslado-flujo-label').textContent = '🔄 ' + FLUJO_LABELS[flujo];
+  $('traslado-sub').textContent = FLUJO_LABELS[flujo];
+
+  // Determine which items to show
+  var items;
+  if(flujo==='rc-barra'||flujo==='rc-cbb'){
+    items = INSUMOS['rc'].filter(function(i){return !i.b;});
+  } else {
+    items = INSUMOS['cbb'].filter(function(i){return i.b;});
+  }
+
+  var lista = $('traslado-lista');
+  lista.innerHTML = '';
+  items.forEach(function(item, idx){
+    var row = document.createElement('div');
+    row.className = 'tras-item';
+    row.innerHTML = '<span class="tras-nombre">'+item.n+'</span>'
+      +'<span class="tras-unidad">'+item.u+'</span>'
+      +'<input class="tras-input" type="number" min="0" step="0.5" value="0" inputmode="decimal" id="tras-'+idx+'">';
+    lista.appendChild(row);
+  });
+}
+
+function enviarTraslado(){
+  var items;
+  if(FLUJO_ACTUAL==='rc-barra'||FLUJO_ACTUAL==='rc-cbb'){
+    items = INSUMOS['rc'].filter(function(i){return !i.b;});
+  } else {
+    items = INSUMOS['cbb'].filter(function(i){return i.b;});
+  }
+
+  var movimientos = [];
+  items.forEach(function(item, idx){
+    var val = parseFloat($('tras-'+idx).value)||0;
+    if(val > 0) movimientos.push({n: item.n, u: item.u, q: val});
+  });
+
+  if(!movimientos.length){
+    alert('Ingresa al menos una cantidad mayor a 0');
+    return;
+  }
+
+  var datos = {
+    tipo     : 'traslado',
+    flujo    : FLUJO_ACTUAL,
+    flujo_label: FLUJO_LABELS[FLUJO_ACTUAL],
+    items    : JSON.stringify(movimientos),
+    total    : movimientos.length
+  };
+
+  enviarASheets('traslado', datos).then(function(){
+    $('traslado-s2').style.display='none';
+    $('traslado-s3').style.display='block';
+  });
+}
+
+// Reset traslado when entering view
+var _origShowRawTraslado = showRaw;
+showRaw = function(id){
+  _origShowRawTraslado(id);
+  if(id==='traslado'){
+    $('traslado-s1').style.display='block';
+    $('traslado-s2').style.display='none';
+    $('traslado-s3').style.display='none';
+    $('traslado-sub').textContent='Selecciona el flujo';
+    FLUJO_ACTUAL=null;
+  }
+};
 
 </script>
 </body>
