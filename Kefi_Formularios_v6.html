@@ -8,10 +8,10 @@
 <style>
 :root{--c:#9B1C35;--cd:#7A1428;--cl:#F0EAD6;--cll:#FAF6EF;--txt:#2C0A12;--txt2:#7A4050;--brd:#E8D0D4;--ok:#1A6B3C;--okl:#D4EDDA;--warn:#854F0B;--warnl:#FFF3CD;--danger:#A32D2D;--dangerl:#FADADD;--rad:12px;--rad-sm:8px;--rad-xs:6px;--blue:#1A4B8C;--bluel:#EBF3FC;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:var(--cll);color:var(--txt);max-width:480px;margin:0 auto;min-height:100vh;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:var(--cll);color:var(--txt);max-width:480px;margin:0 auto;min-height:100vh;}html{background:var(--cll);}
 
 /* VISTAS */
-.view{display:none;flex-direction:column;min-height:100vh;}
+.view{display:none;flex-direction:column;min-height:100vh;background:var(--cll);}
 .view.active{display:flex;}
 
 /* LOGIN */
@@ -488,7 +488,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
 </div>
 
 <!-- CONSULTAS -->
-<div id="consultas" class="view">
+<div id="consultas" class="view" style="display:none;flex-direction:column;">
   <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Consultar registros</div><div class="nav-sub">Historial operacional</div></div></div>
   <div class="cons-filters">
     <div class="cons-row">
@@ -499,7 +499,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <select id="cons-persona"><option value="">Todas las personas</option><option>Valezka</option><option>Aileen</option><option>Francisco</option><option>Sebastian</option><option>Ari</option><option>Cristobal</option><option>Antonia</option><option>Gissela</option><option>Fabian</option><option>Genesis</option></select>
     <button class="btn-buscar" type="button" onclick="buscarRegistros();return false;">🔍 Buscar registros</button>
   </div>
-  <div id="cons-results" class="cons-results"><div class="cons-empty"><div style="font-size:40px">🔍</div><div>Usa los filtros y presiona Buscar</div></div></div>
+  <div id="cons-results" class="cons-results" style="flex:1;min-height:300px"><div class="cons-empty"><div style="font-size:40px">🔍</div><div>Usa los filtros y presiona Buscar</div></div></div>
 </div>
 
 <!-- MODAL PENDIENTES -->
