@@ -345,7 +345,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field" id="bit-nov-text" style="display:none"><label>Describe la novedad</label><textarea id="bit-novedad" placeholder="Describe qué ocurrió..."></textarea></div>
     </div>
     <div class="step" id="bit-s4"><div id="bit-resumen"></div></div>
-    <div class="success" id="bit-done"><div class="success-ring">✓</div><h3>Bitácora registrada</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('bitacora')">Nueva bitácora</button></div>
+    <div class="success" id="bit-done"><div class="success-ring">✓</div><h3>Bitácora registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('bitacora')">Nueva bitácora</button></div>
   </div>
   <div id="bit-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="bit-nav"><button class="btn-back-nav" id="bit-back" type="button" onclick="stepPrev('bitacora');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('bitacora');return false;">Siguiente</button></div>
@@ -381,7 +381,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <input type="hidden" id="caj-b2000" value="0">
     </div>
     <div class="step" id="caj-s4"><div id="caj-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="caj-obs" placeholder="Novedades, diferencias..."></textarea></div></div>
-    <div class="success" id="caj-done"><div class="success-ring">✓</div><h3>Arqueo registrado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('caja')">Nuevo arqueo</button></div>
+    <div class="success" id="caj-done"><div class="success-ring">✓</div><h3>Arqueo registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('caja')">Nuevo arqueo</button></div>
   </div>
   <div id="caj-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="caj-nav"><button class="btn-back-nav" id="caj-back" type="button" onclick="stepPrev('caja');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('caja');return false;">Siguiente</button></div>
@@ -398,7 +398,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     </div>
     <div class="step" id="limp-s2"><div id="limp-lista" style="display:flex;flex-direction:column;gap:8px"></div></div>
     <div class="step" id="limp-s3"><div id="limp-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="limp-obs" placeholder="Tareas no realizadas y motivo..."></textarea></div></div>
-    <div class="success" id="limp-done"><div class="success-ring">✓</div><h3>Checklist enviado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('limpieza')">Nuevo checklist</button></div>
+    <div class="success" id="limp-done"><div class="success-ring">✓</div><h3>Checklist enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('limpieza')">Nuevo checklist</button></div>
   </div>
   <div id="limp-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="limp-nav"><button class="btn-back-nav" id="limp-back" type="button" onclick="stepPrev('limpieza');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('limpieza');return false;">Siguiente</button></div>
@@ -422,7 +422,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>Causa</label><div class="chip-row"><div class="chip" onclick="selChip(this,'mer-causa')">Vencimiento</div><div class="chip" onclick="selChip(this,'mer-causa')">Error preparación</div><div class="chip" onclick="selChip(this,'mer-causa')">Caída/accidente</div><div class="chip" onclick="selChip(this,'mer-causa')">Otro</div></div></div>
     </div>
     <div class="step" id="mer-s4"><div id="mer-resumen"></div><div id="mer-alerta" style="margin-top:8px"></div></div>
-    <div class="success" id="mer-done"><div class="success-ring">✓</div><h3>Merma registrada</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('mermas')">Nueva merma</button></div>
+    <div class="success" id="mer-done"><div class="success-ring">✓</div><h3>Merma registrada</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('mermas')">Nueva merma</button></div>
   </div>
   <div id="mer-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="mer-nav"><button class="btn-back-nav" id="mer-back" type="button" onclick="stepPrev('mermas');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('mermas');return false;">Siguiente</button></div>
@@ -440,7 +440,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     </div>
     <div class="step" id="stk-s2"><div id="stk-bodega-titulo" style="font-size:13px;font-weight:700;color:var(--c);padding:4px 0 8px"></div><input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)"><div id="stk-barra-section"></div></div>
     <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-resumen" style="margin-top:4px"></div></div>
-    <div class="success" id="stk-done"><div class="success-ring">✓</div><h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
+    <div class="success" id="stk-done"><div class="success-ring">✓</div><h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
   </div>
   <div id="stk-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="stk-nav"><button class="btn-back-nav" id="stk-back" type="button" onclick="stepPrev('stock');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('stock');return false;">Siguiente</button></div>
@@ -457,7 +457,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     </div>
     <div class="step" id="ped-s2"><input class="stk-search" type="search" placeholder="Buscar producto..." oninput="filterPedido(this.value)"><div id="ped-lista"></div></div>
     <div class="step" id="ped-s3"><div id="ped-resumen"></div></div>
-    <div class="success" id="ped-done"><div class="success-ring">✓</div><h3>Pedido enviado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('pedido')">Nuevo pedido</button></div>
+    <div class="success" id="ped-done"><div class="success-ring">✓</div><h3>Pedido enviado</h3><p>Fabián puede verlo en Google Sheets</p><button type="button" class="btn-reset" onclick="resetForm('pedido')">Nuevo pedido</button></div>
   </div>
   <div id="ped-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="ped-nav"><button class="btn-back-nav" id="ped-back" type="button" onclick="stepPrev('pedido');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('pedido');return false;">Siguiente</button></div>
@@ -786,10 +786,28 @@ function stepNext(form){
   if(form==='caja'&&f.cur===1) initCalc();
   if(f.cur===f.steps){
     enviarFormulario(form);
-    document.querySelectorAll('#'+form+' .step').forEach(function(s){s.style.display='none';});
-    var done=$(form+'-done');if(done)done.style.display='flex';
+    // Ocultar todos los pasos
+    document.querySelectorAll('#'+form+' .step').forEach(function(s){
+      s.style.display='none';
+      s.classList.remove('active');
+    });
+    // Mostrar pantalla de éxito
+    var done=$(form+'-done');
+    if(done){
+      done.style.display='flex';
+      done.style.flexDirection='column';
+      done.style.alignItems='center';
+      done.style.justifyContent='center';
+      done.style.padding='40px 20px';
+      done.style.textAlign='center';
+      done.style.gap='12px';
+      done.style.minHeight='300px';
+    }
     var dots=$(form+'-dots');if(dots)dots.style.display='none';
     var nav=$(form+'-nav');if(nav)nav.style.display='none';
+    // Scroll al inicio de la pantalla de éxito
+    var fb=document.querySelector('#'+form+' .form-body');
+    if(fb) fb.scrollTop=0;
     return;
   }
   f.cur++;actualizarPasos(form);
@@ -806,7 +824,7 @@ function actualizarPasos(form){
   document.querySelectorAll('#'+pref+'-dots .dot').forEach(function(d,i){d.className='dot'+(i===f.cur-1?' act':'');});
 }
 
-function resetForm(form){showForm(form);goHome();}
+function resetForm(form){goHome();}
 
 function renderBitChecks(){
   var el=$('bit-checks');if(!el)return;el.innerHTML='';
