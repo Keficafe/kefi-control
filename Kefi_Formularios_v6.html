@@ -246,7 +246,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
         </div>
       </div>
       <div id="login-msg" class="login-msg"></div>
-      <button class="login-btn" onclick="doLogin()">Entrar</button>
+      <button class="login-btn" type="button" onclick="doLogin();return false;">Entrar</button>
       <!-- Reset PIN — solo visible para dirección ya logueada (se muestra tras login dir) -->
       <div id="reset-section" style="display:none;border-top:0.5px solid var(--brd);padding-top:12px;display:none;flex-direction:column;gap:8px">
         <div class="login-field">
@@ -273,7 +273,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
 <div id="home" class="view">
   <div class="nav">
     <div class="nav-logo">Kefi</div>
-    <div class="nav-user" onclick="doLogout()" id="nav-user">Salir</div>
+    <div class="nav-user" type="button" onclick="doLogout();return false;" id="nav-user">Salir</div>
   </div>
   <div class="home">
     <div class="home-header">
@@ -331,7 +331,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
 
 <!-- BITÁCORA -->
 <div id="bitacora" class="view">
-  <div class="nav"><button class="nav-back" onclick="goHome()">‹</button><div><div class="nav-title">Bitácora de turno</div><div class="nav-sub" id="bit-sub">Paso 1 de 4</div></div></div>
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Bitácora de turno</div><div class="nav-sub" id="bit-sub">Paso 1 de 4</div></div></div>
   <div class="progress-strip"><div class="progress-fill" id="bit-prog" style="width:25%"></div></div>
   <div class="form-body">
     <div class="step active" id="bit-s1">
@@ -348,12 +348,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="success" id="bit-done"><div class="success-ring">✓</div><h3>Bitácora registrada</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('bitacora')">Nueva bitácora</button></div>
   </div>
   <div id="bit-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="bit-nav"><button class="btn-back-nav" id="bit-back" onclick="stepPrev('bitacora')" style="display:none">Atrás</button><button class="btn-next-nav" onclick="stepNext('bitacora')">Siguiente</button></div>
+  <div class="bottom-nav" id="bit-nav"><button class="btn-back-nav" id="bit-back" type="button" onclick="stepPrev('bitacora');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('bitacora');return false;">Siguiente</button></div>
 </div>
 
 <!-- CAJA -->
 <div id="caja" class="view">
-  <div class="nav"><button class="nav-back" onclick="goHome()">‹</button><div><div class="nav-title">Arqueo de caja</div><div class="nav-sub" id="caj-sub">Paso 1 de 4</div></div></div>
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Arqueo de caja</div><div class="nav-sub" id="caj-sub">Paso 1 de 4</div></div></div>
   <div class="progress-strip"><div class="progress-fill" id="caj-prog" style="width:25%"></div></div>
   <div class="form-body">
     <div class="step active" id="caj-s1">
@@ -384,12 +384,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="success" id="caj-done"><div class="success-ring">✓</div><h3>Arqueo registrado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('caja')">Nuevo arqueo</button></div>
   </div>
   <div id="caj-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="caj-nav"><button class="btn-back-nav" id="caj-back" onclick="stepPrev('caja')" style="display:none">Atrás</button><button class="btn-next-nav" onclick="stepNext('caja')">Siguiente</button></div>
+  <div class="bottom-nav" id="caj-nav"><button class="btn-back-nav" id="caj-back" type="button" onclick="stepPrev('caja');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('caja');return false;">Siguiente</button></div>
 </div>
 
 <!-- LIMPIEZA -->
 <div id="limpieza" class="view">
-  <div class="nav"><button class="nav-back" onclick="goHome()">‹</button><div><div class="nav-title">Checklist de limpieza</div><div class="nav-sub" id="limp-sub">Paso 1 de 3</div></div></div>
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Checklist de limpieza</div><div class="nav-sub" id="limp-sub">Paso 1 de 3</div></div></div>
   <div class="progress-strip"><div class="progress-fill" id="limp-prog" style="width:33%"></div></div>
   <div class="form-body">
     <div class="step active" id="limp-s1">
@@ -401,12 +401,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="success" id="limp-done"><div class="success-ring">✓</div><h3>Checklist enviado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('limpieza')">Nuevo checklist</button></div>
   </div>
   <div id="limp-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="limp-nav"><button class="btn-back-nav" id="limp-back" onclick="stepPrev('limpieza')" style="display:none">Atrás</button><button class="btn-next-nav" onclick="stepNext('limpieza')">Siguiente</button></div>
+  <div class="bottom-nav" id="limp-nav"><button class="btn-back-nav" id="limp-back" type="button" onclick="stepPrev('limpieza');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('limpieza');return false;">Siguiente</button></div>
 </div>
 
 <!-- MERMAS -->
 <div id="mermas" class="view">
-  <div class="nav"><button class="nav-back" onclick="goHome()">‹</button><div><div class="nav-title">Registro de mermas</div><div class="nav-sub" id="mer-sub">Paso 1 de 4</div></div></div>
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Registro de mermas</div><div class="nav-sub" id="mer-sub">Paso 1 de 4</div></div></div>
   <div class="progress-strip"><div class="progress-fill" id="mer-prog" style="width:25%"></div></div>
   <div class="form-body">
     <div class="step active" id="mer-s1">
@@ -425,12 +425,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="success" id="mer-done"><div class="success-ring">✓</div><h3>Merma registrada</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('mermas')">Nueva merma</button></div>
   </div>
   <div id="mer-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="mer-nav"><button class="btn-back-nav" id="mer-back" onclick="stepPrev('mermas')" style="display:none">Atrás</button><button class="btn-next-nav" onclick="stepNext('mermas')">Siguiente</button></div>
+  <div class="bottom-nav" id="mer-nav"><button class="btn-back-nav" id="mer-back" type="button" onclick="stepPrev('mermas');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('mermas');return false;">Siguiente</button></div>
 </div>
 
 <!-- STOCK -->
 <div id="stock" class="view">
-  <div class="nav"><button class="nav-back" onclick="goHome()">‹</button><div><div class="nav-title">Stock del día</div><div class="nav-sub" id="stk-sub">Paso 1 de 3</div></div></div>
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Stock del día</div><div class="nav-sub" id="stk-sub">Paso 1 de 3</div></div></div>
   <div class="progress-strip"><div class="progress-fill" id="stk-prog" style="width:33%"></div></div>
   <div class="form-body">
     <div class="step active" id="stk-s1">
@@ -442,12 +442,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="success" id="stk-done"><div class="success-ring">✓</div><h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
   </div>
   <div id="stk-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="stk-nav"><button class="btn-back-nav" id="stk-back" onclick="stepPrev('stock')" style="display:none">Atrás</button><button class="btn-next-nav" onclick="stepNext('stock')">Siguiente</button></div>
+  <div class="bottom-nav" id="stk-nav"><button class="btn-back-nav" id="stk-back" type="button" onclick="stepPrev('stock');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('stock');return false;">Siguiente</button></div>
 </div>
 
 <!-- PEDIDO -->
 <div id="pedido" class="view">
-  <div class="nav"><button class="nav-back" onclick="goHome()">‹</button><div><div class="nav-title">Pedido a RC</div><div class="nav-sub" id="ped-sub">Paso 1 de 3</div></div></div>
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Pedido a RC</div><div class="nav-sub" id="ped-sub">Paso 1 de 3</div></div></div>
   <div class="progress-strip"><div class="progress-fill" id="ped-prog" style="width:33%"></div></div>
   <div class="form-body">
     <div class="step active" id="ped-s1">
@@ -459,12 +459,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="success" id="ped-done"><div class="success-ring">✓</div><h3>Pedido enviado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('pedido')">Nuevo pedido</button></div>
   </div>
   <div id="ped-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bottom-nav" id="ped-nav"><button class="btn-back-nav" id="ped-back" onclick="stepPrev('pedido')" style="display:none">Atrás</button><button class="btn-next-nav" onclick="stepNext('pedido')">Siguiente</button></div>
+  <div class="bottom-nav" id="ped-nav"><button class="btn-back-nav" id="ped-back" type="button" onclick="stepPrev('pedido');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('pedido');return false;">Siguiente</button></div>
 </div>
 
 <!-- TRASLADO -->
 <div id="traslado" class="view">
-  <div class="nav"><button class="nav-back" onclick="goHome()">‹</button><div><div class="nav-title">Traslado de bodega</div><div class="nav-sub" id="tras-sub">Selecciona el flujo</div></div></div>
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Traslado de bodega</div><div class="nav-sub" id="tras-sub">Selecciona el flujo</div></div></div>
   <div class="form-body">
     <div id="tras-s1" style="display:flex;flex-direction:column;gap:8px">
       <p style="font-size:13px;color:var(--txt2)">De dónde a dónde:</p>
@@ -476,20 +476,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div id="tras-label" style="font-size:13px;font-weight:600;color:var(--blue)"></div>
       <div style="font-size:12px;color:var(--txt2)">Cantidad de cada producto (0 si no se movió)</div>
       <div id="tras-lista"></div>
-      <button class="btn-buscar" onclick="enviarTraslado()">✅ Registrar traslado</button>
+      <button class="btn-buscar" type="button" onclick="enviarTraslado();return false;">✅ Registrar traslado</button>
       <button onclick="iniciarTraslado()" style="padding:12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Elegir otro flujo</button>
     </div>
     <div id="tras-s3" style="display:none;flex-direction:column;align-items:center;padding:40px 0;gap:12px;text-align:center">
       <div class="success-ring">✓</div><h3>Traslado registrado</h3>
       <p style="color:var(--txt2);font-size:14px">Fabián puede verlo en Google Sheets</p>
-      <button class="btn-reset" onclick="goHome()">Volver al inicio</button>
+      <button class="btn-reset" type="button" onclick="goHome();return false;">Volver al inicio</button>
     </div>
   </div>
 </div>
 
 <!-- CONSULTAS -->
 <div id="consultas" class="view">
-  <div class="nav"><button class="nav-back" onclick="goHome()">‹</button><div><div class="nav-title">Consultar registros</div><div class="nav-sub">Historial operacional</div></div></div>
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Consultar registros</div><div class="nav-sub">Historial operacional</div></div></div>
   <div class="cons-filters">
     <div class="cons-row">
       <select id="cons-tipo"><option value="">Todos</option><option value="bitacora">Bitácora</option><option value="caja">Caja</option><option value="limpieza">Limpieza</option><option value="mermas">Mermas</option><option value="stock">Stock</option><option value="pedido">Pedido</option><option value="traslado">Traslados</option></select>
@@ -497,7 +497,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     </div>
     <div class="cons-row"><input type="date" id="cons-desde"><input type="date" id="cons-hasta"></div>
     <select id="cons-persona"><option value="">Todas las personas</option><option>Valezka</option><option>Aileen</option><option>Francisco</option><option>Sebastian</option><option>Ari</option><option>Cristobal</option><option>Antonia</option><option>Gissela</option><option>Fabian</option><option>Genesis</option></select>
-    <button class="btn-buscar" onclick="buscarRegistros()">🔍 Buscar registros</button>
+    <button class="btn-buscar" type="button" onclick="buscarRegistros();return false;">🔍 Buscar registros</button>
   </div>
   <div id="cons-results" class="cons-results"><div class="cons-empty"><div style="font-size:40px">🔍</div><div>Usa los filtros y presiona Buscar</div></div></div>
 </div>
@@ -532,8 +532,22 @@ function showView(id){
   var el=$(id);if(!el)return;
   el.style.display='flex';el.classList.add('active');
   var fb=el.querySelector('.form-body');if(fb)fb.scrollTop=0;
+  // Push state to prevent browser back from closing app
+  try{
+    if(id==='home') history.replaceState({view:id},'',location.href);
+    else history.pushState({view:id},'',location.href);
+  }catch(e){}
 }
 function goHome(){showView('home');}
+
+// Intercept browser back button - stay in app
+window.addEventListener('popstate', function(e){
+  e.preventDefault();
+  if(USER) showView('home');
+  else showView('login');
+  // Push state again to keep blocking
+  try{history.pushState({view:'home'},'',location.href);}catch(e){}
+});
 
 function getPIN(n){try{return localStorage.getItem(PIN_PFX+n)||null;}catch(e){return null;}}
 function setPIN(n,p){try{localStorage.setItem(PIN_PFX+n,p);}catch(e){}}
@@ -666,9 +680,9 @@ function renderCalcSection(containerId, items){
     row.innerHTML=
       '<div><div class="calc-denom">'+d.label+'</div><div class="calc-tipo">'+d.tipo+'</div></div>'+
       '<div class="calc-ctrl">'+
-        '<div class="calc-btn" onclick="calcChange('+d.v+',-1)">−</div>'+
+        '<div class="calc-btn" type="button" onclick="calcChange('+d.v+',-1)">−</div>'+
         '<div class="calc-count" id="cc-'+d.v+'">'+cnt+'</div>'+
-        '<div class="calc-btn" onclick="calcChange('+d.v+',1)">+</div>'+
+        '<div class="calc-btn" type="button" onclick="calcChange('+d.v+',1)">+</div>'+
       '</div>'+
       '<div class="calc-subtotal" id="cs-'+d.v+'">'+(subtotal>0?'$'+subtotal.toLocaleString('es-CL'):'—')+'</div>';
     el.appendChild(row);
@@ -1137,9 +1151,9 @@ function renderCalcSection(containerId, items){
     row.innerHTML=
       '<div><div class="calc-denom">'+d.label+'</div><div class="calc-tipo">'+d.tipo+'</div></div>'+
       '<div class="calc-ctrl">'+
-        '<div class="calc-btn" onclick="calcChange('+d.v+',-1)">−</div>'+
+        '<div class="calc-btn" type="button" onclick="calcChange('+d.v+',-1)">−</div>'+
         '<div class="calc-count" id="cc-'+d.v+'">'+cnt+'</div>'+
-        '<div class="calc-btn" onclick="calcChange('+d.v+',1)">+</div>'+
+        '<div class="calc-btn" type="button" onclick="calcChange('+d.v+',1)">+</div>'+
       '</div>'+
       '<div class="calc-subtotal" id="cs-'+d.v+'">'+(subtotal>0?'$'+subtotal.toLocaleString('es-CL'):'—')+'</div>';
     el.appendChild(row);
