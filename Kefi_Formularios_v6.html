@@ -366,10 +366,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>Débito / Crédito ($)</label><div class="amt-wrap"><span>$</span><input type="number" id="caj-tarjeta" placeholder="0" inputmode="numeric"></div></div>
     </div>
     <div class="step" id="caj-s3">
-      <div class="field"><label>Monedas ($)</label><div class="amt-wrap"><span>$</span><input type="number" id="caj-monedas" placeholder="0" inputmode="numeric"></div></div>
-      <div class="field"><label>Billetes $1.000 (cantidad)</label><div class="amt-wrap"><span>#</span><input type="number" id="caj-b1000" placeholder="0" inputmode="numeric"></div></div>
-      <div class="field"><label>Billetes $2.000 (cantidad)</label><div class="amt-wrap"><span>#</span><input type="number" id="caj-b2000" placeholder="0" inputmode="numeric"></div></div>
-      <div class="field"><label>Devolución a cliente ($)</label><div class="amt-wrap"><span>$</span><input type="number" id="caj-devolucion" placeholder="0" inputmode="numeric"></div></div>
+      <div class="calc-section-title">🪙 Monedas</div>
+      <div class="calc-wrap" id="calc-monedas"></div>
+      <div class="calc-section-title" style="margin-top:8px">💵 Billetes</div>
+      <div class="calc-wrap" id="calc-billetes"></div>
+      <div class="calc-total-wrap" style="margin-top:8px">
+        <span class="calc-total-label">Total sencillo</span>
+        <span class="calc-total-val" id="calc-total-display">$0</span>
+      </div>
+      <div class="field" style="margin-top:12px"><label>Devolución a cliente ($)</label><div class="amt-wrap"><span>$</span><input type="number" id="caj-devolucion" placeholder="0" inputmode="numeric"></div></div>
+      <!-- Hidden fields for compatibility -->
+      <input type="hidden" id="caj-monedas" value="0">
+      <input type="hidden" id="caj-b1000" value="0">
+      <input type="hidden" id="caj-b2000" value="0">
     </div>
     <div class="step" id="caj-s4"><div id="caj-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="caj-obs" placeholder="Novedades, diferencias..."></textarea></div></div>
     <div class="success" id="caj-done"><div class="success-ring">✓</div><h3>Arqueo registrado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('caja')">Nuevo arqueo</button></div>
@@ -429,7 +438,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>Momento</label><div class="chip-row"><div class="chip" onclick="selChip(this,'stk-momento')">Apertura</div><div class="chip" onclick="selChip(this,'stk-momento')">Cierre</div></div></div>
     </div>
     <div class="step" id="stk-s2"><input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)"><div id="stk-barra-section"></div></div>
-    <div class="step" id="stk-s3"><div id="stk-bodega-section"></div><div id="stk-resumen" style="margin-top:8px"></div></div>
+    <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-bodega-section"></div><div id="stk-resumen" style="margin-top:8px"></div></div>
     <div class="success" id="stk-done"><div class="success-ring">✓</div><h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
   </div>
   <div id="stk-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
@@ -617,7 +626,88 @@ function doLogout(){
   $('pin-input').value='';$('pin-confirm').value='';
   $('login-msg').style.display='none';
   var rs=$('reset-section');if(rs)rs.style.display='none';
-  showView('login');
+  
+// ══════════════════════════════════
+// CALCULADORA DE CAJA
+// ══════════════════════════════════
+var CALC_DENOMS = [
+  {v:10,   label:'$10',    tipo:'Moneda'},
+  {v:50,   label:'$50',    tipo:'Moneda'},
+  {v:100,  label:'$100',   tipo:'Moneda'},
+  {v:500,  label:'$500',   tipo:'Moneda'},
+  {v:1000, label:'$1.000', tipo:'Billete'},
+  {v:2000, label:'$2.000', tipo:'Billete'},
+  {v:5000, label:'$5.000', tipo:'Billete'},
+  {v:10000,label:'$10.000',tipo:'Billete'},
+  {v:20000,label:'$20.000',tipo:'Billete'}
+];
+var calcCounts = {};
+
+function initCalc(){
+  CALC_DENOMS.forEach(function(d){calcCounts[d.v]=0;});
+  renderCalc();
+}
+
+function renderCalc(){
+  var monedas=CALC_DENOMS.filter(function(d){return d.tipo==='Moneda';});
+  var billetes=CALC_DENOMS.filter(function(d){return d.tipo==='Billete';});
+  renderCalcSection('calc-monedas', monedas);
+  renderCalcSection('calc-billetes', billetes);
+  updateCalcTotal();
+}
+
+function renderCalcSection(containerId, items){
+  var el=$(containerId);if(!el)return;
+  el.innerHTML='';
+  items.forEach(function(d){
+    var row=document.createElement('div');row.className='calc-row';
+    var cnt=calcCounts[d.v]||0;
+    var subtotal=cnt*d.v;
+    row.innerHTML=
+      '<div><div class="calc-denom">'+d.label+'</div><div class="calc-tipo">'+d.tipo+'</div></div>'+
+      '<div class="calc-ctrl">'+
+        '<div class="calc-btn" onclick="calcChange('+d.v+',-1)">−</div>'+
+        '<div class="calc-count" id="cc-'+d.v+'">'+cnt+'</div>'+
+        '<div class="calc-btn" onclick="calcChange('+d.v+',1)">+</div>'+
+      '</div>'+
+      '<div class="calc-subtotal" id="cs-'+d.v+'">'+(subtotal>0?'$'+subtotal.toLocaleString('es-CL'):'—')+'</div>';
+    el.appendChild(row);
+  });
+}
+
+function calcChange(denom, delta){
+  calcCounts[denom]=Math.max(0,(calcCounts[denom]||0)+delta);
+  var cc=$('cc-'+denom);if(cc)cc.textContent=calcCounts[denom];
+  var cs=$('cs-'+denom);
+  if(cs){
+    var sub=calcCounts[denom]*denom;
+    cs.textContent=sub>0?'$'+sub.toLocaleString('es-CL'):'—';
+  }
+  updateCalcTotal();
+}
+
+function updateCalcTotal(){
+  var total=0;
+  CALC_DENOMS.forEach(function(d){total+=(calcCounts[d.v]||0)*d.v;});
+  var el=$('calc-total-display');
+  if(el)el.textContent='$'+total.toLocaleString('es-CL');
+  // Update hidden fields for compatibility with buildCajaResumen
+  var monTotal=0,b1=0,b2=0;
+  CALC_DENOMS.filter(function(d){return d.tipo==='Moneda';}).forEach(function(d){monTotal+=calcCounts[d.v]*d.v;});
+  b1=calcCounts[1000]||0;b2=calcCounts[2000]||0;
+  var cm=$('caj-monedas');if(cm)cm.value=monTotal;
+  var cb1=$('caj-b1000');if(cb1)cb1.value=b1;
+  var cb2=$('caj-b2000');if(cb2)cb2.value=b2;
+}
+
+function getCalcTotal(){
+  var total=0;
+  CALC_DENOMS.forEach(function(d){total+=(calcCounts[d.v]||0)*d.v;});
+  return total;
+}
+
+initCalc();
+showView('login');
 }
 
 function poblarSelects(){
@@ -671,6 +761,7 @@ function stepNext(form){
   var f=FORMS[form];
   if(f.cur===f.steps-1) buildResumen(form);
   if(form==='stock'&&f.cur===2) renderStockBodega();
+  if(form==='caja'&&f.cur===2) initCalc();
   if(f.cur===f.steps){
     enviarFormulario(form);
     document.querySelectorAll('#'+form+' .step').forEach(function(s){s.style.display='none';});
@@ -724,7 +815,7 @@ function buildCajaResumen(){
   var c=parseFloat($('caj-contado').value)||0,s=parseFloat($('caj-sumup').value)||0,t=parseFloat($('caj-tarjeta').value)||0;
   var dev=parseFloat($('caj-devolucion').value)||0,m=parseFloat($('caj-monedas').value)||0;
   var b1=parseFloat($('caj-b1000').value)||0,b2=parseFloat($('caj-b2000').value)||0;
-  var sencillo=m+(b1*1000)+(b2*2000),diff=c-s;
+  var sencillo=getCalcTotal(),diff=c-s;
   var dc=Math.abs(diff)<500?'var(--ok)':Math.abs(diff)<2000?'var(--warn)':'var(--danger)';
   var suc=USER?(USER.suc==='cbb'?'Clínica Bio Bio':'Ramón Carrasco'):'--';
   $('caj-resumen').innerHTML='<div class="summary"><div class="srow"><span class="sl">Sucursal</span><span class="sv">'+suc+'</span></div><div class="srow"><span class="sl">Turno</span><span class="sv">'+(opts['caj-turno']||'--')+'</span></div><div class="srow"><span class="sl">HB</span><span class="sv">'+($('caj-hb').value||'--')+'</span></div><div class="srow"><span class="sl">Efectivo contado</span><span class="sv">'+fmtP(c)+'</span></div><div class="srow"><span class="sl">SumUp efectivo</span><span class="sv">'+fmtP(s)+'</span></div><div class="srow"><span class="sl">Diferencia</span><span class="sv" style="color:'+dc+'">'+fmtP(diff)+'</span></div><div class="srow"><span class="sl">Débito/Crédito</span><span class="sv">'+fmtP(t)+'</span></div><div class="srow"><span class="sl">Total ventas</span><span class="sv">'+fmtP(c+t)+'</span></div><div class="srow"><span class="sl">Sencillo</span><span class="sv">'+fmtP(sencillo)+'</span></div>'+(dev>0?'<div class="srow"><span class="sl">Devolución</span><span class="sv" style="color:var(--danger)">'+fmtP(dev)+'</span></div>':'')+'</div>';
@@ -740,6 +831,8 @@ function renderLimpieza(){
     if(esAM) return !t.turno||t.turno==='Manana'||t.turno==='Apertura';
     return !t.turno||t.turno==='Tarde'||t.turno==='Cierre';
   });
+  // Si no hay tareas para el filtro, mostrar todas
+  if(!filtradas.length) filtradas=tareas;
   var el=$('limp-lista');if(!el)return;el.innerHTML='';
   filtradas.forEach(function(t,i){
     var d=document.createElement('div');d.className='check-item'+(t.critica?' critica':'');
@@ -806,12 +899,14 @@ function renderStockBodega(){
   var suc=USER?USER.suc:'cbb';
   var el=$('stk-bodega-section');el.innerHTML='';
   if(suc==='rc'){
-    var items=INSUMOS['rc'].filter(function(i){return!i.b;});
-    var tit=document.createElement('div');tit.className='stk-grupo-titulo';tit.textContent='Bodega Principal RC';el.appendChild(tit);
-    var grp=document.createElement('div');grp.className='stk-grupo';
-    items.forEach(function(item,i){grp.appendChild(makeQtyRow(item,'sbod',i));});el.appendChild(grp);
+    // RC: mostrar resumen del conteo de barra + label explicativo
+    var info=document.createElement('div');
+    info.style.cssText='padding:12px;background:var(--cl);border-radius:var(--rad-sm);border:0.5px solid var(--brd);font-size:13px;color:var(--txt2);margin-bottom:8px;';
+    info.innerHTML='<strong style="color:var(--c)">Resumen del conteo</strong><br>Revisa que los datos estén correctos antes de enviar.';
+    el.appendChild(info);
   } else {
-    var bodItems=INSUMOS['cbb'].filter(function(i){return i.b;});if(!bodItems.length){buildStockResumen();return;}
+    var bodItems=INSUMOS['cbb'].filter(function(i){return i.b;});
+    if(!bodItems.length){buildStockResumen();return;}
     var tit2=document.createElement('div');tit2.className='stk-grupo-titulo';tit2.textContent='Bodega CBB abajo';el.appendChild(tit2);
     var grp2=document.createElement('div');grp2.className='stk-grupo';
     bodItems.forEach(function(item,i){grp2.appendChild(makeQtyRow(item,'sbod',i));});el.appendChild(grp2);
@@ -1002,6 +1097,87 @@ function buscarRegistros(){
   }).catch(function(){el.innerHTML='<div class="cons-empty">⚠️ Error al consultar.</div>';});
 }
 
+
+// ══════════════════════════════════
+// CALCULADORA DE CAJA
+// ══════════════════════════════════
+var CALC_DENOMS = [
+  {v:10,   label:'$10',    tipo:'Moneda'},
+  {v:50,   label:'$50',    tipo:'Moneda'},
+  {v:100,  label:'$100',   tipo:'Moneda'},
+  {v:500,  label:'$500',   tipo:'Moneda'},
+  {v:1000, label:'$1.000', tipo:'Billete'},
+  {v:2000, label:'$2.000', tipo:'Billete'},
+  {v:5000, label:'$5.000', tipo:'Billete'},
+  {v:10000,label:'$10.000',tipo:'Billete'},
+  {v:20000,label:'$20.000',tipo:'Billete'}
+];
+var calcCounts = {};
+
+function initCalc(){
+  CALC_DENOMS.forEach(function(d){calcCounts[d.v]=0;});
+  renderCalc();
+}
+
+function renderCalc(){
+  var monedas=CALC_DENOMS.filter(function(d){return d.tipo==='Moneda';});
+  var billetes=CALC_DENOMS.filter(function(d){return d.tipo==='Billete';});
+  renderCalcSection('calc-monedas', monedas);
+  renderCalcSection('calc-billetes', billetes);
+  updateCalcTotal();
+}
+
+function renderCalcSection(containerId, items){
+  var el=$(containerId);if(!el)return;
+  el.innerHTML='';
+  items.forEach(function(d){
+    var row=document.createElement('div');row.className='calc-row';
+    var cnt=calcCounts[d.v]||0;
+    var subtotal=cnt*d.v;
+    row.innerHTML=
+      '<div><div class="calc-denom">'+d.label+'</div><div class="calc-tipo">'+d.tipo+'</div></div>'+
+      '<div class="calc-ctrl">'+
+        '<div class="calc-btn" onclick="calcChange('+d.v+',-1)">−</div>'+
+        '<div class="calc-count" id="cc-'+d.v+'">'+cnt+'</div>'+
+        '<div class="calc-btn" onclick="calcChange('+d.v+',1)">+</div>'+
+      '</div>'+
+      '<div class="calc-subtotal" id="cs-'+d.v+'">'+(subtotal>0?'$'+subtotal.toLocaleString('es-CL'):'—')+'</div>';
+    el.appendChild(row);
+  });
+}
+
+function calcChange(denom, delta){
+  calcCounts[denom]=Math.max(0,(calcCounts[denom]||0)+delta);
+  var cc=$('cc-'+denom);if(cc)cc.textContent=calcCounts[denom];
+  var cs=$('cs-'+denom);
+  if(cs){
+    var sub=calcCounts[denom]*denom;
+    cs.textContent=sub>0?'$'+sub.toLocaleString('es-CL'):'—';
+  }
+  updateCalcTotal();
+}
+
+function updateCalcTotal(){
+  var total=0;
+  CALC_DENOMS.forEach(function(d){total+=(calcCounts[d.v]||0)*d.v;});
+  var el=$('calc-total-display');
+  if(el)el.textContent='$'+total.toLocaleString('es-CL');
+  // Update hidden fields for compatibility with buildCajaResumen
+  var monTotal=0,b1=0,b2=0;
+  CALC_DENOMS.filter(function(d){return d.tipo==='Moneda';}).forEach(function(d){monTotal+=calcCounts[d.v]*d.v;});
+  b1=calcCounts[1000]||0;b2=calcCounts[2000]||0;
+  var cm=$('caj-monedas');if(cm)cm.value=monTotal;
+  var cb1=$('caj-b1000');if(cb1)cb1.value=b1;
+  var cb2=$('caj-b2000');if(cb2)cb2.value=b2;
+}
+
+function getCalcTotal(){
+  var total=0;
+  CALC_DENOMS.forEach(function(d){total+=(calcCounts[d.v]||0)*d.v;});
+  return total;
+}
+
+initCalc();
 showView('login');
 </script>
 </body>
