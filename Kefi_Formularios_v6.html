@@ -932,7 +932,7 @@ function cargarPendientes(){
       if(!filtradas.length)return;
       var u=filtradas[0];
       if(r.tipo==='limpieza'){var crit=parseInt(u[7])||0;if(crit>0)pend.push({icon:'🧹',tipo:'Limpieza',detalle:crit+' tarea(s) crítica(s) sin completar',urg:true});}
-      if(r.tipo==='stock'){var det=u[5]||'';var q=det.split(' | ').filter(function(i){return i&&/:\s*0[\s|]/.test(i);}).map(function(i){return i.split(':')[0].trim();});if(q.length)pend.push({icon:'📦',tipo:'Quiebre de stock',detalle:q.slice(0,5).join(', ')+(q.length>5?' y más':''),urg:true});}
+      if(r.tipo==='stock'){var det=u[5]||'';var q=det.split(' | ').filter(function(i){if(!i)return false;var p=i.split(': ');return p.length>1&&(p[1].trim()==='0'||p[1].trim().startsWith('0 '));}).map(function(i){return i.split(':')[0].trim();});if(q.length)pend.push({icon:'📦',tipo:'Quiebre de stock',detalle:q.slice(0,5).join(', ')+(q.length>5?' y más':''),urg:true});}
       if(r.tipo==='caja'){var dif=parseFloat(u[6])||0;if(Math.abs(dif)>2000)pend.push({icon:'💰',tipo:'Diferencia de caja',detalle:'Diferencia de $'+Math.abs(dif).toLocaleString('es-CL'),urg:Math.abs(dif)>5000});}
       if(r.tipo==='bitacora'){var nov=u[6]||'';if(nov&&nov.toLowerCase()!=='sin novedades'&&nov.trim())pend.push({icon:'📝',tipo:'Novedad de turno',detalle:nov,urg:false});}
     });
@@ -969,12 +969,12 @@ function buscarRegistros(){
       for(var i=1;i<cols.length&&i<fila.length;i++){
         var val=fila[i];if(!val&&val!==0)continue;
         var style='';
-        if(item.tipo==='caja'&&cols[i]==='Diferencia'){var n=parseFloat(String(val).replace(/[^0-9\-]/g,''));style=n===0?'color:var(--ok)':Math.abs(n)<=2000?'color:var(--warn)':'color:var(--danger)';}
+        if(item.tipo==='caja'&&cols[i]==='Diferencia'){var n=parseFloat(String(val).replace(/[^0-9-]/g,''));style=n===0?'color:var(--ok)':Math.abs(n)<=2000?'color:var(--warn)':'color:var(--danger)';}
         if(item.tipo==='mermas'&&cols[i]==='Alerta'){style=String(val).indexOf('Sí')>=0?'color:var(--danger);font-weight:600':'';}
         if(item.tipo==='stock'&&cols[i]==='Detalle'){
           var si=String(val).split(' | ').filter(Boolean);
           rows+='<div class="cons-srow"><span class="cons-sl">Detalle stock</span></div><div class="cons-stock-detalle">';
-          si.slice(0,25).forEach(function(x){var p=x.split(': ');var esQ=p[1]&&p[1].trim().startsWith('0');rows+='<div class="cons-stock-item'+(esQ?' quiebre':'')+'"><span class="cons-stock-nombre">'+(p[0]||x)+'</span><span class="cons-stock-qty">'+(p[1]||'')+'</span></div>';});
+          si.slice(0,25).forEach(function(x){var p=x.split(': ');var rawQty=(p[1]||'').trim();var esQ=rawQty===''||rawQty==='0'||rawQty.indexOf('0 ')===0;rows+='<div class="cons-stock-item'+(esQ?' quiebre':'')+'"><span class="cons-stock-nombre">'+(p[0]||x)+'</span><span class="cons-stock-qty">'+(p[1]||'')+'</span></div>';});
           if(si.length>25)rows+='<div style="font-size:11px;color:var(--txt2);padding:4px 8px">...y '+(si.length-25)+' más</div>';
           rows+='</div>';continue;
         }
