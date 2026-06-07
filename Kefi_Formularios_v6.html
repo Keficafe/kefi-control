@@ -439,10 +439,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
       <div class="field"><label>¿Qué bodega vas a contar?</label><select id="bodega-selector" onchange="seleccionarBodega(this.value)"><option value="">Seleccionar bodega...</option></select></div>
     </div>
     <div class="step" id="stk-s2"><div id="stk-bodega-titulo" style="font-size:13px;font-weight:700;color:var(--c);padding:4px 0 8px"></div><input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)"><div id="stk-barra-section"></div></div>
-    <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-resumen"></div></div>
+    <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-resumen" style="margin-top:4px"></div></div>
     <div class="success" id="stk-done"><div class="success-ring">✓</div><h3>Stock registrado</h3><p>Fabián puede verlo en Google Sheets</p><button class="btn-reset" onclick="resetForm('stock')">Nuevo conteo</button></div>
   </div>
-  <div id="stk-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div></div>
+  <div id="stk-dots" class="step-dots"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
   <div class="bottom-nav" id="stk-nav"><button class="btn-back-nav" id="stk-back" type="button" onclick="stepPrev('stock');return false;" style="display:none">Atrás</button><button class="btn-next-nav" type="button" onclick="stepNext('stock');return false;">Siguiente</button></div>
 </div>
 
@@ -742,7 +742,7 @@ function poblarSelects(){
   var mp=$('mer-prod');if(mp){mp.innerHTML='<option value="">Seleccionar...</option>';INSUMOS_MERMAS.forEach(function(n){var o=document.createElement('option');o.value=n;o.textContent=n;mp.appendChild(o);});}
 }
 
-var FORMS={bitacora:{steps:4,cur:1,pref:'bit'},caja:{steps:4,cur:1,pref:'caj'},limpieza:{steps:3,cur:1,pref:'limp'},mermas:{steps:4,cur:1,pref:'mer'},stock:{steps:2,cur:1,pref:'stk'},pedido:{steps:3,cur:1,pref:'ped'}};
+var FORMS={bitacora:{steps:4,cur:1,pref:'bit'},caja:{steps:4,cur:1,pref:'caj'},limpieza:{steps:3,cur:1,pref:'limp'},mermas:{steps:4,cur:1,pref:'mer'},stock:{steps:3,cur:1,pref:'stk'},pedido:{steps:3,cur:1,pref:'ped'}};
 var LABELS={bitacora:['Identificación','Formularios','Novedades','Resumen'],caja:['Datos','Ventas','Sencillo','Resumen'],limpieza:['Datos','Tareas','Resumen'],mermas:['Quién','Producto','Causa','Resumen'],stock:['Datos','Conteo','Resumen'],pedido:['Datos','Pedido','Resumen']};
 
 function showForm(form){
@@ -774,10 +774,15 @@ function selChip(el,key){
 
 function stepNext(form){
   var f=FORMS[form];
-  if(f.cur===f.steps-1) buildResumen(form);
+  // Stock paso 1→2: cargar items de bodega seleccionada
   if(form==='stock'&&f.cur===1){
     if(!renderStockItems()) return;
   }
+  // Stock paso 2→3: construir resumen
+  if(form==='stock'&&f.cur===2) buildStockResumen();
+  // Otros formularios: construir resumen en penúltimo paso
+  if(form!=='stock'&&f.cur===f.steps-1) buildResumen(form);
+  // Caja paso 1→2: iniciar calculadora
   if(form==='caja'&&f.cur===1) initCalc();
   if(f.cur===f.steps){
     enviarFormulario(form);
