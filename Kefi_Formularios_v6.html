@@ -773,10 +773,18 @@ function semLabel(s){var cls=s==='diario'?'d':s==='semanal'?'s':'q';var txt=s===
 function makeQtyRow(item,prefix,idx){
   var id=prefix+'-'+idx;
   var d=document.createElement('div');d.className='qty-row';
-  d.innerHTML='<div class="qty-left"><div class="qty-name">'+item.n+'</div><div class="qty-unit">'+item.u+'</div>'+semLabel(item.s)+(item.b?'<span class="bodega-tag">Bodega</span>':'')+'</div>'
-    +'<div class="qty-ctrl"><div class="qb" onclick="changeQty(''+id+'',-0.5)">−</div>'
-    +'<input class="qv" id="'+id+'-v" type="number" min="0" step="0.5" value="0" inputmode="decimal" onchange="setQty(''+id+'',this.value)" onfocus="this.select()">'
-    +'<div class="qb" onclick="changeQty(''+id+'',0.5)">+</div></div>';
+  var left=document.createElement('div');left.className='qty-left';
+  left.innerHTML='<div class="qty-name">'+item.n+'</div><div class="qty-unit">'+item.u+'</div>'+semLabel(item.s)+(item.b?'<span class="bodega-tag">Bodega</span>':'');
+  var ctrl=document.createElement('div');ctrl.className='qty-ctrl';
+  var bm=document.createElement('div');bm.className='qb';bm.textContent='−';
+  bm.onclick=function(){changeQty(id,-0.5);};
+  var inp=document.createElement('input');
+  inp.className='qv';inp.id=id+'-v';inp.type='number';inp.min='0';inp.step='0.5';inp.value='0';inp.setAttribute('inputmode','decimal');
+  inp.onchange=function(){setQty(id,this.value);};inp.onfocus=function(){this.select();};
+  var bp=document.createElement('div');bp.className='qb';bp.textContent='+';
+  bp.onclick=function(){changeQty(id,0.5);};
+  ctrl.appendChild(bm);ctrl.appendChild(inp);ctrl.appendChild(bp);
+  d.appendChild(left);d.appendChild(ctrl);
   return d;
 }
 function changeQty(id,delta){if(!qtys[id])qtys[id]=0;qtys[id]=Math.round((Math.max(0,qtys[id]+delta))*10)/10;var el=$(id+'-v');if(el){el.value=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}}
