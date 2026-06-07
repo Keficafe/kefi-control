@@ -679,11 +679,11 @@ function semLabel(s){if(s==='diario')return '<span class="qty-sem sem-diario">Di
 var PIN_PREFIX = 'kefi_pin_';
 var INTENTOS_PREFIX = 'kefi_int_';
 
-function getPIN(nombre){ return localStorage.getItem(PIN_PREFIX+nombre)||null; }
-function setPIN(nombre,pin){ localStorage.setItem(PIN_PREFIX+nombre,pin); }
-function getIntentos(nombre){ return parseInt(localStorage.getItem(INTENTOS_PREFIX+nombre)||'0'); }
-function setIntentos(nombre,n){ localStorage.setItem(INTENTOS_PREFIX+nombre,String(n)); }
-function resetIntentos(nombre){ localStorage.removeItem(INTENTOS_PREFIX+nombre); }
+function getPIN(nombre){ try{ return localStorage.getItem(PIN_PREFIX+nombre)||null; }catch(e){ return null; } }
+function setPIN(nombre,pin){ try{ localStorage.setItem(PIN_PREFIX+nombre,pin); }catch(e){} }
+function getIntentos(nombre){ try{ return parseInt(localStorage.getItem(INTENTOS_PREFIX+nombre)||'0'); }catch(e){ return 0; } }
+function setIntentos(nombre,n){ try{ localStorage.setItem(INTENTOS_PREFIX+nombre,String(n)); }catch(e){} }
+function resetIntentos(nombre){ try{ localStorage.removeItem(INTENTOS_PREFIX+nombre); }catch(e){} }
 
 function resetearPIN(){
   var quien=$('reset-quien').value;
@@ -780,6 +780,10 @@ function doLogin(){
   // Mostrar reset PIN solo si es dirección
   $('reset-pin-section').style.display=rol==='dir'?'block':'none';
   showRaw('home');
+  // Mostrar pendientes para no-dirección
+  if(rol!=='dir'){
+    setTimeout(function(){ mostrarPendientes(); }, 400);
+  }
 }
 
 function doLogout(){
@@ -1740,17 +1744,7 @@ function mostrarPendientes(){
   });
 }
 
-// Override doLogin para mostrar pendientes al entrar
-var _origDoLoginPend = doLogin;
-doLogin = function(){
-  _origDoLoginPend();
-  // Solo mostrar si el usuario NO es dirección (ellos tienen visión completa)
-  setTimeout(function(){
-    if(USER && USER.rol !== 'dir'){
-      mostrarPendientes();
-    }
-  }, 300);
-};
+// mostrarPendientes se llama desde doLogin directamente (ver función doLogin)
 
 // ══════════════════════════════════════════════════
 // TRASLADO DE BODEGA
