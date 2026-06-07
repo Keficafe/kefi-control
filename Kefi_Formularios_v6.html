@@ -436,7 +436,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
     <div class="step active" id="stk-s1">
       <div class="field"><label>Head Barista</label><select id="stk-hb"><option value="">Seleccionar...</option></select></div>
       <div class="field"><label>Momento</label><div class="chip-row"><div class="chip" onclick="selChip(this,'stk-momento')">Apertura</div><div class="chip" onclick="selChip(this,'stk-momento')">Cierre</div></div></div>
-      <div class="field"><label>¿Qué bodega vas a contar?</label><div class="bodega-selector" id="bodega-selector"></div></div>
+      <div class="field"><label>¿Qué bodega vas a contar?</label><select id="bodega-selector" onchange="seleccionarBodega(this.value)"><option value="">Seleccionar bodega...</option></select></div>
     </div>
     <div class="step" id="stk-s2"><div id="stk-bodega-titulo" style="font-size:13px;font-weight:700;color:var(--c);padding:4px 0 8px"></div><input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)"><div id="stk-barra-section"></div></div>
     <div class="step" id="stk-s3" style="padding-bottom:20px"><div id="stk-resumen"></div></div>
@@ -933,32 +933,26 @@ function renderStock(){
   var bodegas=getBodegasDisponibles();
   var sel=$('bodega-selector');
   if(!sel)return;
-  sel.innerHTML='';
-  bodegas.forEach(function(b){
-    var btn=document.createElement('button');
-    btn.type='button';
-    btn.className='bodega-btn';
-    btn.innerHTML='<div class="bodega-btn-icon">'+b.icon+'</div>'
-      +'<div class="bodega-btn-info">'
-      +'<div class="bodega-btn-titulo">'+b.label+'</div>'
-      +'<div class="bodega-btn-sub">'+b.sub+'</div>'
-      +'</div>';
-    (function(btn, b){
-      btn.addEventListener('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        sel.querySelectorAll('.bodega-btn').forEach(function(x){x.classList.remove('activa');});
-        btn.classList.add('activa');
-        BODEGA_SELECCIONADA=b;
-      }, false);
-    })(btn, b);
-    sel.appendChild(btn);
+  sel.innerHTML='<option value="">Seleccionar bodega...</option>';
+  bodegas.forEach(function(b,i){
+    var o=document.createElement('option');
+    o.value=i;
+    o.textContent=b.icon+' '+b.label+' — '+b.sub;
+    sel.appendChild(o);
   });
-  // Auto-select first if only one option
+  // Auto-select if only one option
   if(bodegas.length===1){
-    sel.querySelector('.bodega-btn').classList.add('activa');
+    sel.value='0';
     BODEGA_SELECCIONADA=bodegas[0];
   }
+  // Store bodegas for lookup
+  sel._bodegas=bodegas;
+}
+
+function seleccionarBodega(val){
+  var sel=$('bodega-selector');
+  if(val===''||!sel||!sel._bodegas){BODEGA_SELECCIONADA=null;return;}
+  BODEGA_SELECCIONADA=sel._bodegas[parseInt(val)];
 }
 
 function renderStockItems(){
