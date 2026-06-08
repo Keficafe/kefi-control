@@ -896,7 +896,8 @@ function doLogin(){
   $('fcard-traslado').style.display=(suc==='rc'||rol==='dir')?'flex':'none';
   var rs=$('reset-section');if(rs)rs.style.display=rol==='dir'?'flex':'none';
   showView('home');
-  if(rol!=='dir') setTimeout(cargarPendientes,600);
+  // cargarPendientes deshabilitado temporalmente
+  // if(rol!=='dir') setTimeout(cargarPendientes,600);
 }
 
 function doLogout(){
@@ -1471,18 +1472,29 @@ function enviarTraslado(){
 
 function enviarASheets(tipo,datos){
   datos.tipo=tipo;datos.usuario=USER?USER.nombre:'?';
+  // Solo enviar en HTTPS (GitHub Pages)
+  if(location.protocol!=='https:'){
+    console.log('Envío deshabilitado en archivo local - usar GitHub Pages');
+    return Promise.resolve({ok:true});
+  }
   return new Promise(function(resolve){
     try{
       var iid='kf_'+Date.now();
       var iframe=document.createElement('iframe');
-      iframe.name=iid;iframe.style.cssText='display:none;width:0;height:0;position:absolute;';
+      iframe.name=iid;
+      iframe.style.cssText='display:none;width:0;height:0;position:absolute;left:-9999px;';
       document.body.appendChild(iframe);
       var form=document.createElement('form');
-      form.method='POST';form.action=SCRIPT_URL;form.target=iid;form.style.display='none';
-      var inp=document.createElement('input');inp.type='hidden';inp.name='payload';inp.value=JSON.stringify(datos);
+      form.method='POST';form.action=SCRIPT_URL;form.target=iid;
+      form.style.display='none';
+      var inp=document.createElement('input');
+      inp.type='hidden';inp.name='payload';inp.value=JSON.stringify(datos);
       form.appendChild(inp);document.body.appendChild(form);
-      var t=setTimeout(function(){try{document.body.removeChild(form);document.body.removeChild(iframe);}catch(e){}resolve({ok:true});},6000);
-      iframe.onload=function(){clearTimeout(t);try{document.body.removeChild(form);setTimeout(function(){try{document.body.removeChild(iframe);}catch(e){}},500);}catch(e){}resolve({ok:true});};
+      setTimeout(function(){
+        try{document.body.removeChild(form);}catch(e){}
+        setTimeout(function(){try{document.body.removeChild(iframe);}catch(e){}},500);
+        resolve({ok:true});
+      },5000);
       form.submit();
     }catch(err){resolve({ok:false});}
   });
@@ -1537,6 +1549,8 @@ function fetchJSONP(url){
 }
 
 function cargarPendientes(){
+  return; // Deshabilitado - solo funciona en GitHub
+
   if(!SCRIPT_URL||!USER||isLocalFile())return;
   var suc=USER.suc,sucFilter=suc==='cbb'?'Bio Bio':'Ramon';
   $('modal-pend').classList.remove('hidden');
