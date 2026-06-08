@@ -761,6 +761,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-se
 // con este texto completo.
 // ================================================================
 
+window.onerror=function(){return true;};
 var SCRIPT_URL='https://script.google.com/macros/s/AKfycbwZ7ua9zq1nsS7MnORv7SpyI_6x40MEQHU4yjQ3etdbd7VYqkUbjqhInsxrhnoVVAU/exec';
 var PERSONAS={"cbb":["Aileen","Francisco","Sebastian","Ari","Cristobal","Fabián","Génesis"],"rc":["Valezka","Ari","Cristobal","Antonia","Gissela","Fabián","Génesis"],"all":["Aileen","Francisco","Valezka","Sebastian","Ari","Cristobal","Antonia","Gissela","Fabian","Genesis"]};
 var BIT_CHECKS=["Arqueo de caja completado","Checklist de limpieza firmado","Mermas registradas (0 si no hubo)","Stock revisado","Pedido CBB a RC enviado (solo turno tarde CBB)"];
@@ -838,7 +839,8 @@ function showView(id){
   var el=$(id);if(!el)return;
   el.style.display='flex';el.classList.add('active');
   var fb=el.querySelector('.form-body');if(fb)fb.scrollTop=0;
-  try{if(typeof history!=='undefined'){if(id==='home')history.replaceState({view:id},'',location.href);else history.pushState({view:id},'',location.href);}}catch(e){}
+  if(id==='login')return;
+  try{if(typeof history!=='undefined'&&history.pushState){if(id==='home')history.replaceState({view:id},'',location.href);else history.pushState({view:id},'',location.href);}}catch(e){}
 }
 
 function goHome(){
