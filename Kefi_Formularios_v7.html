@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Kefi — Control Operacional</title>
+<style>
+:root{--c:#9B1C35;--cd:#7A1428;--cl:#F0EAD6;--cll:#FAF6EF;--txt:#2C0A12;--txt2:#7A4050;--brd:#E8D0D4;--ok:#1A6B3C;--okl:#D4EDDA;--warn:#854F0B;--warnl:#FFF3CD;--danger:#A32D2D;--dangerl:#FADADD;--rad:12px;--rad-sm:8px;--rad-xs:6px;--blue:#1A4B8C;--bluel:#EBF3FC;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:var(--cll);color:var(--txt);max-width:480px;margin:0 auto;min-height:100vh;}html{background:var(--cll);}
+
+/* VISTAS */
+.view{display:none;flex-direction:column;min-height:100vh;background:var(--cll);}
+.step-dots{display:none;}
+.bottom-nav{display:none;}
+.view.active{display:flex;}
+
+/* LOGIN */
+.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px 24px;gap:24px;}
+.login-logo{font-family:Georgia,serif;font-size:52px;font-weight:400;color:var(--c);letter-spacing:-1px;}
+.login-sub{font-size:14px;color:var(--txt2);margin-top:-18px;}
+.login-card{width:100%;display:flex;flex-direction:column;gap:14px;}
+.login-field{display:flex;flex-direction:column;gap:6px;}
+.login-field label{font-size:12px;font-weight:600;color:var(--c);text-transform:uppercase;letter-spacing:0.4px;}
+.login-field select,.login-field input{width:100%;padding:14px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);font-size:15px;color:var(--txt);background:#fff;-webkit-appearance:none;outline:none;}
+.login-btn{width:100%;padding:16px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:16px;font-weight:700;cursor:pointer;margin-top:4px;}
+.pin-input{font-size:24px!important;letter-spacing:10px!important;text-align:center!important;}
+.login-msg{padding:10px 14px;border-radius:var(--rad-sm);font-size:13px;text-align:center;display:none;}
+.login-msg.err{background:var(--dangerl);color:var(--danger);}
+.login-msg.ok{background:var(--okl);color:var(--ok);}
+.reset-link{font-size:12px;color:var(--txt2);text-align:center;text-decoration:underline;cursor:pointer;margin-top:4px;}
+
+/* NAV */
+.nav{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--c);color:#fff;position:sticky;top:0;z-index:10;}
+.nav-back{background:rgba(255,255,255,0.2);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;flex-shrink:0;}
+.nav-logo{font-family:Georgia,serif;font-size:22px;color:#fff;}
+.nav-title{font-size:16px;font-weight:700;color:#fff;}
+.nav-sub{font-size:11px;color:rgba(255,255,255,0.8);margin-top:1px;}
+.nav-user{margin-left:auto;font-size:12px;color:rgba(255,255,255,0.9);cursor:pointer;background:rgba(255,255,255,0.15);padding:6px 10px;border-radius:20px;}
+
+/* HOME */
+.home{padding:16px;display:flex;flex-direction:column;gap:8px;}
+.home-header{padding:4px 0 8px;}
+.home-header h2{font-size:22px;font-weight:700;}
+.home-header p{font-size:13px;color:var(--txt2);margin-top:2px;}
+.home-date{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:var(--rad-sm);padding:10px 14px;border:0.5px solid var(--brd);margin-bottom:4px;}
+.hd-l{font-size:12px;color:var(--txt2);}
+.hd-v{font-size:13px;font-weight:600;color:var(--txt);}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--txt2);text-transform:uppercase;padding:8px 0 4px;}
+.fcard{display:flex;align-items:center;gap:12px;background:#fff;border-radius:var(--rad-sm);padding:14px;border:0.5px solid var(--brd);border-left:3px solid var(--c);cursor:pointer;}
+.fcard-icon{width:40px;height:40px;border-radius:10px;background:var(--cl);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fcard-info{flex:1;}
+.fcard-title{font-size:14px;font-weight:600;color:var(--txt);}
+.fcard-sub{font-size:12px;color:var(--txt2);margin-top:1px;}
+
+/* FORMULARIOS */
+.progress-strip{height:3px;background:var(--brd);}
+.progress-fill{height:3px;background:var(--c);transition:width 0.3s;}
+.form-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;}
+.step{display:none;flex-direction:column;gap:14px;}
+.step.active{display:flex;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:12px;font-weight:600;color:var(--c);text-transform:uppercase;letter-spacing:0.4px;}
+.field select,.field input,.field textarea{width:100%;padding:12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);font-size:15px;color:var(--txt);background:#fff;-webkit-appearance:none;outline:none;}
+.field textarea{min-height:80px;resize:none;}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{padding:8px 14px;border:0.5px solid var(--brd);border-radius:20px;font-size:13px;cursor:pointer;background:#fff;color:var(--txt);}
+.chip.sel{background:var(--c);color:#fff;border-color:var(--c);}
+.amt-wrap{display:flex;align-items:center;background:#fff;border:0.5px solid var(--brd);border-radius:var(--rad-sm);overflow:hidden;}
+.amt-wrap span{padding:12px 10px;font-size:15px;color:var(--txt2);background:var(--cll);}
+.amt-wrap input{flex:1;padding:12px;border:none;font-size:15px;outline:none;}
+.step-dots{display:flex;justify-content:center;gap:6px;padding:12px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--brd);}
+.dot.act{background:var(--c);}
+.bottom-nav{display:flex;gap:8px;padding:12px 16px;border-top:0.5px solid var(--brd);background:#fff;}
+.btn-back-nav{flex:1;padding:14px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:15px;cursor:pointer;color:var(--txt);}
+.btn-next-nav{flex:2;padding:14px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:15px;font-weight:600;cursor:pointer;}
+.summary{background:#fff;border-radius:var(--rad-sm);border:0.5px solid var(--brd);}
+.srow{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--brd);}
+.srow:last-child{border-bottom:none;}
+.sl{font-size:13px;color:var(--txt2);}
+.sv{font-size:13px;font-weight:600;color:var(--txt);}
+.success{display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px;}
+.success-ring{width:64px;height:64px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;}
+.success h3{font-size:20px;font-weight:700;}
+.success p{font-size:14px;color:var(--txt2);}
+.btn-reset{background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 24px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;}
+
+/* CHECKLIST LIMPIEZA */
+.check-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-radius:var(--rad-sm);border:0.5px solid var(--brd);cursor:pointer;}
+.check-item.done{background:var(--okl);border-color:#97C459;}
+.check-item.critica{border-left:3px solid var(--danger);}
+.check-item.critica.done{border-left-color:var(--ok);}
+.check-box{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--brd);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.check-item.done .check-box{background:var(--ok);border-color:var(--ok);color:#fff;}
+.check-label{font-size:13px;flex:1;}
+.crit-tag{font-size:10px;font-weight:700;color:var(--danger);background:var(--dangerl);padding:2px 6px;border-radius:10px;}
+.score-wrap{background:#fff;border-radius:var(--rad-sm);border:0.5px solid var(--brd);padding:12px;}
+.score-top{display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;}
+.score-pct{font-weight:700;color:var(--c);}
+.bar{height:8px;background:var(--brd);border-radius:4px;overflow:hidden;}
+.bar-fill{height:8px;background:var(--c);border-radius:4px;transition:width 0.3s;}
+.bar-fill.ok{background:var(--ok);}
+
+/* STOCK */
+.sec-div{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--txt2);padding:8px 0 4px;}
+.stk-grupo{margin-bottom:12px;}
+.stk-grupo-titulo{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--txt2);padding:8px 12px 6px;background:var(--cl);border-radius:var(--rad-sm) var(--rad-sm) 0 0;border:0.5px solid var(--brd);border-bottom:none;}
+.qty-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:0.5px solid var(--brd);border-top:none;background:#fff;}
+.stk-grupo .qty-row:last-child{border-radius:0 0 var(--rad-sm) var(--rad-sm);}
+.qty-left{flex:1;}
+.qty-name{font-size:13px;font-weight:500;color:var(--txt);}
+.qty-unit{font-size:11px;color:var(--txt2);}
+.qty-ctrl{display:flex;align-items:center;}
+.qb{width:32px;height:32px;border:0.5px solid var(--brd);background:var(--cll);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;font-weight:300;color:var(--txt);user-select:none;}
+.qb:first-child{border-radius:var(--rad-xs) 0 0 var(--rad-xs);}
+.qb:last-child{border-radius:0 var(--rad-xs) var(--rad-xs) 0;}
+.qv{width:52px;height:32px;border-top:0.5px solid var(--brd);border-bottom:0.5px solid var(--brd);border-left:none;border-right:none;background:#fff;text-align:center;font-size:14px;font-weight:500;color:var(--txt);outline:none;padding:0;-webkit-appearance:none;}
+.qv.has{background:var(--cl);color:var(--c);font-weight:700;}
+.sem-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:8px;margin-top:2px;}
+.sem-tag.d{background:#D4EDDA;color:#1A6B3C;}
+.sem-tag.s{background:#FFE5B4;color:#8B5A00;}
+.sem-tag.q{background:#EBF3FC;color:var(--blue);}
+.bodega-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:8px;background:var(--dangerl);color:var(--danger);margin-top:2px;}
+.stk-search{width:100%;padding:10px 12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);font-size:14px;background:#fff;outline:none;margin-bottom:8px;}
+
+/* ALERT */
+.alert{border-radius:var(--rad-sm);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;}
+.alert.warn{background:var(--warnl);border:0.5px solid #EF9F27;}
+.alert.danger{background:var(--dangerl);border:0.5px solid #F09595;}
+.alert.ok{background:var(--okl);border:0.5px solid #97C459;}
+.alert.info{background:var(--cl);border:0.5px solid var(--brd);}
+.at{font-size:13px;font-weight:500;}
+.as{font-size:12px;color:var(--txt2);margin-top:2px;}
+.diff-ok{background:var(--okl);border:0.5px solid #97C459;border-radius:var(--rad-sm);padding:10px 14px;font-size:13px;color:var(--ok);font-weight:600;}
+.diff-warn{background:var(--warnl);border:0.5px solid #EF9F27;border-radius:var(--rad-sm);padding:10px 14px;font-size:13px;color:var(--warn);font-weight:600;}
+.diff-bad{background:var(--dangerl);border:0.5px solid #F09595;border-radius:var(--rad-sm);padding:10px 14px;font-size:13px;color:var(--danger);font-weight:600;}
+
+/* TRASLADO */
+.flujo-btn{width:100%;padding:14px 16px;border:1.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;text-align:left;cursor:pointer;margin-bottom:8px;}
+.flujo-btn .fl-title{font-size:14px;font-weight:600;color:var(--txt);}
+.flujo-btn .fl-sub{font-size:12px;color:var(--txt2);margin-top:2px;}
+.tras-item{display:flex;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--brd);}
+.tras-nombre{flex:1;font-size:13px;}
+.tras-unidad{font-size:11px;color:var(--txt2);margin:0 8px;}
+.tras-input{width:72px;padding:8px;border:0.5px solid var(--brd);border-radius:var(--rad-xs);font-size:14px;text-align:center;outline:none;}
+
+/* CONSULTAS */
+.cons-filters{display:flex;flex-direction:column;gap:10px;padding:16px;background:#fff;border-bottom:0.5px solid var(--brd);}
+.cons-filters select,.cons-filters input[type=date]{width:100%;padding:10px 12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);font-size:14px;color:var(--txt);background:#fff;-webkit-appearance:none;}
+.cons-row{display:flex;gap:8px;}
+.cons-row select,.cons-row input{flex:1;}
+.btn-buscar{background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:12px;font-size:14px;font-weight:600;width:100%;cursor:pointer;margin-top:4px;}
+.cons-results{padding:16px;display:flex;flex-direction:column;gap:12px;}
+.cons-card{background:#fff;border:0.5px solid var(--brd);border-radius:var(--rad);padding:14px;border-left:3px solid var(--c);}
+.cons-card.bitacora{border-left-color:var(--c);}
+.cons-card.caja{border-left-color:var(--ok);}
+.cons-card.limpieza{border-left-color:var(--warn);}
+.cons-card.mermas{border-left-color:var(--danger);}
+.cons-card.stock{border-left-color:var(--blue);}
+.cons-card.pedido{border-left-color:#6B3C8C;}
+.cons-card.traslado{border-left-color:#2C7A7A;}
+.cons-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.cons-card-tipo{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:20px;background:var(--cl);color:var(--c);}
+.cons-card-fecha{font-size:11px;color:var(--txt2);}
+.cons-srow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--brd);font-size:13px;}
+.cons-srow:last-child{border-bottom:none;}
+.cons-sl{color:var(--txt2);}
+.cons-sv{font-weight:500;color:var(--txt);text-align:right;max-width:65%;}
+.cons-stock-detalle{margin-top:6px;display:flex;flex-direction:column;gap:3px;}
+.cons-stock-item{display:flex;justify-content:space-between;padding:3px 8px;border-radius:4px;background:var(--cll);}
+.cons-stock-item.quiebre{background:var(--dangerl);}
+.cons-stock-nombre{font-size:12px;color:var(--txt);}
+.cons-stock-qty{font-size:12px;font-weight:700;color:var(--c);}
+.cons-stock-item.quiebre .cons-stock-qty{color:var(--danger);}
+.cons-empty{text-align:center;padding:40px 20px;color:var(--txt2);}
+.cons-count{font-size:12px;color:var(--txt2);padding:0 16px 8px;}
+
+/* MODAL PENDIENTES */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(44,10,18,0.55);z-index:999;display:flex;align-items:flex-end;}
+.modal-overlay.hidden{display:none;}
+.modal-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-height:80vh;overflow-y:auto;}
+.modal-header{padding:16px;border-bottom:0.5px solid var(--brd);position:sticky;top:0;background:#fff;}
+.modal-title{font-size:16px;font-weight:700;}
+.modal-sub{font-size:12px;color:var(--txt2);margin-top:2px;}
+.modal-body{padding:16px;display:flex;flex-direction:column;gap:8px;}
+.pend-item{display:flex;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--brd);}
+.pend-item:last-child{border-bottom:none;}
+.pend-icon{font-size:20px;flex-shrink:0;}
+.pend-tipo{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--txt2);}
+.pend-detalle{font-size:13px;font-weight:500;color:var(--txt);margin-top:2px;}
+.pend-ok{text-align:center;padding:24px;color:var(--ok);font-size:14px;}
+.modal-btn{width:calc(100% - 32px);margin:0 16px 24px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px;font-size:15px;font-weight:600;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="view active">
+  <div class="login-wrap">
+    <div class="login-logo">Kefi</div>
+    <p class="login-sub">Control Operacional</p>
+    <div class="login-card">
+      <div class="login-field">
+        <label>¿Quién eres?</label>
+        <select id="login-nombre" onchange="onSelectUsuario()">
+          <option value="">Seleccionar...</option>
+          <optgroup label="Dirección">
+            <option value="Fabian|dir">Fabián — Dirección</option>
+            <option value="Genesis|dir">Génesis — Dirección</option>
+          </optgroup>
+          <optgroup label="Head Baristas">
+            <option value="Valezka|rc">Valezka — Ramón Carrasco</option>
+            <option value="Aileen|cbb">Aileen — Clínica Bio Bio</option>
+            <option value="Francisco|cbb">Francisco — Clínica Bio Bio</option>
+          </optgroup>
+          <optgroup label="Baristas">
+            <option value="Sebastian|cbb">Sebastián — Clínica Bio Bio</option>
+            <option value="Ari|rc">Ari — Ramón Carrasco</option>
+          </optgroup>
+          <optgroup label="Part-time">
+            <option value="Cristobal|ambos">Cristóbal — RC / CBB</option>
+            <option value="Antonia|rc">Antonia — Ramón Carrasco</option>
+            <option value="Gissela|rc">Gissela — Ramón Carrasco</option>
+          </optgroup>
+        </select>
+      </div>
+      <div id="pin-section" style="display:flex;flex-direction:column;gap:10px">
+        <div class="login-field">
+          <label id="pin-label">Tu PIN de acceso</label>
+          <input id="pin-input" type="password" inputmode="numeric" maxlength="6" placeholder="••••" class="pin-input" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+        <div id="pin-confirm-wrap" style="display:none">
+          <div class="login-field">
+            <label>Confirmar PIN</label>
+            <input id="pin-confirm" type="password" inputmode="numeric" maxlength="6" placeholder="••••" class="pin-input">
+          </div>
+        </div>
+        <div id="suc-wrap" style="display:none">
+          <div class="login-field">
+            <label>¿En qué local estás hoy?</label>
+            <select id="login-suc">
+              <option value="rc">Ramón Carrasco</option>
+              <option value="cbb">Clínica Bio Bio</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="login-msg" class="login-msg"></div>
+      <button class="login-btn" type="button" onclick="doLogin();return false;">Entrar</button>
+      <!-- Reset PIN — solo visible para dirección ya logueada (se muestra tras login dir) -->
+      <div id="reset-section" style="display:none;border-top:0.5px solid var(--brd);padding-top:12px;display:none;flex-direction:column;gap:8px">
+        <div class="login-field">
+          <label>Resetear PIN de usuario</label>
+          <select id="reset-quien">
+            <option value="">Seleccionar usuario...</option>
+            <option value="Valezka">Valezka</option>
+            <option value="Aileen">Aileen</option>
+            <option value="Francisco">Francisco</option>
+            <option value="Sebastian">Sebastián</option>
+            <option value="Ari">Ari</option>
+            <option value="Cristobal">Cristóbal</option>
+            <option value="Antonia">Antonia</option>
+            <option value="Gissela">Gissela</option>
+          </select>
+        </div>
+        <button onclick="resetearPIN()" style="padding:10px;background:var(--cd);color:#fff;border:none;border-radius:var(--rad-sm);font-size:13px;cursor:pointer;">Resetear PIN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="home" class="view">
+  <div class="nav">
+    <div class="nav-logo">Kefi</div>
+    <div class="nav-user" type="button" onclick="doLogout();return false;" id="nav-user">Salir</div>
+  </div>
+  <div class="home">
+    <div class="home-header">
+      <h2 id="home-titulo">Hola</h2>
+      <p id="home-sub"></p>
+    </div>
+    <div class="home-date"><span class="hd-l">Hoy</span><span class="hd-v" id="today-date"></span></div>
+    <div class="sec-label">TURNO Y TRASPASO</div>
+    <div class="fcard" onclick="showForm('bitacora')">
+      <div class="fcard-icon">📋</div>
+      <div class="fcard-info"><div class="fcard-title">Bitácora de turno</div><div class="fcard-sub">Traspaso entre turnos</div></div>
+      <span>›</span>
+    </div>
+    <div class="sec-label">CONTROL DIARIO</div>
+    <div class="fcard" onclick="showForm('caja')">
+      <div class="fcard-icon">💰</div>
+      <div class="fcard-info"><div class="fcard-title">Arqueo de caja</div><div class="fcard-sub">Control efectivo vs SumUp</div></div>
+      <span>›</span>
+    </div>
+    <div class="fcard" onclick="showForm('limpieza')">
+      <div class="fcard-icon">🧹</div>
+      <div class="fcard-info"><div class="fcard-title">Checklist de limpieza</div><div class="fcard-sub">Control de tareas por turno</div></div>
+      <span>›</span>
+    </div>
+    <div class="fcard" onclick="showForm('mermas')">
+      <div class="fcard-icon">⚠️</div>
+      <div class="fcard-info"><div class="fcard-title">Registro de mermas</div><div class="fcard-sub">Productos perdidos o vencidos</div></div>
+      <span>›</span>
+    </div>
+    <div class="sec-label">INVENTARIO</div>
+    <div class="fcard" onclick="showForm('stock')">
+      <div class="fcard-icon">📦</div>
+      <div class="fcard-info"><div class="fcard-title">Stock del día</div><div class="fcard-sub">Conteo de insumos</div></div>
+      <span>›</span>
+    </div>
+    <div class="fcard" id="fcard-traslado" onclick="showView('traslado')" style="display:none;border-left-color:var(--blue)">
+      <div class="fcard-icon" style="background:var(--bluel)">🚚</div>
+      <div class="fcard-info"><div class="fcard-title">Traslado de bodega</div><div class="fcard-sub">Mover productos entre bodegas</div></div>
+      <span>›</span>
+    </div>
+    <div class="fcard" id="fcard-pedido" onclick="showForm('pedido')" style="display:none;border-left-color:#6B3C8C">
+      <div class="fcard-icon" style="background:#F0E8FC">📝</div>
+      <div class="fcard-info"><div class="fcard-title">Pedido a RC</div><div class="fcard-sub">Solicitar insumos desde CBB</div></div>
+      <span>›</span>
+    </div>
+    <div class="sec-label">REPORTES</div>
+    <div class="fcard" onclick="showView('consultas')" style="border-left-color:var(--ok)">
+      <div class="fcard-icon" style="background:var(--okl)">🔍</div>
+      <div class="fcard-info"><div class="fcard-title">Consultar registros</div><div class="fcard-sub">Historial operacional</div></div>
+      <span>›</span>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- BITÁCORA -->
+
+<!-- BITÁCORA -->
+<div id="bitacora" class="view">
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Bitácora de turno</div><div class="nav-sub" id="bit-sub">Paso 1 de 4</div></div></div>
+  <div class="progress-strip"><div class="progress-fill" id="bit-prog" style="width:25%"></div></div>
+  <div class="form-body">
+    <div class="step active" id="bit-s1">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepNext('bitacora');return false;" style="width:100%;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>Turno que entrega</label><div class="chip-row"><div class="chip" onclick="selChip(this,'bit-turno')">Mañana</div><div class="chip" onclick="selChip(this,'bit-turno')">Tarde</div></div></div>
+      <div class="field"><label>HB que sale</label><select id="bit-sale"><option value="">Seleccionar...</option></select></div>
+      <div class="field"><label>HB que entra</label><select id="bit-entra"><option value="">Seleccionar...</option></select></div>
+    </div>
+    <div class="step" id="bit-s2">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('bitacora');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button><button type="button" onclick="stepNext('bitacora');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+<p style="font-size:13px;color:var(--txt2)">Confirma que estos formularios están completados:</p><div id="bit-checks" style="display:flex;flex-direction:column;gap:8px"></div></div>
+    <div class="step" id="bit-s3">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('bitacora');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button><button type="button" onclick="stepNext('bitacora');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>Novedades</label><div class="chip-row"><div class="chip" onclick="selChip(this,'bit-nov')">Sin novedades</div><div class="chip" onclick="selChip(this,'bit-nov')">Con novedad</div></div></div>
+      <div class="field" id="bit-nov-text" style="display:none"><label>Describe la novedad</label><textarea id="bit-novedad" placeholder="Describe qué ocurrió..."></textarea></div>
+    </div>
+    <div class="step" id="bit-s4">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('bitacora');return false;" style="width:100%;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button></div>
+<div id="bit-resumen"></div></div>
+  </div>
+  <div id="bit-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="bottom-nav" id="bit-nav" style="display:none">
+    <button class="btn-back-nav" id="bit-back" type="button" onclick="stepPrev('bitacora');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('bitacora');return false;">Siguiente</button>
+  </div>
+  <div id="bit-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Bitácora registrada</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('bitacora');return false;">Nueva bitácora</button>
+  </div>
+</div>
+
+<!-- CAJA -->
+<div id="caja" class="view">
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Arqueo de caja</div><div class="nav-sub" id="caj-sub">Paso 1 de 4</div></div></div>
+  <div class="progress-strip"><div class="progress-fill" id="caj-prog" style="width:25%"></div></div>
+  <div class="form-body">
+    <div class="step active" id="caj-s1">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepNext('caja');return false;" style="width:100%;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>Turno</label><div class="chip-row"><div class="chip" onclick="selChip(this,'caj-turno')">Mañana</div><div class="chip" onclick="selChip(this,'caj-turno')">Tarde</div></div></div>
+      <div class="field"><label>Head Barista</label><select id="caj-hb"><option value="">Seleccionar...</option></select></div>
+    </div>
+    <div class="step" id="caj-s2">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('caja');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button><button type="button" onclick="stepNext('caja');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#1A4B8C;padding:4px 0 6px;">🪙 Monedas</div>
+<div style="display:table;width:100%;background:#EEF3FF;border-radius:10px;margin-bottom:6px;padding:10px 12px;box-sizing:border-box;">
+  <div style="display:table-cell;vertical-align:middle;width:50%;">
+    <div style="font-size:17px;font-weight:800;color:#2C0A12;">$10</div>
+    <span style="font-size:10px;font-weight:700;background:#1A4B8C;color:#fff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;">Moneda</span>
+  </div>
+  <div style="display:table-cell;vertical-align:middle;width:25%;text-align:center;">
+    <div style="display:inline-table;border:1px solid #E8D0D4;border-radius:8px;overflow:hidden;">
+      <div style="display:table-row;">
+        <div data-v="10" data-d="-1" class="calc-m-btn" style="display:table-cell;width:34px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:22px;color:#2C0A12;cursor:pointer;border-right:1px solid #E8D0D4;">−</div>
+        <div id="cc-10" style="display:table-cell;width:38px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#9B1C35;">0</div>
+        <div data-v="10" data-d="1" class="calc-p-btn" style="display:table-cell;width:34px;height:34px;background:#9B1C35;text-align:center;vertical-align:middle;font-size:22px;color:#fff;cursor:pointer;border-left:1px solid #7A1428;">+</div>
+      </div>
+    </div>
+  </div>
+  <div id="cs-10" style="display:table-cell;vertical-align:middle;width:25%;text-align:right;font-size:13px;font-weight:700;color:#C0B0B4;">—</div>
+</div>
+<div style="display:table;width:100%;background:#EEF3FF;border-radius:10px;margin-bottom:6px;padding:10px 12px;box-sizing:border-box;">
+  <div style="display:table-cell;vertical-align:middle;width:50%;">
+    <div style="font-size:17px;font-weight:800;color:#2C0A12;">$50</div>
+    <span style="font-size:10px;font-weight:700;background:#1A4B8C;color:#fff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;">Moneda</span>
+  </div>
+  <div style="display:table-cell;vertical-align:middle;width:25%;text-align:center;">
+    <div style="display:inline-table;border:1px solid #E8D0D4;border-radius:8px;overflow:hidden;">
+      <div style="display:table-row;">
+        <div data-v="50" data-d="-1" class="calc-m-btn" style="display:table-cell;width:34px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:22px;color:#2C0A12;cursor:pointer;border-right:1px solid #E8D0D4;">−</div>
+        <div id="cc-50" style="display:table-cell;width:38px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#9B1C35;">0</div>
+        <div data-v="50" data-d="1" class="calc-p-btn" style="display:table-cell;width:34px;height:34px;background:#9B1C35;text-align:center;vertical-align:middle;font-size:22px;color:#fff;cursor:pointer;border-left:1px solid #7A1428;">+</div>
+      </div>
+    </div>
+  </div>
+  <div id="cs-50" style="display:table-cell;vertical-align:middle;width:25%;text-align:right;font-size:13px;font-weight:700;color:#C0B0B4;">—</div>
+</div>
+<div style="display:table;width:100%;background:#EEF3FF;border-radius:10px;margin-bottom:6px;padding:10px 12px;box-sizing:border-box;">
+  <div style="display:table-cell;vertical-align:middle;width:50%;">
+    <div style="font-size:17px;font-weight:800;color:#2C0A12;">$100</div>
+    <span style="font-size:10px;font-weight:700;background:#1A4B8C;color:#fff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;">Moneda</span>
+  </div>
+  <div style="display:table-cell;vertical-align:middle;width:25%;text-align:center;">
+    <div style="display:inline-table;border:1px solid #E8D0D4;border-radius:8px;overflow:hidden;">
+      <div style="display:table-row;">
+        <div data-v="100" data-d="-1" class="calc-m-btn" style="display:table-cell;width:34px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:22px;color:#2C0A12;cursor:pointer;border-right:1px solid #E8D0D4;">−</div>
+        <div id="cc-100" style="display:table-cell;width:38px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#9B1C35;">0</div>
+        <div data-v="100" data-d="1" class="calc-p-btn" style="display:table-cell;width:34px;height:34px;background:#9B1C35;text-align:center;vertical-align:middle;font-size:22px;color:#fff;cursor:pointer;border-left:1px solid #7A1428;">+</div>
+      </div>
+    </div>
+  </div>
+  <div id="cs-100" style="display:table-cell;vertical-align:middle;width:25%;text-align:right;font-size:13px;font-weight:700;color:#C0B0B4;">—</div>
+</div>
+<div style="display:table;width:100%;background:#EEF3FF;border-radius:10px;margin-bottom:6px;padding:10px 12px;box-sizing:border-box;">
+  <div style="display:table-cell;vertical-align:middle;width:50%;">
+    <div style="font-size:17px;font-weight:800;color:#2C0A12;">$500</div>
+    <span style="font-size:10px;font-weight:700;background:#1A4B8C;color:#fff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;">Moneda</span>
+  </div>
+  <div style="display:table-cell;vertical-align:middle;width:25%;text-align:center;">
+    <div style="display:inline-table;border:1px solid #E8D0D4;border-radius:8px;overflow:hidden;">
+      <div style="display:table-row;">
+        <div data-v="500" data-d="-1" class="calc-m-btn" style="display:table-cell;width:34px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:22px;color:#2C0A12;cursor:pointer;border-right:1px solid #E8D0D4;">−</div>
+        <div id="cc-500" style="display:table-cell;width:38px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#9B1C35;">0</div>
+        <div data-v="500" data-d="1" class="calc-p-btn" style="display:table-cell;width:34px;height:34px;background:#9B1C35;text-align:center;vertical-align:middle;font-size:22px;color:#fff;cursor:pointer;border-left:1px solid #7A1428;">+</div>
+      </div>
+    </div>
+  </div>
+  <div id="cs-500" style="display:table-cell;vertical-align:middle;width:25%;text-align:right;font-size:13px;font-weight:700;color:#C0B0B4;">—</div>
+</div>
+<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#8B5A00;padding:10px 0 6px;">💵 Billetes</div>
+<div style="display:table;width:100%;background:#FFF4E6;border-radius:10px;margin-bottom:6px;padding:10px 12px;box-sizing:border-box;">
+  <div style="display:table-cell;vertical-align:middle;width:50%;">
+    <div style="font-size:17px;font-weight:800;color:#2C0A12;">$1.000</div>
+    <span style="font-size:10px;font-weight:700;background:#8B5A00;color:#fff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;">Billete</span>
+  </div>
+  <div style="display:table-cell;vertical-align:middle;width:25%;text-align:center;">
+    <div style="display:inline-table;border:1px solid #E8D0D4;border-radius:8px;overflow:hidden;">
+      <div style="display:table-row;">
+        <div data-v="1000" data-d="-1" class="calc-m-btn" style="display:table-cell;width:34px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:22px;color:#2C0A12;cursor:pointer;border-right:1px solid #E8D0D4;">−</div>
+        <div id="cc-1000" style="display:table-cell;width:38px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#9B1C35;">0</div>
+        <div data-v="1000" data-d="1" class="calc-p-btn" style="display:table-cell;width:34px;height:34px;background:#9B1C35;text-align:center;vertical-align:middle;font-size:22px;color:#fff;cursor:pointer;border-left:1px solid #7A1428;">+</div>
+      </div>
+    </div>
+  </div>
+  <div id="cs-1000" style="display:table-cell;vertical-align:middle;width:25%;text-align:right;font-size:13px;font-weight:700;color:#C0B0B4;">—</div>
+</div>
+<div style="display:table;width:100%;background:#FFF4E6;border-radius:10px;margin-bottom:6px;padding:10px 12px;box-sizing:border-box;">
+  <div style="display:table-cell;vertical-align:middle;width:50%;">
+    <div style="font-size:17px;font-weight:800;color:#2C0A12;">$2.000</div>
+    <span style="font-size:10px;font-weight:700;background:#8B5A00;color:#fff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;">Billete</span>
+  </div>
+  <div style="display:table-cell;vertical-align:middle;width:25%;text-align:center;">
+    <div style="display:inline-table;border:1px solid #E8D0D4;border-radius:8px;overflow:hidden;">
+      <div style="display:table-row;">
+        <div data-v="2000" data-d="-1" class="calc-m-btn" style="display:table-cell;width:34px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:22px;color:#2C0A12;cursor:pointer;border-right:1px solid #E8D0D4;">−</div>
+        <div id="cc-2000" style="display:table-cell;width:38px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#9B1C35;">0</div>
+        <div data-v="2000" data-d="1" class="calc-p-btn" style="display:table-cell;width:34px;height:34px;background:#9B1C35;text-align:center;vertical-align:middle;font-size:22px;color:#fff;cursor:pointer;border-left:1px solid #7A1428;">+</div>
+      </div>
+    </div>
+  </div>
+  <div id="cs-2000" style="display:table-cell;vertical-align:middle;width:25%;text-align:right;font-size:13px;font-weight:700;color:#C0B0B4;">—</div>
+</div>
+<div style="display:table;width:100%;background:#FFF4E6;border-radius:10px;margin-bottom:6px;padding:10px 12px;box-sizing:border-box;">
+  <div style="display:table-cell;vertical-align:middle;width:50%;">
+    <div style="font-size:17px;font-weight:800;color:#2C0A12;">$5.000</div>
+    <span style="font-size:10px;font-weight:700;background:#8B5A00;color:#fff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;">Billete</span>
+  </div>
+  <div style="display:table-cell;vertical-align:middle;width:25%;text-align:center;">
+    <div style="display:inline-table;border:1px solid #E8D0D4;border-radius:8px;overflow:hidden;">
+      <div style="display:table-row;">
+        <div data-v="5000" data-d="-1" class="calc-m-btn" style="display:table-cell;width:34px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:22px;color:#2C0A12;cursor:pointer;border-right:1px solid #E8D0D4;">−</div>
+        <div id="cc-5000" style="display:table-cell;width:38px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#9B1C35;">0</div>
+        <div data-v="5000" data-d="1" class="calc-p-btn" style="display:table-cell;width:34px;height:34px;background:#9B1C35;text-align:center;vertical-align:middle;font-size:22px;color:#fff;cursor:pointer;border-left:1px solid #7A1428;">+</div>
+      </div>
+    </div>
+  </div>
+  <div id="cs-5000" style="display:table-cell;vertical-align:middle;width:25%;text-align:right;font-size:13px;font-weight:700;color:#C0B0B4;">—</div>
+</div>
+<div style="display:table;width:100%;background:#FFF4E6;border-radius:10px;margin-bottom:6px;padding:10px 12px;box-sizing:border-box;">
+  <div style="display:table-cell;vertical-align:middle;width:50%;">
+    <div style="font-size:17px;font-weight:800;color:#2C0A12;">$10.000</div>
+    <span style="font-size:10px;font-weight:700;background:#8B5A00;color:#fff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;">Billete</span>
+  </div>
+  <div style="display:table-cell;vertical-align:middle;width:25%;text-align:center;">
+    <div style="display:inline-table;border:1px solid #E8D0D4;border-radius:8px;overflow:hidden;">
+      <div style="display:table-row;">
+        <div data-v="10000" data-d="-1" class="calc-m-btn" style="display:table-cell;width:34px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:22px;color:#2C0A12;cursor:pointer;border-right:1px solid #E8D0D4;">−</div>
+        <div id="cc-10000" style="display:table-cell;width:38px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#9B1C35;">0</div>
+        <div data-v="10000" data-d="1" class="calc-p-btn" style="display:table-cell;width:34px;height:34px;background:#9B1C35;text-align:center;vertical-align:middle;font-size:22px;color:#fff;cursor:pointer;border-left:1px solid #7A1428;">+</div>
+      </div>
+    </div>
+  </div>
+  <div id="cs-10000" style="display:table-cell;vertical-align:middle;width:25%;text-align:right;font-size:13px;font-weight:700;color:#C0B0B4;">—</div>
+</div>
+<div style="display:table;width:100%;background:#FFF4E6;border-radius:10px;margin-bottom:6px;padding:10px 12px;box-sizing:border-box;">
+  <div style="display:table-cell;vertical-align:middle;width:50%;">
+    <div style="font-size:17px;font-weight:800;color:#2C0A12;">$20.000</div>
+    <span style="font-size:10px;font-weight:700;background:#8B5A00;color:#fff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;">Billete</span>
+  </div>
+  <div style="display:table-cell;vertical-align:middle;width:25%;text-align:center;">
+    <div style="display:inline-table;border:1px solid #E8D0D4;border-radius:8px;overflow:hidden;">
+      <div style="display:table-row;">
+        <div data-v="20000" data-d="-1" class="calc-m-btn" style="display:table-cell;width:34px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:22px;color:#2C0A12;cursor:pointer;border-right:1px solid #E8D0D4;">−</div>
+        <div id="cc-20000" style="display:table-cell;width:38px;height:34px;background:#fff;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#9B1C35;">0</div>
+        <div data-v="20000" data-d="1" class="calc-p-btn" style="display:table-cell;width:34px;height:34px;background:#9B1C35;text-align:center;vertical-align:middle;font-size:22px;color:#fff;cursor:pointer;border-left:1px solid #7A1428;">+</div>
+      </div>
+    </div>
+  </div>
+  <div id="cs-20000" style="display:table-cell;vertical-align:middle;width:25%;text-align:right;font-size:13px;font-weight:700;color:#C0B0B4;">—</div>
+</div>
+<div style="background:#9B1C35;border-radius:10px;padding:14px 16px;margin-top:10px;display:table;width:100%;box-sizing:border-box;">
+  <div style="display:table-cell;font-size:13px;color:rgba(255,255,255,0.8);font-weight:500;">Total sencillo</div>
+  <div style="display:table-cell;text-align:right;font-size:22px;font-weight:700;color:#fff;" id="calc-total-display">$0</div>
+</div>
+      <input type="hidden" id="caj-monedas" value="0">
+      <input type="hidden" id="caj-b1000" value="0">
+      <input type="hidden" id="caj-b2000" value="0">
+    </div>
+    <div class="step" id="caj-s3">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('caja');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button><button type="button" onclick="stepNext('caja');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>Efectivo contado ($)</label><div class="amt-wrap"><span>$</span><input type="number" id="caj-contado" placeholder="0" inputmode="numeric"></div></div>
+      <div class="field"><label>SumUp efectivo ($)</label><div class="amt-wrap"><span>$</span><input type="number" id="caj-sumup" placeholder="0" inputmode="numeric"></div></div>
+      <div class="field"><label>Débito / Crédito ($)</label><div class="amt-wrap"><span>$</span><input type="number" id="caj-tarjeta" placeholder="0" inputmode="numeric"></div></div>
+    </div>
+    <div class="step" id="caj-s4">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('caja');return false;" style="width:100%;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button></div>
+<div id="caj-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="caj-obs" placeholder="Novedades, diferencias..."></textarea></div></div>
+  </div>
+  <div id="caj-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="bottom-nav" id="caj-nav" style="display:none">
+    <button class="btn-back-nav" id="caj-back" type="button" onclick="stepPrev('caja');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('caja');return false;">Siguiente</button>
+  </div>
+  <div id="caj-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Arqueo registrado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('caja');return false;">Nuevo arqueo</button>
+  </div>
+</div>
+
+<!-- LIMPIEZA -->
+<div id="limpieza" class="view">
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Checklist de limpieza</div><div class="nav-sub" id="limp-sub">Paso 1 de 3</div></div></div>
+  <div class="progress-strip"><div class="progress-fill" id="limp-prog" style="width:33%"></div></div>
+  <div class="form-body">
+    <div class="step active" id="limp-s1">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepNext('limpieza');return false;" style="width:100%;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>Head Barista</label><select id="limp-hb"><option value="">Seleccionar...</option></select></div>
+      <div class="field"><label>Turno</label><div class="chip-row"><div class="chip" onclick="selChip(this,'limp-momento')">AM — Apertura</div><div class="chip" onclick="selChip(this,'limp-momento')">PM — Cierre</div></div></div>
+    </div>
+    <div class="step" id="limp-s2">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('limpieza');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button><button type="button" onclick="stepNext('limpieza');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+      <div id="limp-lista" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+    <div class="step" id="limp-s3">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('limpieza');return false;" style="width:100%;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button></div>
+<div id="limp-resumen"></div><div class="field" style="margin-top:8px"><label>Observaciones</label><textarea id="limp-obs" placeholder="Tareas no realizadas y motivo..."></textarea></div></div>
+  </div>
+  <div id="limp-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="bottom-nav" id="limp-nav" style="display:none">
+    <button class="btn-back-nav" id="limp-back" type="button" onclick="stepPrev('limpieza');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('limpieza');return false;">Siguiente</button>
+  </div>
+  <div id="limp-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Checklist enviado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('limpieza');return false;">Nuevo checklist</button>
+  </div>
+</div>
+
+<!-- MERMAS -->
+<div id="mermas" class="view">
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Registro de mermas</div><div class="nav-sub" id="mer-sub">Paso 1 de 4</div></div></div>
+  <div class="progress-strip"><div class="progress-fill" id="mer-prog" style="width:25%"></div></div>
+  <div class="form-body">
+    <div class="step active" id="mer-s1">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepNext('mermas');return false;" style="width:100%;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>¿Quién registra?</label><select id="mer-quien"><option value="">Seleccionar...</option></select></div>
+      <div class="field"><label>Turno</label><div class="chip-row"><div class="chip" onclick="selChip(this,'mer-turno')">Mañana</div><div class="chip" onclick="selChip(this,'mer-turno')">Tarde</div></div></div>
+    </div>
+    <div class="step" id="mer-s2">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('mermas');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button><button type="button" onclick="stepNext('mermas');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>Producto</label><select id="mer-prod"><option value="">Seleccionar...</option></select></div>
+      <div class="field"><label>Cantidad</label><div class="amt-wrap"><span>#</span><input type="number" id="mer-cant" placeholder="0" step="0.5" inputmode="decimal"></div></div>
+      <input type="hidden" id="mer-costo" value="0">
+    </div>
+    <div class="step" id="mer-s3">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('mermas');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button><button type="button" onclick="stepNext('mermas');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>Causa</label><div class="chip-row"><div class="chip" onclick="selChip(this,'mer-causa')">Vencimiento</div><div class="chip" onclick="selChip(this,'mer-causa')">Error preparación</div><div class="chip" onclick="selChip(this,'mer-causa')">Caída/accidente</div><div class="chip" onclick="selChip(this,'mer-causa')">Otro</div></div></div>
+    </div>
+    <div class="step" id="mer-s4">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('mermas');return false;" style="width:100%;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button></div>
+<div id="mer-resumen"></div><div id="mer-alerta" style="margin-top:8px"></div></div>
+  </div>
+  <div id="mer-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="bottom-nav" id="mer-nav" style="display:none">
+    <button class="btn-back-nav" id="mer-back" type="button" onclick="stepPrev('mermas');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('mermas');return false;">Siguiente</button>
+  </div>
+  <div id="mer-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Merma registrada</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('mermas');return false;">Nueva merma</button>
+  </div>
+</div>
+
+<!-- STOCK -->
+<div id="stock" class="view">
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Stock del día</div><div class="nav-sub" id="stk-sub">Paso 1 de 3</div></div></div>
+  <div class="progress-strip"><div class="progress-fill" id="stk-prog" style="width:33%"></div></div>
+  <div class="form-body">
+    <div class="step active" id="stk-s1">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepNext('stock');return false;" style="width:100%;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>Head Barista</label><select id="stk-hb"><option value="">Seleccionar...</option></select></div>
+      <div class="field"><label>Momento</label><div class="chip-row"><div class="chip" onclick="selChip(this,'stk-momento')">Apertura</div><div class="chip" onclick="selChip(this,'stk-momento')">Cierre</div></div></div>
+      <div class="field"><label>¿Qué bodega vas a contar?</label><select id="bodega-selector" onchange="seleccionarBodega(this.value)"><option value="">Seleccionar bodega...</option></select></div>
+    </div>
+    <div class="step" id="stk-s2">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('stock');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button><button type="button" onclick="stepNext('stock');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div id="stk-bodega-titulo" style="font-size:13px;font-weight:700;color:var(--c);padding:4px 0 8px"></div>
+      <input class="stk-search" type="search" placeholder="Buscar insumo..." oninput="filterStock(this.value)">
+      <div id="stk-barra-section"></div>
+    </div>
+    <div class="step" id="stk-s3">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('stock');return false;" style="width:100%;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button></div>
+<div id="stk-resumen"></div></div>
+  </div>
+  <div id="stk-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="bottom-nav" id="stk-nav" style="display:none">
+    <button class="btn-back-nav" id="stk-back" type="button" onclick="stepPrev('stock');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('stock');return false;">Siguiente</button>
+  </div>
+  <div id="stk-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Stock registrado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('stock');return false;">Nuevo conteo</button>
+  </div>
+</div>
+
+<!-- PEDIDO -->
+<div id="pedido" class="view">
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Pedido a RC</div><div class="nav-sub" id="ped-sub">Paso 1 de 3</div></div></div>
+  <div class="progress-strip"><div class="progress-fill" id="ped-prog" style="width:33%"></div></div>
+  <div class="form-body">
+    <div class="step active" id="ped-s1">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepNext('pedido');return false;" style="width:100%;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+
+      <div class="field"><label>¿Quién pide?</label><select id="ped-quien"><option value="">Seleccionar...</option></select></div>
+      <div class="alert info"><div><div class="at">Pedido para CBB</div><div class="as">Solicitar insumos desde bodega Ramón Carrasco</div></div></div>
+    </div>
+    <div class="step" id="ped-s2">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('pedido');return false;" style="flex:1;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button><button type="button" onclick="stepNext('pedido');return false;" style="flex:2;padding:10px;background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);font-size:14px;font-weight:600;cursor:pointer">Siguiente →</button></div>
+<input class="stk-search" type="search" placeholder="Buscar producto..." oninput="filterPedido(this.value)"><div id="ped-lista"></div></div>
+    <div class="step" id="ped-s3">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" onclick="stepPrev('pedido');return false;" style="width:100%;padding:10px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Atrás</button></div>
+<div id="ped-resumen"></div></div>
+  </div>
+  <div id="ped-dots" class="step-dots" style="display:none"><div class="dot act"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="bottom-nav" id="ped-nav" style="display:none">
+    <button class="btn-back-nav" id="ped-back" type="button" onclick="stepPrev('pedido');return false;" style="display:none">Atrás</button>
+    <button class="btn-next-nav" type="button" onclick="stepNext('pedido');return false;">Siguiente</button>
+  </div>
+  <div id="ped-done" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;flex:1;background:var(--cll)">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--okl);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">✓</div>
+    <h3 style="font-size:22px;font-weight:700;color:var(--txt)">Pedido enviado</h3>
+    <p style="font-size:14px;color:var(--txt2)">Fabián puede verlo en Google Sheets</p>
+    <button type="button" style="background:var(--c);color:#fff;border:none;border-radius:var(--rad-sm);padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" onclick="resetForm('pedido');return false;">Nuevo pedido</button>
+  </div>
+</div>
+<div id="traslado" class="view">
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Traslado de bodega</div><div class="nav-sub" id="tras-sub">Selecciona el flujo</div></div></div>
+  <div class="form-body">
+    <div id="tras-s1" style="display:flex;flex-direction:column;gap:8px">
+      <p style="font-size:13px;color:var(--txt2)">De dónde a dónde:</p>
+      <button class="flujo-btn" onclick="elegirFlujo('rc-barra')"><div class="fl-title">📦 Bodega RC → Barra RC</div><div class="fl-sub">Reabastecer barra de Ramón Carrasco</div></button>
+      <button class="flujo-btn" onclick="elegirFlujo('rc-cbb')"><div class="fl-title">🚚 Bodega RC → Bodega CBB abajo</div><div class="fl-sub">Enviar productos a Clínica Bio Bio</div></button>
+      <button class="flujo-btn" onclick="elegirFlujo('cbb-barra')"><div class="fl-title">⬆️ Bodega CBB abajo → Barra CBB</div><div class="fl-sub">Reabastecer barra de Clínica Bio Bio</div></button>
+    </div>
+    <div id="tras-s2" style="display:none;flex-direction:column;gap:8px">
+      <div id="tras-label" style="font-size:13px;font-weight:600;color:var(--blue)"></div>
+      <div style="font-size:12px;color:var(--txt2)">Cantidad de cada producto (0 si no se movió)</div>
+      <div id="tras-lista"></div>
+      <button class="btn-buscar" type="button" onclick="enviarTraslado();return false;">✅ Registrar traslado</button>
+      <button onclick="iniciarTraslado()" style="padding:12px;border:0.5px solid var(--brd);border-radius:var(--rad-sm);background:#fff;font-size:14px;cursor:pointer;color:var(--txt2)">← Elegir otro flujo</button>
+    </div>
+    <div id="tras-s3" style="display:none;flex-direction:column;align-items:center;padding:40px 0;gap:12px;text-align:center">
+      <div class="success-ring">✓</div><h3>Traslado registrado</h3>
+      <p style="color:var(--txt2);font-size:14px">Fabián puede verlo en Google Sheets</p>
+      <button class="btn-reset" type="button" onclick="goHome();return false;">Volver al inicio</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONSULTAS -->
+<div id="consultas" class="view" style="display:none;flex-direction:column;">
+  <div class="nav"><button type="button" class="nav-back" onclick="goHome();return false;">‹</button><div><div class="nav-title">Consultar registros</div><div class="nav-sub">Historial operacional</div></div></div>
+  <div class="cons-filters">
+    <div class="cons-row">
+      <select id="cons-tipo"><option value="">Todos</option><option value="bitacora">Bitácora</option><option value="caja">Caja</option><option value="limpieza">Limpieza</option><option value="mermas">Mermas</option><option value="stock">Stock</option><option value="pedido">Pedido</option><option value="traslado">Traslados</option></select>
+      <select id="cons-suc"><option value="">Ambas</option><option value="Bio Bio">CBB</option><option value="Ramon">RC</option></select>
+    </div>
+    <div class="cons-row"><input type="date" id="cons-desde"><input type="date" id="cons-hasta"></div>
+    <select id="cons-persona"><option value="">Todas las personas</option><option>Valezka</option><option>Aileen</option><option>Francisco</option><option>Sebastian</option><option>Ari</option><option>Cristobal</option><option>Antonia</option><option>Gissela</option><option>Fabian</option><option>Genesis</option></select>
+    <button class="btn-buscar" type="button" onclick="buscarRegistros();return false;">🔍 Buscar registros</button>
+  </div>
+  <div id="cons-results" class="cons-results" style="flex:1;min-height:300px"><div class="cons-empty"><div style="font-size:40px">🔍</div><div>Usa los filtros y presiona Buscar</div></div></div>
+</div>
+
+<!-- MODAL PENDIENTES -->
+<div id="modal-pend" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <div class="modal-header"><div class="modal-title">📋 Pendientes del turno anterior</div><div class="modal-sub" id="modal-sub">Consultando...</div></div>
+    <div class="modal-body" id="modal-body"><div style="text-align:center;padding:20px;color:var(--txt2)">⏳ Cargando...</div></div>
+    <button class="modal-btn" onclick="document.getElementById('modal-pend').classList.add('hidden')">Entendido, comenzar turno</button>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// KEFI FORMULARIOS v7 — SCRIPT COMPLETO CORREGIDO
+// INSTRUCCIONES: En el archivo Kefi_Formularios_v6.html,
+// reemplaza TODO el contenido entre <script> y </script>
+// con este texto completo.
+// ================================================================
+
+var SCRIPT_URL='https://script.google.com/macros/s/AKfycbwZ7ua9zq1nsS7MnORv7SpyI_6x40MEQHU4yjQ3etdbd7VYqkUbjqhInsxrhnoVVAU/exec';
+var PERSONAS={"cbb":["Aileen","Francisco","Sebastian","Ari","Cristobal","Fabián","Génesis"],"rc":["Valezka","Ari","Cristobal","Antonia","Gissela","Fabián","Génesis"],"all":["Aileen","Francisco","Valezka","Sebastian","Ari","Cristobal","Antonia","Gissela","Fabian","Genesis"]};
+var BIT_CHECKS=["Arqueo de caja completado","Checklist de limpieza firmado","Mermas registradas (0 si no hubo)","Stock revisado","Pedido CBB a RC enviado (solo turno tarde CBB)"];
+var TAREAS_CBB=[{"tarea":"Visicooler leches — corroborar termostato","resp":"Barista","turno":"Manana","freq":"Diario","hora":"Apertura","critica":true},{"tarea":"Visicooler bebidas — corroborar termostato","resp":"Barista","turno":"Manana","freq":"Diario","hora":"Apertura","critica":true},{"tarea":"Superficies de trabajo barra — alcohol 70%","resp":"Barista","turno":"Manana","freq":"Diario","hora":"Apertura","critica":false},{"tarea":"Tablas y utensilios — detergente suave","resp":"Barista","turno":"Manana","freq":"Diario","hora":"Apertura","critica":false},{"tarea":"Vitrina pastelera — rejilla de ventilacion y termostato","resp":"Apoyo Logistico","turno":"Tarde","freq":"Lun-Mie-Vie","hora":"13:00 hrs","critica":false},{"tarea":"Lavaplatos — liberar desague de residuos","resp":"Apoyo Logistico","turno":"Ambos","freq":"Diario","hora":"Cada 1 hora","critica":true},{"tarea":"Visicooler leches — corroborar termostato (2a revision)","resp":"Barista","turno":"Tarde","freq":"Diario","hora":"15:00 hrs","critica":true},{"tarea":"Visicooler bebidas — corroborar termostato (2a revision)","resp":"Barista","turno":"Tarde","freq":"Diario","hora":"15:00 hrs","critica":true},{"tarea":"Cafetera — remojo portafiltro y limpieza grupos","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":true},{"tarea":"Horno — rejilla de ventilacion","resp":"Apoyo Logistico","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Basureros — cambio de bolsa si corresponde","resp":"Apoyo Logistico","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Muebles de preparacion — puertas y cajones","resp":"Apoyo Logistico","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Muebles clientes — estado y limpieza","resp":"Apoyo Logistico","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Piso porcelanato — barrer y fregar","resp":"Cajero","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Paredes de madera — pano humedo","resp":"Cajero","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Repisas y muebles — pano humedo","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Superficies de trabajo barra — alcohol 70%","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":true},{"tarea":"Tablas y utensilios — detergente suave","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Contenedor de basura — lavar con cloro 1:100","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Vitrinas y equipos de frio — limpieza completa","resp":"Apoyo Logistico","turno":"Ambos","freq":"Diario","hora":"Cierre de turno","critica":false},{"tarea":"Puertas y cortina metalica — estado y funcionamiento","resp":"Apoyo Logistico","turno":"Ambos","freq":"Lun-Mie-Vie","hora":"Cierre de turno","critica":false},{"tarea":"Luces — corroborar funcionamiento interior y exterior","resp":"Apoyo Logistico","turno":"Ambos","freq":"Lun-Mie-Vie","hora":"Cierre de turno","critica":false},{"tarea":"Puertas y ventanas — limpiavidrios","resp":"Apoyo Logistico","turno":"Manana","freq":"Mar-Sab","hora":"Apertura","critica":false},{"tarea":"Congelador — descongelar y limpieza interior","resp":"Barista","turno":"Tarde","freq":"Sabado","hora":"Cierre de turno","critica":false}];
+var TAREAS_RC=[{"tarea":"Limpieza de fierros de ambas paredes exterior","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza exterior — piso y pared de dibujo del carro","resp":"Cajero","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza mesas y sillas — superficie, base y revisar patas sueltas","resp":"Cajero","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza vitrina de helados","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza vitrina de pasteles — refrigerada y no refrigerada, interior y exterior","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza tapa ruedas (frecuentemente)","resp":"Apoyo Logístico","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza basurero exterior","resp":"Apoyo Logístico","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza vitrina de pan","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza barra de clientes (frecuentemente)","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":true},{"tarea":"Limpieza vitrina de Coca Cola","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Piso interior del carro","resp":"Cajero","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Pantallas y equipos punto de venta","resp":"Cajero","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Orden y limpieza de sachet de azúcar y servilletas","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":true},{"tarea":"Máquina cafetera — limpieza exterior","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":true},{"tarea":"Limpieza zona de trabajo barista y cajero","resp":"Barista + Cajero","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":true},{"tarea":"Limpieza horno","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza de polvo de tapas","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Revisión agua limpia y sucia","resp":"Barista","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":true},{"tarea":"Revisar si hay cajas de cartón en basureros para aplastar","resp":"Todo el equipo","turno":"Ambos","freq":"Diario","hora":"Apertura y Cierre","critica":false},{"tarea":"Limpieza vinilo del frente del carro","resp":"Cajero","turno":"Ambos","freq":"Lun-Mie-Vie","hora":"Apertura y Cierre","critica":false},{"tarea":"Revisar naranjas podridas","resp":"Barista","turno":"Ambos","freq":"Mar-Jue-Sab","hora":"Apertura y Cierre","critica":false},{"tarea":"Estufa exterior","resp":"Cajero","turno":"Manana","freq":"Diario","hora":"Apertura","critica":false},{"tarea":"Limpieza refrigerador y leches","resp":"Barista","turno":"Manana","freq":"Diario","hora":"Apertura","critica":true},{"tarea":"Limpieza letrero tipo paloma, bicicletero y letrero cafetería","resp":"Cajero","turno":"Manana","freq":"Lun-Jue","hora":"Apertura","critica":false},{"tarea":"Limpieza de lavaplatos","resp":"Apoyo Logístico","turno":"Manana","freq":"Lun-Mie-Vie","hora":"Apertura","critica":false},{"tarea":"Sacar y entrar tarros de basura","resp":"Apoyo Logístico","turno":"Manana","freq":"Mar-Jue-Sab","hora":"Apertura","critica":false},{"tarea":"Limpieza interior cajas de cubre vasos y sachet de azúcar en barra de entrega","resp":"Barista","turno":"Tarde","freq":"Diario","hora":"Cierre","critica":false},{"tarea":"Limpiar zona de almacenamiento de leches en el carro","resp":"Barista","turno":"Tarde","freq":"Diario","hora":"Cierre","critica":false},{"tarea":"Estufa interior","resp":"Barista","turno":"Tarde","freq":"Diario","hora":"Cierre","critica":false},{"tarea":"Bandeja escurridora de loza","resp":"Barista","turno":"Tarde","freq":"Diario","hora":"Cierre","critica":false},{"tarea":"Cambio bolsa basura interior","resp":"Apoyo Logístico","turno":"Tarde","freq":"Diario","hora":"Cierre","critica":false},{"tarea":"Caja de cubiertos interior","resp":"Barista","turno":"Tarde","freq":"Mar-Vie","hora":"Cierre","critica":false},{"tarea":"Inventario bodega principal","resp":"Valezka","turno":"Tarde","freq":"Lunes","hora":"Cierre","critica":false},{"tarea":"Inventario bodega principal completo","resp":"Valezka","turno":"Tarde","freq":"Quincenal","hora":"Cierre","critica":false}];
+var INSUMOS_MERMAS=['Leche entera','Leche descremada','Leche semidescremada','Leche sin lactosa','Chocolate Moca Negro','Chocolate Moca Blanco','Cafe grano','Caramelo','Vainilla','Frambuesa','Maracuya','Naranja','Chai','Matcha','Avellana','Menta','Canela','Amaretto','Crema Chantilly','Hielo frappe','Otro'];
+var INSUMOS={"cbb":[{"n":"Sin lactosa descremada","u":"1 litro","s":"diario","b":false},{"n":"Descremada","u":"1 litro","s":"diario","b":false},{"n":"Semidescremada","u":"1 litro","s":"diario","b":false},{"n":"Entera","u":"1 litro","s":"diario","b":false},{"n":"Chocolate Moca Negro 811","u":"10 kilos","s":"diario","b":false},{"n":"Chocolate Moca Blanco","u":"10 kilos","s":"diario","b":false},{"n":"Café Grano formato 1 kg","u":"caja roja","s":"diario","b":false},{"n":"Caramelo","u":"1 litro","s":"semanal","b":false},{"n":"Vainilla","u":"1 litro","s":"semanal","b":false},{"n":"Frambuesa","u":"1 kilo","s":"semanal","b":false},{"n":"Maracuya","u":"1 kilo","s":"semanal","b":false},{"n":"Naranja","u":"1 kilo","s":"semanal","b":false},{"n":"Vegetal Avena","u":"1 litro","s":"semanal","b":false},{"n":"Vegetal Almendra","u":"1 litro","s":"semanal","b":false},{"n":"Tiger Spice","u":"337 gr","s":"semanal","b":false},{"n":"Orca Spice (Sin azucar)","u":"337 gr","s":"semanal","b":false},{"n":"Flamingo Vainilla (Sin azucar)","u":"337 gr","s":"semanal","b":false},{"n":"Elephant Vainilla","u":"337 gr","s":"semanal","b":false},{"n":"Matcha Normal","u":"250 gr","s":"semanal","b":false},{"n":"Bolsa 250 café","u":"Bolsa de 250 grm","s":"semanal","b":false},{"n":"Benedictino 3 Lt","u":"3 litros","s":"semanal","b":false},{"n":"Obólo Dark 62 %","u":"2,5 kg","s":"semanal","b":false},{"n":"Chai","u":"90 gr","s":"semanal","b":false},{"n":"English Breakfast","u":"90 gr","s":"semanal","b":false},{"n":"Earl Gray","u":"90 gr","s":"semanal","b":false},{"n":"Te canela","u":"90 gr","s":"semanal","b":false},{"n":"Menta (Manzana naranja)","u":"90 gr","s":"semanal","b":false},{"n":"Te verde citrico","u":"90 gr","s":"semanal","b":false},{"n":"Frutos Rojos","u":"90 gr","s":"semanal","b":false},{"n":"Manzanilla/menta/vainilla","u":"90 gr","s":"semanal","b":false},{"n":"Durazno","u":"90 gr","s":"semanal","b":false},{"n":"Limón Jengibre","u":"90 gr","s":"semanal","b":false},{"n":"Filtros de te Adagio","u":"20 ud","s":"semanal","b":false},{"n":"Benedictino 1,5 LT","u":"1,5 litro","s":"semanal","b":false},{"n":"Coca cola normal botella 500 cc","u":"500 cc","s":"semanal","b":false},{"n":"Coca cola zero botella 500 cc","u":"500 cc","s":"semanal","b":false},{"n":"Coca Cola normal lata","u":"330 cc","s":"semanal","b":false},{"n":"Coca Cola light lata","u":"330 cc","s":"semanal","b":false},{"n":"Benedictino c/g 500 cc","u":"500 cc","s":"semanal","b":false},{"n":"Benedictino s/g 500 cc","u":"500 cc","s":"semanal","b":false},{"n":"Agua saborizada manzana","u":"500 cc","s":"semanal","b":false},{"n":"Agua saborizada Mango Maracuya","u":"500 cc","s":"semanal","b":false},{"n":"Nectar naranja","u":"300 cc","s":"semanal","b":false},{"n":"Nectar mango","u":"300 cc","s":"semanal","b":false},{"n":"Nectar piña mango maracuya","u":"300 cc","s":"semanal","b":false},{"n":"Nectar ciruela frutilla","u":"300 cc","s":"semanal","b":false},{"n":"Tonic","u":"200 cc","s":"semanal","b":false},{"n":"Ginger Beer","u":"200 cc","s":"semanal","b":false},{"n":"Orange Tonic","u":"200 cc","s":"semanal","b":false},{"n":"Hielo en cubo","u":"2 kg","s":"semanal","b":false},{"n":"Hielo frappe","u":"2 kg","s":"semanal","b":false},{"n":"Servilleta mediana","u":"1 paquete","s":"semanal","b":false},{"n":"Servilleta grande","u":"1 paquete","s":"semanal","b":false},{"n":"Papel interfoliado","u":"20 ud","s":"semanal","b":false},{"n":"Rollo de papel grande","u":"4 ud","s":"semanal","b":false},{"n":"Bolsa de basura grande","u":"1 rollo","s":"semanal","b":false},{"n":"Bolsa de basura mediana","u":"1 rollo","s":"semanal","b":false},{"n":"Menta","u":"1 litro","s":"quincenal","b":false},{"n":"Avellana","u":"1 litro","s":"quincenal","b":false},{"n":"Canela","u":"1 litro","s":"quincenal","b":false},{"n":"Amaretto","u":"1 litro","s":"quincenal","b":false},{"n":"Salsa Caramelo","u":"1890 cc","s":"quincenal","b":false},{"n":"Pure de frambuesa","u":"1890 cc","s":"quincenal","b":false},{"n":"Pure de maracuya","u":"1890 cc","s":"quincenal","b":false},{"n":"Bombiillas","u":"Manga de x cantidad","s":"quincenal","b":false},{"n":"Azúcar blanca","u":"1000 ud","s":"quincenal","b":false},{"n":"Azúcar morena","u":"1000 ud","s":"quincenal","b":false},{"n":"Stevia","u":"1000 ud","s":"quincenal","b":false},{"n":"Mantequilla con logo","u":"1000 ud","s":"quincenal","b":false},{"n":"Rollo SumUp grande","u":"10 ud","s":"quincenal","b":false},{"n":"Rollo SumUp chico","u":"10 ud","s":"quincenal","b":false},{"n":"Cuchillos","u":"100 ud","s":"quincenal","b":false},{"n":"Tenedores","u":"100 ud","s":"quincenal","b":false},{"n":"Cloro","u":"900 ml","s":"quincenal","b":false},{"n":"Paños microfibra rollo","u":"20 ud","s":"quincenal","b":false},{"n":"Paño esponja","u":"3 ud","s":"quincenal","b":false},{"n":"Lavaloza","u":"900 ml","s":"quincenal","b":false},{"n":"Jabon","u":"1 litro","s":"quincenal","b":false},{"n":"Guantes","u":"100 ud","s":"quincenal","b":false},{"n":"Limpia vidrio","u":"400 cc","s":"quincenal","b":false},{"n":"Rinza","u":"1 envase","s":"quincenal","b":false},{"n":"Cafiza","u":"1 envase","s":"quincenal","b":false},{"n":"Alcohol","u":"3 litros","s":"quincenal","b":false},{"n":"Limpia grasa","u":"1 botella","s":"quincenal","b":false},{"n":"Trapero microfibra","u":"1 unidad","s":"quincenal","b":false},{"n":"Trapero piso microfibra","u":"1 unidad","s":"quincenal","b":false},{"n":"Limpia piso","u":"1 botella","s":"quincenal","b":false},{"n":"8 oz Café","u":"50 ud","s":"diario","b":true},{"n":"12 oz Café","u":"50 ud","s":"diario","b":true},{"n":"Tapa 8 oz café","u":"50 ud","s":"diario","b":true},{"n":"Tapa 12 oz café","u":"50 ud","s":"diario","b":true},{"n":"4 oz Café","u":"50 ud","s":"semanal","b":true},{"n":"6 oz Café","u":"50 ud","s":"semanal","b":true},{"n":"Vaso Pla 12 oz","u":"50 ud","s":"semanal","b":true},{"n":"Cubre vaso 8 oz","u":"1 Pack","s":"semanal","b":true},{"n":"Cubre vaso 12 oz","u":"1 Pack","s":"semanal","b":true},{"n":"Tapa pla 12 y 16 oz","u":"50 ud","s":"quincenal","b":true},{"n":"Porta vaso 2 ud","u":"30 ud","s":"quincenal","b":true},{"n":"Porta vaso 4 ud","u":"30 ud","s":"quincenal","b":true},{"n":"Revolvedor de madera","u":"Paquete de x cantidad","s":"quincenal","b":true},{"n":"Bolsas transparentes (jugos)","u":"Paquete de x cantidad","s":"quincenal","b":true},{"n":"Bolsa grande con asa","u":"50 ud","s":"quincenal","b":true},{"n":"Bolsa papel grande","u":"50 ud","s":"quincenal","b":true},{"n":"Bolsa papel mediana","u":"50 ud","s":"quincenal","b":true},{"n":"Caja 1200 cc con ventana kraft","u":"30 ud","s":"quincenal","b":true}],"rc":[{"n":"Sin lactosa descremada","u":"1 litro","s":"diario","b":false},{"n":"Descremada","u":"1 litro","s":"diario","b":false},{"n":"Semidescremada","u":"1 litro","s":"diario","b":false},{"n":"Entera","u":"1 litro","s":"diario","b":false},{"n":"Chocolate Moca Negro 811","u":"10 kilos","s":"diario","b":false},{"n":"Chocolate Moca Blanco","u":"10 kilos","s":"diario","b":false},{"n":"Café Grano formato 1 kg","u":"caja roja","s":"diario","b":false},{"n":"8 oz Café","u":"50 ud","s":"diario","b":false},{"n":"12 oz Café","u":"50 ud","s":"diario","b":false},{"n":"Tapa 8 oz café","u":"50 ud","s":"diario","b":false},{"n":"Tapa 12 oz café","u":"50 ud","s":"diario","b":false},{"n":"Caramelo","u":"1 litro","s":"semanal","b":false},{"n":"Vainilla","u":"1 litro","s":"semanal","b":false},{"n":"Frambuesa","u":"1 kilo","s":"semanal","b":false},{"n":"Maracuya","u":"1 kilo","s":"semanal","b":false},{"n":"Naranja","u":"1 kilo","s":"semanal","b":false},{"n":"Vegetal Avena","u":"1 litro","s":"semanal","b":false},{"n":"Vegetal Almendra","u":"1 litro","s":"semanal","b":false},{"n":"Tiger Spice","u":"337 gr","s":"semanal","b":false},{"n":"Orca Spice (Sin azucar)","u":"337 gr","s":"semanal","b":false},{"n":"Flamingo Vainilla (Sin azucar)","u":"337 gr","s":"semanal","b":false},{"n":"Elephant Vainilla","u":"337 gr","s":"semanal","b":false},{"n":"Matcha Normal","u":"250 gr","s":"semanal","b":false},{"n":"Bolsa 250 café","u":"Bolsa de 250 grm","s":"semanal","b":false},{"n":"Benedictino 3 Lt","u":"3 litros","s":"semanal","b":false},{"n":"Obólo Dark 62 %","u":"2,5 kg","s":"semanal","b":false},{"n":"Chai","u":"90 gr","s":"semanal","b":false},{"n":"English Breakfast","u":"90 gr","s":"semanal","b":false},{"n":"Earl Gray","u":"90 gr","s":"semanal","b":false},{"n":"Te canela","u":"90 gr","s":"semanal","b":false},{"n":"Menta (Manzana naranja)","u":"90 gr","s":"semanal","b":false},{"n":"Te verde citrico","u":"90 gr","s":"semanal","b":false},{"n":"Frutos Rojos","u":"90 gr","s":"semanal","b":false},{"n":"Manzanilla/menta/vainilla","u":"90 gr","s":"semanal","b":false},{"n":"Durazno","u":"90 gr","s":"semanal","b":false},{"n":"Limón Jengibre","u":"90 gr","s":"semanal","b":false},{"n":"Filtros de te Adagio","u":"20 ud","s":"semanal","b":false},{"n":"Benedictino 1,5 LT","u":"1,5 litro","s":"semanal","b":false},{"n":"Coca cola normal botella 500 cc","u":"500 cc","s":"semanal","b":false},{"n":"Coca cola zero botella 500 cc","u":"500 cc","s":"semanal","b":false},{"n":"Coca Cola normal lata","u":"330 cc","s":"semanal","b":false},{"n":"Coca Cola light lata","u":"330 cc","s":"semanal","b":false},{"n":"Benedictino c/g 500 cc","u":"500 cc","s":"semanal","b":false},{"n":"Benedictino s/g 500 cc","u":"500 cc","s":"semanal","b":false},{"n":"Agua saborizada manzana","u":"500 cc","s":"semanal","b":false},{"n":"Agua saborizada Mango Maracuya","u":"500 cc","s":"semanal","b":false},{"n":"Agua saborizada limonada","u":"500 cc","s":"semanal","b":false},{"n":"Powerade azul","u":"600 cc","s":"semanal","b":false},{"n":"Nectar naranja","u":"300 cc","s":"semanal","b":false},{"n":"Nectar mango","u":"300 cc","s":"semanal","b":false},{"n":"Nectar piña mango maracuya","u":"300 cc","s":"semanal","b":false},{"n":"Nectar ciruela frutilla","u":"300 cc","s":"semanal","b":false},{"n":"Tonic","u":"200 cc","s":"semanal","b":false},{"n":"Ginger Beer","u":"200 cc","s":"semanal","b":false},{"n":"Orange Tonic","u":"200 cc","s":"semanal","b":false},{"n":"Hielo en cubo","u":"2 kg","s":"semanal","b":false},{"n":"Hielo frappe","u":"2 kg","s":"semanal","b":false},{"n":"4 oz Café","u":"50 ud","s":"semanal","b":false},{"n":"6 oz Café","u":"50 ud","s":"semanal","b":false},{"n":"Vaso Pla 12 oz","u":"50 ud","s":"semanal","b":false},{"n":"Cubre vaso 8 oz","u":"1 Pack","s":"semanal","b":false},{"n":"Cubre vaso 12 oz","u":"1 Pack","s":"semanal","b":false},{"n":"Servilleta mediana","u":"1 paquete","s":"semanal","b":false},{"n":"Servilleta grande","u":"1 paquete","s":"semanal","b":false},{"n":"Papel interfoliado","u":"20 ud","s":"semanal","b":false},{"n":"Rollo de papel grande","u":"4 ud","s":"semanal","b":false},{"n":"Bolsa de basura grande","u":"1 rollo","s":"semanal","b":false},{"n":"Bolsa de basura mediana","u":"1 rollo","s":"semanal","b":false},{"n":"Menta","u":"1 litro","s":"quincenal","b":false},{"n":"Chocolate negro","u":"1 litro","s":"quincenal","b":false},{"n":"Chocolate blanco","u":"1 litro","s":"quincenal","b":false},{"n":"Avellana","u":"1 litro","s":"quincenal","b":false},{"n":"Crema irlandesa","u":"1 litro","s":"quincenal","b":false},{"n":"Canela","u":"1 litro","s":"quincenal","b":false},{"n":"Amaretto","u":"1 litro","s":"quincenal","b":false},{"n":"Salsa Chocolate","u":"1890 cc","s":"quincenal","b":false},{"n":"Salsa Chocolate blanco","u":"1890 cc","s":"quincenal","b":false},{"n":"Salsa Caramelo","u":"1890 cc","s":"quincenal","b":false},{"n":"Pure de frambuesa","u":"1890 cc","s":"quincenal","b":false},{"n":"Pure de maracuya","u":"1890 cc","s":"quincenal","b":false},{"n":"Crema Chantilli","u":"250 gr","s":"quincenal","b":false},{"n":"Vaso Pla 16 oz","u":"50 ud","s":"quincenal","b":false},{"n":"Tapa pla 12 y 16 oz","u":"50 ud","s":"quincenal","b":false},{"n":"Porta vaso 2 ud","u":"30 ud","s":"quincenal","b":false},{"n":"Bombiillas","u":"Manga de x cantidad","s":"quincenal","b":false},{"n":"Revolvedor de madera","u":"Paquete de x cantidad","s":"quincenal","b":false},{"n":"Cuchara de helado","u":"Paquete de x cantidad","s":"quincenal","b":false},{"n":"Bolsas transparentes (jugos)","u":"Paquete de x cantidad","s":"quincenal","b":false},{"n":"Bolsa grande con asa","u":"50 ud","s":"quincenal","b":false},{"n":"Bolsa papel grande","u":"50 ud","s":"quincenal","b":false},{"n":"Bolsa papel mediana","u":"50 ud","s":"quincenal","b":false},{"n":"Bolsa papel blanca chica","u":"30 ud","s":"quincenal","b":false},{"n":"Caja 1200 cc con ventana kraft","u":"30 ud","s":"quincenal","b":false},{"n":"Azúcar blanca","u":"1000 ud","s":"quincenal","b":false},{"n":"Azúcar morena","u":"1000 ud","s":"quincenal","b":false},{"n":"Stevia","u":"1000 ud","s":"quincenal","b":false},{"n":"Mantequilla con logo","u":"1000 ud","s":"quincenal","b":false},{"n":"Rollo SumUp grande","u":"10 ud","s":"quincenal","b":false},{"n":"Rollo SumUp chico","u":"10 ud","s":"quincenal","b":false},{"n":"Alusa rollo","u":"Unidad","s":"quincenal","b":false},{"n":"Cuchillos","u":"100 ud","s":"quincenal","b":false},{"n":"Tenedores","u":"100 ud","s":"quincenal","b":false},{"n":"Cloro","u":"900 ml","s":"quincenal","b":false},{"n":"Paños microfibra rollo","u":"20 ud","s":"quincenal","b":false},{"n":"Paño esponja","u":"3 ud","s":"quincenal","b":false},{"n":"Lavaloza","u":"900 ml","s":"quincenal","b":false},{"n":"Jabon","u":"1 litro","s":"quincenal","b":false},{"n":"Guantes","u":"100 ud","s":"quincenal","b":false},{"n":"Rinza","u":"1 envase","s":"quincenal","b":false},{"n":"Cafiza","u":"1 envase","s":"quincenal","b":false},{"n":"Alcohol","u":"3 litros","s":"quincenal","b":false},{"n":"Trapero microfibra","u":"1 unidad","s":"quincenal","b":false},{"n":"Trapero piso microfibra","u":"1 unidad","s":"quincenal","b":false},{"n":"Limpia piso","u":"1 botella","s":"quincenal","b":false}]};
+
+// ================================================================
+// CALCULADORA DE CAJA — ÚNICA DECLARACIÓN GLOBAL
+// (CORRECCIÓN v7: eliminadas duplicaciones dentro de doLogout)
+// ================================================================
+var CALC_DENOMS=[
+  {v:10,label:'$10',tipo:'Moneda'},{v:50,label:'$50',tipo:'Moneda'},
+  {v:100,label:'$100',tipo:'Moneda'},{v:500,label:'$500',tipo:'Moneda'},
+  {v:1000,label:'$1.000',tipo:'Billete'},{v:2000,label:'$2.000',tipo:'Billete'},
+  {v:5000,label:'$5.000',tipo:'Billete'},{v:10000,label:'$10.000',tipo:'Billete'},
+  {v:20000,label:'$20.000',tipo:'Billete'}
+];
+var calcCounts={};
+
+function initCalc(){
+  CALC_DENOMS.forEach(function(d){calcCounts[d.v]=0;});
+  CALC_DENOMS.forEach(function(d){
+    var cc=document.getElementById('cc-'+d.v);if(cc)cc.textContent='0';
+    var cs=document.getElementById('cs-'+d.v);if(cs){cs.textContent='—';cs.style.color='#C0B0B4';}
+  });
+  updateCalcTotal();
+  var step=document.querySelector('#caj-s2');
+  if(step&&!step._calcReady){
+    step._calcReady=true;
+    step.addEventListener('click',function(e){
+      var t=e.target;
+      if(t.classList.contains('calc-m-btn')||t.classList.contains('calc-p-btn')){
+        var v=parseInt(t.getAttribute('data-v'));
+        var d=parseInt(t.getAttribute('data-d'));
+        if(!isNaN(v)&&!isNaN(d))calcChange(v,d);
+      }
+    });
+  }
+}
+function calcChange(denom,delta){
+  calcCounts[denom]=Math.max(0,(calcCounts[denom]||0)+delta);
+  var cc=document.getElementById('cc-'+denom);if(cc)cc.textContent=calcCounts[denom];
+  var cs=document.getElementById('cs-'+denom);
+  if(cs){var sub=calcCounts[denom]*denom;cs.textContent=sub>0?'$'+sub.toLocaleString('es-CL'):'—';cs.style.color=sub>0?'#1A6B3C':'#C0B0B4';}
+  updateCalcTotal();
+}
+function updateCalcTotal(){
+  var total=0;CALC_DENOMS.forEach(function(d){total+=(calcCounts[d.v]||0)*d.v;});
+  var el=document.getElementById('calc-total-display');if(el)el.textContent='$'+total.toLocaleString('es-CL');
+  var monTotal=0,b1=0,b2=0;
+  CALC_DENOMS.filter(function(d){return d.tipo==='Moneda';}).forEach(function(d){monTotal+=calcCounts[d.v]*d.v;});
+  b1=calcCounts[1000]||0;b2=calcCounts[2000]||0;
+  var cm=document.getElementById('caj-monedas');if(cm)cm.value=monTotal;
+  var cb1=document.getElementById('caj-b1000');if(cb1)cb1.value=b1;
+  var cb2=document.getElementById('caj-b2000');if(cb2)cb2.value=b2;
+}
+function getCalcTotal(){
+  var total=0;CALC_DENOMS.forEach(function(d){total+=(calcCounts[d.v]||0)*d.v;});return total;
+}
+
+// ================================================================
+// ESTADO GLOBAL
+// ================================================================
+var USER=null,opts={},qtys={},FLUJO_ACTUAL=null,BODEGA_SELECCIONADA=null;
+var PIN_PFX='kefi_pin_',INT_PFX='kefi_int_';
+
+function $(i){return document.getElementById(i);}
+function today(){var d=new Date();return d.toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short',year:'numeric'});}
+function fmtP(n){return '$'+Math.round(n).toLocaleString('es-CL');}
+
+function showView(id){
+  document.querySelectorAll('.view').forEach(function(v){v.style.display='none';v.classList.remove('active');});
+  var el=$(id);if(!el)return;
+  el.style.display='flex';el.classList.add('active');
+  var fb=el.querySelector('.form-body');if(fb)fb.scrollTop=0;
+  try{if(typeof history!=='undefined'){if(id==='home')history.replaceState({view:id},'',location.href);else history.pushState({view:id},'',location.href);}}catch(e){}
+}
+
+function goHome(){
+  document.querySelectorAll('.form-body').forEach(function(fb){fb.style.display='';});
+  ['bit','caj','limp','mer','stk','ped'].forEach(function(pref){
+    var dots=$(pref+'-dots');if(dots)dots.style.display='none';
+    var nav=$(pref+'-nav');if(nav)nav.style.display='none';
+    var done=$(pref+'-done');if(done)done.style.display='none';
+  });
+  showView('home');
+}
+
+window.addEventListener('popstate',function(e){
+  try{e.preventDefault();}catch(ex){}
+  if(USER)showView('home');else showView('login');
+  try{history.pushState({view:'home'},'',location.href);}catch(ex){}
+});
+
+function getPIN(n){try{return localStorage.getItem(PIN_PFX+n)||null;}catch(e){return null;}}
+function setPIN(n,p){try{localStorage.setItem(PIN_PFX+n,p);}catch(e){}}
+function getInt(n){try{return parseInt(localStorage.getItem(INT_PFX+n)||'0');}catch(e){return 0;}}
+function setInt(n,v){try{localStorage.setItem(INT_PFX+n,String(v));}catch(e){}}
+function resetInt(n){try{localStorage.removeItem(INT_PFX+n);}catch(e){}}
+
+function resetearPIN(){
+  var q=$('reset-quien').value;if(!q){alert('Elige un usuario');return;}
+  try{localStorage.removeItem(PIN_PFX+q);}catch(e){}
+  resetInt(q);showMsg('PIN de '+q+' reseteado. Podrá crear uno nuevo.',false);
+}
+
+function onSelectUsuario(){
+  var val=$('login-nombre').value;
+  $('login-msg').style.display='none';$('pin-input').value='';$('pin-confirm').value='';
+  if(!val){$('pin-label').textContent='Tu PIN de acceso';$('pin-confirm-wrap').style.display='none';$('suc-wrap').style.display='none';return;}
+  var parts=val.split('|'),nombre=parts[0],base=parts[1];
+  $('suc-wrap').style.display=(base==='dir'||base==='ambos')?'block':'none';
+  var pin=getPIN(nombre);
+  if(!pin){$('pin-label').textContent='Elige tu PIN (primera vez — mín. 4 dígitos)';$('pin-confirm-wrap').style.display='block';}
+  else{$('pin-label').textContent='Tu PIN de acceso';$('pin-confirm-wrap').style.display='none';}
+}
+
+function showMsg(txt,esErr){
+  var el=$('login-msg');el.className='login-msg '+(esErr?'err':'ok');el.textContent=txt;el.style.display='block';
+}
+
+function doLogin(){
+  var val=$('login-nombre').value;if(!val){showMsg('Elige tu nombre',true);return;}
+  var parts=val.split('|'),nombre=parts[0],base=parts[1];
+  var pin=$('pin-input').value;if(!pin){showMsg('Ingresa tu PIN',true);return;}
+  var intentos=getInt(nombre);
+  if(intentos>=5){showMsg('PIN bloqueado. Pide a Fabián o Génesis que lo reseteen.',true);return;}
+  var pinGuardado=getPIN(nombre);
+  if(!pinGuardado){
+    var confirm=$('pin-confirm').value;
+    if(!confirm){showMsg('Confirma tu PIN en el campo de abajo',true);return;}
+    if(pin!==confirm){showMsg('Los PINs no coinciden. Intenta de nuevo.',true);$('pin-input').value='';$('pin-confirm').value='';return;}
+    if(pin.length<4){showMsg('El PIN debe tener mínimo 4 dígitos',true);return;}
+    setPIN(nombre,pin);resetInt(nombre);
+  }else{
+    if(pin!==pinGuardado){intentos++;setInt(nombre,intentos);showMsg(intentos>=5?'PIN bloqueado. Contacta a Fabián.':'PIN incorrecto. '+(5-intentos)+' intento(s) restante(s).',true);$('pin-input').value='';return;}
+    resetInt(nombre);
+  }
+  var suc=base;if(base==='dir'||base==='ambos')suc=$('login-suc').value||'rc';
+  var rol=base==='dir'?'dir':'hb';
+  USER={nombre:nombre,suc:suc,rol:rol};poblarSelects();
+  $('nav-user').textContent=nombre+' · Salir';$('home-titulo').textContent='Hola, '+nombre;
+  var sn=suc==='cbb'?'Clínica Bio Bio':'Ramón Carrasco';
+  $('home-sub').textContent=sn+(rol==='dir'?' · Dirección':'')+' — '+today();
+  $('today-date').textContent=today();
+  $('fcard-pedido').style.display=suc==='cbb'?'flex':'none';
+  $('fcard-traslado').style.display=(suc==='rc'||rol==='dir')?'flex':'none';
+  var rs=$('reset-section');if(rs)rs.style.display=rol==='dir'?'flex':'none';
+  showView('home');
+}
+
+// CORRECCIÓN v7: doLogout() ahora se cierra correctamente aquí
+function doLogout(){
+  USER=null;$('login-nombre').value='';$('pin-input').value='';$('pin-confirm').value='';
+  $('login-msg').style.display='none';
+  var rs=$('reset-section');if(rs)rs.style.display='none';
+  showView('login');
+}
+// FIN doLogout — todo lo que venía después (CALC_DENOMS duplicado, etc.) fue eliminado
+
+function poblarSelects(){
+  var suc=USER.suc,lista=PERSONAS[suc]||[],all=PERSONAS.all||[];
+  ['bit-sale','bit-entra','caj-hb','limp-hb','stk-hb'].forEach(function(id){
+    var el=$(id);if(!el)return;el.innerHTML='<option value="">Seleccionar...</option>';
+    lista.forEach(function(n){var o=document.createElement('option');o.value=n;o.textContent=n;el.appendChild(o);});
+  });
+  ['mer-quien','ped-quien'].forEach(function(id){
+    var el=$(id);if(!el)return;el.innerHTML='<option value="">Seleccionar...</option>';
+    all.forEach(function(n){var o=document.createElement('option');o.value=n;o.textContent=n;el.appendChild(o);});
+  });
+  var mp=$('mer-prod');if(mp){mp.innerHTML='<option value="">Seleccionar...</option>';INSUMOS_MERMAS.forEach(function(n){var o=document.createElement('option');o.value=n;o.textContent=n;mp.appendChild(o);});}
+}
+
+var FORMS={bitacora:{steps:4,cur:1,pref:'bit'},caja:{steps:4,cur:1,pref:'caj'},limpieza:{steps:3,cur:1,pref:'limp'},mermas:{steps:4,cur:1,pref:'mer'},stock:{steps:3,cur:1,pref:'stk'},pedido:{steps:3,cur:1,pref:'ped'}};
+var LABELS={bitacora:['Identificación','Formularios','Novedades','Resumen'],caja:['Datos','Sencillo','Ventas','Resumen'],limpieza:['Datos','Tareas','Resumen'],mermas:['Quién','Producto','Causa','Resumen'],stock:['Datos','Conteo','Resumen'],pedido:['Datos','Pedido','Resumen']};
+
+function showForm(form){
+  var f=FORMS[form];
+  var donEl=$(f.pref+'-done');if(donEl)donEl.style.display='none';
+  var fbEl=document.querySelector('#'+form+' .form-body');
+  if(fbEl){fbEl.style.display='';fbEl.style.flexDirection='column';}f.cur=1;
+  document.querySelectorAll('#'+form+' .step').forEach(function(s,i){s.style.display=i===0?'flex':'none';s.className='step'+(i===0?' active':'');});
+  var pref=f.pref;
+  var dots=$(pref+'-dots');if(dots)dots.style.display='flex';
+  var nav=$(pref+'-nav');if(nav)nav.style.display='flex';
+  var prog=$(pref+'-prog');if(prog)prog.style.width=Math.round(1/f.steps*100)+'%';
+  var sub=$(pref+'-sub');if(sub)sub.textContent='Paso 1 de '+f.steps+' — '+LABELS[form][0];
+  var back=$(pref+'-back');if(back)back.style.display='none';
+  document.querySelectorAll('#'+form+' .chip').forEach(function(c){c.classList.remove('sel');});
+  Object.keys(opts).forEach(function(k){opts[k]='';});qtys={};
+  showView(form);
+  if(form==='stock')renderStock();if(form==='pedido')renderPedido();
+  if(form==='bitacora')renderBitChecks();if(form==='limpieza')renderLimpieza();
+}
+
+function selChip(el,key){
+  el.parentNode.querySelectorAll('.chip').forEach(function(c){c.classList.remove('sel');});
+  el.classList.add('sel');opts[key]=el.textContent;
+  if(key==='bit-nov'){var nt=$('bit-nov-text');if(nt)nt.style.display=el.textContent==='Con novedad'?'flex':'none';}
+  if(key==='limp-momento')renderLimpieza();
+}
+
+function stepNext(form){
+  var f=FORMS[form];
+  if(form==='stock'&&f.cur===1){if(!renderStockItems())return;}
+  if(form==='stock'&&f.cur===2)buildStockResumen();
+  if(form!=='stock'&&f.cur===f.steps-1)buildResumen(form);
+  if(form==='caja'&&f.cur===1)initCalc();
+  if(f.cur===f.steps){
+    enviarFormulario(form);var pref=f.pref;
+    document.querySelectorAll('#'+form+' .step').forEach(function(s){s.style.display='none';s.classList.remove('active');});
+    var fb=document.querySelector('#'+form+' .form-body');if(fb)fb.style.display='none';
+    var dots=$(pref+'-dots');if(dots)dots.style.display='none';
+    var nav=$(pref+'-nav');if(nav)nav.style.display='none';
+    document.querySelectorAll('#'+form+' .bottom-nav').forEach(function(el){el.style.display='none';});
+    var done=$(pref+'-done');if(done)done.style.display='flex';return;
+  }
+  f.cur++;actualizarPasos(form);
+}
+
+function stepPrev(form){var f=FORMS[form];if(f.cur>1){f.cur--;actualizarPasos(form);}}
+
+function actualizarPasos(form){
+  var f=FORMS[form],pref=f.pref;
+  document.querySelectorAll('#'+form+' .step').forEach(function(s,i){s.style.display=i===f.cur-1?'flex':'none';s.className='step'+(i===f.cur-1?' active':'');});
+  var prog=$(pref+'-prog');if(prog)prog.style.width=Math.round(f.cur/f.steps*100)+'%';
+  var sub=$(pref+'-sub');if(sub)sub.textContent='Paso '+f.cur+' de '+f.steps+' — '+(LABELS[form][f.cur-1]||'');
+  var back=$(pref+'-back');if(back)back.style.display=f.cur>1?'block':'none';
+  document.querySelectorAll('#'+pref+'-dots .dot').forEach(function(d,i){d.className='dot'+(i===f.cur-1?' act':'');});
+}
+
+function resetForm(form){
+  var f=FORMS[form];f.cur=1;BODEGA_SELECCIONADA=null;qtys={};
+  Object.keys(opts).forEach(function(k){opts[k]='';});
+  var done=$(f.pref+'-done');if(done)done.style.display='none';
+  var fb=document.querySelector('#'+form+' .form-body');if(fb){fb.style.display='';fb.style.flexDirection='column';}
+  document.querySelectorAll('#'+form+' .step').forEach(function(s,i){s.style.display=i===0?'flex':'none';s.className='step'+(i===0?' active':'');});
+  document.querySelectorAll('#'+form+' .chip').forEach(function(c){c.classList.remove('sel');});
+  var dots=$(f.pref+'-dots');if(dots)dots.style.display='flex';
+  var nav=$(f.pref+'-nav');if(nav)nav.style.display='flex';
+  var prog=$(f.pref+'-prog');if(prog)prog.style.width=Math.round(1/f.steps*100)+'%';
+  var sub=$(f.pref+'-sub');if(sub)sub.textContent='Paso 1 de '+f.steps+' — '+(LABELS[form][0]||'');
+  var back=$(f.pref+'-back');if(back)back.style.display='none';
+  document.querySelectorAll('#'+f.pref+'-dots .dot').forEach(function(d,i){d.className='dot'+(i===0?' act':'');});
+  if(form==='stock')renderStock();if(form==='pedido')renderPedido();
+  if(form==='bitacora')renderBitChecks();if(form==='limpieza')renderLimpieza();
+}
+
+function renderBitChecks(){
+  var el=$('bit-checks');if(!el)return;el.innerHTML='';
+  BIT_CHECKS.forEach(function(txt,i){
+    var d=document.createElement('div');d.className='check-item';d.id='bc-'+i;
+    d.innerHTML='<div class="check-box" id="bcb-'+i+'"></div><span class="check-label">'+txt+'</span>';
+    d.onclick=function(){d.classList.toggle('done');$('bcb-'+i).innerHTML=d.classList.contains('done')?'✓':'';};
+    el.appendChild(d);
+  });
+}
+
+function buildResumen(form){
+  if(form==='bitacora'){
+    var done=document.querySelectorAll('#bit-s2 .check-item.done').length;
+    var hora=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+    var suc=USER?(USER.suc==='cbb'?'Clínica Bio Bio':'Ramón Carrasco'):'--';
+    var nov=opts['bit-nov']==='Con novedad'?($('bit-novedad').value||'Con novedad'):(opts['bit-nov']||'--');
+    $('bit-resumen').innerHTML='<div class="summary"><div class="srow"><span class="sl">Sucursal</span><span class="sv">'+suc+'</span></div><div class="srow"><span class="sl">Turno</span><span class="sv">'+(opts['bit-turno']||'--')+'</span></div><div class="srow"><span class="sl">HB saliente</span><span class="sv">'+($('bit-sale').value||'--')+'</span></div><div class="srow"><span class="sl">HB entrante</span><span class="sv">'+($('bit-entra').value||'--')+'</span></div><div class="srow"><span class="sl">Formularios</span><span class="sv">'+done+'/'+BIT_CHECKS.length+' completados</span></div><div class="srow"><span class="sl">Novedad</span><span class="sv">'+nov+'</span></div><div class="srow"><span class="sl">Hora</span><span class="sv">'+hora+'</span></div></div>';
+  }
+  if(form==='caja')buildCajaResumen();
+  if(form==='limpieza')buildLimpResumen();
+  if(form==='mermas')buildMermaResumen();
+  if(form==='pedido')buildPedidoResumen();
+}
+
+function buildCajaResumen(){
+  var c=parseFloat($('caj-contado').value)||0,s=parseFloat($('caj-sumup').value)||0,t=parseFloat($('caj-tarjeta').value)||0;
+  var sencillo=getCalcTotal(),diff=c-s;
+  var dc=Math.abs(diff)<500?'var(--ok)':Math.abs(diff)<2000?'var(--warn)':'var(--danger)';
+  var suc=USER?(USER.suc==='cbb'?'Clínica Bio Bio':'Ramón Carrasco'):'--';
+  $('caj-resumen').innerHTML='<div class="summary"><div class="srow"><span class="sl">Sucursal</span><span class="sv">'+suc+'</span></div><div class="srow"><span class="sl">Turno</span><span class="sv">'+(opts['caj-turno']||'--')+'</span></div><div class="srow"><span class="sl">HB</span><span class="sv">'+($('caj-hb').value||'--')+'</span></div><div class="srow"><span class="sl">Efectivo contado</span><span class="sv">'+fmtP(c)+'</span></div><div class="srow"><span class="sl">SumUp efectivo</span><span class="sv">'+fmtP(s)+'</span></div><div class="srow"><span class="sl">Diferencia</span><span class="sv" style="color:'+dc+'">'+fmtP(diff)+'</span></div><div class="srow"><span class="sl">Débito/Crédito</span><span class="sv">'+fmtP(t)+'</span></div><div class="srow"><span class="sl">Total ventas</span><span class="sv">'+fmtP(c+t)+'</span></div><div class="srow"><span class="sl">Sencillo</span><span class="sv">'+fmtP(sencillo)+'</span></div></div>';
+}
+
+function renderLimpieza(){
+  var suc=USER?USER.suc:'cbb',tareas=suc==='rc'?TAREAS_RC:TAREAS_CBB,momento=opts['limp-momento']||'';
+  var filtradas=tareas.filter(function(t){
+    if(!momento)return true;var esAM=momento.indexOf('AM')>=0;
+    if(esAM)return !t.turno||t.turno==='Manana'||t.turno==='Apertura';
+    return !t.turno||t.turno==='Tarde'||t.turno==='Cierre';
+  });
+  if(!filtradas.length)filtradas=tareas;
+  var el=$('limp-lista');if(!el)return;el.innerHTML='';
+  filtradas.forEach(function(t,i){
+    var d=document.createElement('div');d.className='check-item'+(t.critica?' critica':'');
+    d.innerHTML=(t.critica?'<span class="crit-tag">CRÍTICA</span>':'')+'<div class="check-box" id="lb-'+i+'"></div><span class="check-label">'+t.tarea+'</span>';
+    d.onclick=function(){d.classList.toggle('done');$('lb-'+i).innerHTML=d.classList.contains('done')?'✓':'';};
+    el.appendChild(d);
+  });
+}
+
+function buildLimpResumen(){
+  var items=document.querySelectorAll('#limp-s2 .check-item'),tot=items.length;
+  var done=document.querySelectorAll('#limp-s2 .check-item.done').length;
+  var crit=document.querySelectorAll('#limp-s2 .check-item.critica').length;
+  var critDone=document.querySelectorAll('#limp-s2 .check-item.critica.done').length;
+  var pct=tot>0?Math.round(done/tot*100):100;
+  var suc=USER?(USER.suc==='cbb'?'Clínica Bio Bio':'Ramón Carrasco'):'--';
+  $('limp-resumen').innerHTML='<div class="summary"><div class="srow"><span class="sl">Sucursal</span><span class="sv">'+suc+'</span></div><div class="srow"><span class="sl">HB</span><span class="sv">'+($('limp-hb').value||'--')+'</span></div><div class="srow"><span class="sl">Turno</span><span class="sv">'+(opts['limp-momento']||'--')+'</span></div><div class="srow"><span class="sl">Completadas</span><span class="sv" style="color:'+(pct===100?'var(--ok)':'var(--warn)')+'">'+done+'/'+tot+'</span></div><div class="srow"><span class="sl">Críticas pendientes</span><span class="sv" style="color:'+(crit-critDone>0?'var(--danger)':'var(--ok)')+'">'+((crit-critDone)===0?'✓ Todas ok':(crit-critDone)+' sin completar')+'</span></div></div><div class="score-wrap" style="margin-top:8px"><div class="score-top"><span class="score-pct">'+pct+'%</span><span>'+done+'/'+tot+'</span></div><div class="bar"><div class="bar-fill'+(pct===100?' ok':'')+'" style="width:'+pct+'%"></div></div></div>';
+}
+
+function getMerProducto(){
+  var sel=$('mer-prod');if(sel&&sel.selectedIndex>0)return sel.options[sel.selectedIndex].textContent;return '--';
+}
+function buildMermaResumen(){
+  var prodN=getMerProducto(),cant=parseFloat($('mer-cant').value)||0,cu=parseFloat($('mer-costo').value)||0,total=cant*cu;
+  var suc=USER?(USER.suc==='cbb'?'Clínica Bio Bio':'Ramón Carrasco'):'--';
+  $('mer-resumen').innerHTML='<div class="summary"><div class="srow"><span class="sl">Sucursal</span><span class="sv">'+suc+'</span></div><div class="srow"><span class="sl">Quién</span><span class="sv">'+($('mer-quien').value||'--')+'</span></div><div class="srow"><span class="sl">Turno</span><span class="sv">'+(opts['mer-turno']||'--')+'</span></div><div class="srow"><span class="sl">Producto</span><span class="sv">'+prodN+'</span></div><div class="srow"><span class="sl">Cantidad</span><span class="sv">'+cant+'</span></div><div class="srow"><span class="sl">Causa</span><span class="sv">'+(opts['mer-causa']||'--')+'</span></div><div class="srow"><span class="sl">Costo total</span><span class="sv" style="color:var(--c)">'+fmtP(total)+'</span></div></div>';
+  var al=$('mer-alerta');if(al)al.innerHTML='';
+}
+
+function semLabel(s){var cls=s==='diario'?'d':s==='semanal'?'s':'q';var txt=s==='diario'?'Diario':s==='semanal'?'Semanal':'Quincenal';return '<span class="sem-tag '+cls+'">'+txt+'</span>';}
+
+function makeQtyRow(item,prefix,idx){
+  var id=prefix+'-'+idx,d=document.createElement('div');d.className='qty-row';
+  var left=document.createElement('div');left.className='qty-left';
+  left.innerHTML='<div class="qty-name">'+item.n+'</div><div class="qty-unit">'+item.u+'</div>'+semLabel(item.s)+(item.b?'<span class="bodega-tag">Bodega</span>':'');
+  var ctrl=document.createElement('div');ctrl.className='qty-ctrl';
+  var bm=document.createElement('div');bm.className='qb';bm.textContent='−';bm.onclick=function(){changeQty(id,-0.5);};
+  var inp=document.createElement('input');
+  inp.className='qv';inp.id=id+'-v';inp.type='number';inp.min='0';inp.step='0.5';inp.value='0';inp.setAttribute('inputmode','decimal');
+  inp.onchange=function(){setQty(id,this.value);};inp.onfocus=function(){this.select();};
+  var bp=document.createElement('div');bp.className='qb';bp.textContent='+';bp.onclick=function(){changeQty(id,0.5);};
+  ctrl.appendChild(bm);ctrl.appendChild(inp);ctrl.appendChild(bp);d.appendChild(left);d.appendChild(ctrl);return d;
+}
+function changeQty(id,delta){if(!qtys[id])qtys[id]=0;qtys[id]=Math.round((Math.max(0,qtys[id]+delta))*10)/10;var el=$(id+'-v');if(el){el.value=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}}
+function setQty(id,val){qtys[id]=Math.max(0,Math.round((parseFloat(val)||0)*10)/10);var el=$(id+'-v');if(el){el.value=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}}
+
+function getBodegasDisponibles(){
+  if(!USER)return[];var suc=USER.suc,rol=USER.rol,bodegas=[];
+  if(rol==='dir'){bodegas=[{id:'barra-rc',label:'Barra RC',sub:'Ramón Carrasco',icon:'☕',suc:'rc',bodega:false},{id:'bodega-rc',label:'Bodega Principal RC',sub:'Ramón Carrasco',icon:'📦',suc:'rc',bodega:true},{id:'barra-cbb',label:'Barra CBB',sub:'Clínica Bio Bio',icon:'☕',suc:'cbb',bodega:false},{id:'bodega-cbb',label:'Bodega CBB abajo',sub:'Clínica Bio Bio',icon:'📦',suc:'cbb',bodega:true}];}
+  else if(suc==='rc'){bodegas=[{id:'barra-rc',label:'Barra RC',sub:'Ramón Carrasco',icon:'☕',suc:'rc',bodega:false},{id:'bodega-rc',label:'Bodega Principal RC',sub:'Ramón Carrasco',icon:'📦',suc:'rc',bodega:true}];}
+  else{bodegas=[{id:'barra-cbb',label:'Barra CBB',sub:'Clínica Bio Bio',icon:'☕',suc:'cbb',bodega:false},{id:'bodega-cbb',label:'Bodega CBB abajo',sub:'Clínica Bio Bio',icon:'📦',suc:'cbb',bodega:true}];}
+  return bodegas;
+}
+function renderStock(){
+  BODEGA_SELECCIONADA=null;qtys={};var bodegas=getBodegasDisponibles();
+  var sel=$('bodega-selector');if(!sel)return;
+  sel.innerHTML='<option value="">Seleccionar bodega...</option>';
+  bodegas.forEach(function(b,i){var o=document.createElement('option');o.value=i;o.textContent=b.icon+' '+b.label+' — '+b.sub;sel.appendChild(o);});
+  if(bodegas.length===1){sel.value='0';BODEGA_SELECCIONADA=bodegas[0];}
+  sel._bodegas=bodegas;
+}
+function seleccionarBodega(val){var sel=$('bodega-selector');if(val===''||!sel||!sel._bodegas){BODEGA_SELECCIONADA=null;return;}BODEGA_SELECCIONADA=sel._bodegas[parseInt(val)];}
+function renderStockItems(){
+  if(!BODEGA_SELECCIONADA){alert('Selecciona una bodega primero');return false;}
+  var b=BODEGA_SELECCIONADA,titulo=$('stk-bodega-titulo');if(titulo)titulo.textContent=b.icon+' '+b.label+' — '+b.sub;
+  var items;
+  if(b.bodega){var bi=INSUMOS[b.suc].filter(function(i){return i.b;});items=bi.length>0?bi:INSUMOS[b.suc];}
+  else{items=INSUMOS[b.suc].filter(function(i){return !i.b;});}
+  var sec=$('stk-barra-section');sec.innerHTML='';var prefix=b.id.replace('-','_');
+  [{label:'⚡ Revisión diaria',key:'diario'},{label:'📅 Revisión semanal',key:'semanal'},{label:'🗓 Revisión quincenal',key:'quincenal'}].forEach(function(g){
+    var gItems=items.filter(function(i){return i.s===g.key;});if(!gItems.length)return;
+    var grp=document.createElement('div');grp.className='stk-grupo';
+    var tit=document.createElement('div');tit.className='stk-grupo-titulo';tit.textContent=g.label+' ('+gItems.length+')';grp.appendChild(tit);
+    gItems.forEach(function(item){grp.appendChild(makeQtyRow(item,prefix,items.indexOf(item)));});sec.appendChild(grp);
+  });
+  if(!sec.children.length){var grp2=document.createElement('div');grp2.className='stk-grupo';items.forEach(function(item,i){grp2.appendChild(makeQtyRow(item,prefix,i));});sec.appendChild(grp2);}
+  return true;
+}
+function buildStockResumen(){
+  var b=BODEGA_SELECCIONADA||{id:'sb',label:'--',suc:USER?USER.suc:'cbb',bodega:false};
+  var allItems;
+  if(b.bodega){var bi=INSUMOS[b.suc]?INSUMOS[b.suc].filter(function(i){return i.b;}):[]; allItems=bi.length>0?bi:(INSUMOS[b.suc]||[]);}
+  else{allItems=INSUMOS[b.suc]?INSUMOS[b.suc].filter(function(i){return !i.b;}):[]; }
+  var prefix=b.id?b.id.replace('-','_'):'sb';
+  var cats=[{key:'diario',label:'⚡ Diario'},{key:'semanal',label:'📅 Semanal'},{key:'quincenal',label:'🗓 Quincenal'}];
+  var catRows='';
+  cats.forEach(function(cat){
+    var catItems=allItems.filter(function(i){return i.s===cat.key;});if(!catItems.length)return;
+    var contados=catItems.filter(function(item){var idx=allItems.indexOf(item);return(qtys[prefix+'-'+idx]||0)>0;}).length;
+    var pct=Math.round(contados/catItems.length*100);
+    var color=pct===100?'var(--ok)':pct>50?'var(--warn)':'var(--danger)';
+    catRows+='<div class="srow"><span class="sl">'+cat.label+'</span><span class="sv" style="color:'+color+'">'+contados+'/'+catItems.length+' ('+pct+'%)</span></div>';
+  });
+  var totalCon=Object.values(qtys).filter(function(v){return v>0;}).length;
+  $('stk-resumen').innerHTML='<div class="summary"><div class="srow"><span class="sl">Bodega</span><span class="sv">'+b.label+'</span></div><div class="srow"><span class="sl">HB</span><span class="sv">'+($('stk-hb').value||'--')+'</span></div><div class="srow"><span class="sl">Momento</span><span class="sv">'+(opts['stk-momento']||'--')+'</span></div><div class="srow" style="font-weight:700"><span class="sl">Total contados</span><span class="sv">'+totalCon+'/'+allItems.length+'</span></div>'+catRows+'</div>';
+}
+function filterStock(q){var query=(q||'').toLowerCase();document.querySelectorAll('#stk-barra-section .qty-row').forEach(function(row){var n=row.querySelector('.qty-name');row.style.display=(!query||n.textContent.toLowerCase().indexOf(query)>=0)?'flex':'none';});}
+
+function renderPedido(){
+  var el=$('ped-lista');el.innerHTML='';var items=INSUMOS['cbb'];
+  [{label:'⚡ Diario',key:'diario'},{label:'📅 Semanal',key:'semanal'},{label:'🗓 Quincenal',key:'quincenal'}].forEach(function(g){
+    var gItems=items.filter(function(i){return i.s===g.key&&!i.b;});if(!gItems.length)return;
+    var grp=document.createElement('div');grp.className='stk-grupo';
+    var tit=document.createElement('div');tit.className='stk-grupo-titulo';tit.textContent=g.label;grp.appendChild(tit);
+    gItems.forEach(function(item){grp.appendChild(makeQtyRow(item,'pp',items.indexOf(item)));});el.appendChild(grp);
+  });
+}
+function filterPedido(q){var query=(q||'').toLowerCase();document.querySelectorAll('#ped-lista .qty-row').forEach(function(row){var n=row.querySelector('.qty-name');row.style.display=(!query||n.textContent.toLowerCase().indexOf(query)>=0)?'flex':'none';});}
+function buildPedidoResumen(){
+  var items=INSUMOS['cbb'];
+  var ped=items.map(function(item,i){var q=qtys['pp-'+i]||0;return q>0?{n:item.n,u:item.u,q:q}:null;}).filter(Boolean);
+  var h='<div class="summary"><div class="srow"><span class="sl">Quien pide</span><span class="sv">'+($('ped-quien').value||'--')+'</span></div><div class="srow"><span class="sl">Total items</span><span class="sv">'+ped.length+'</span></div></div>';
+  if(ped.length){h+='<div class="summary" style="margin-top:8px">';ped.forEach(function(p){h+='<div class="srow"><span class="sl">'+p.n+'</span><span class="sv">'+p.q+' '+p.u+'</span></div>';});h+='</div>';}
+  $('ped-resumen').innerHTML=h;
+}
+
+var FLUJO_LABELS={'rc-barra':'Bodega RC → Barra RC','rc-cbb':'Bodega RC → Bodega CBB abajo','cbb-barra':'Bodega CBB abajo → Barra CBB'};
+function iniciarTraslado(){FLUJO_ACTUAL=null;$('tras-s1').style.display='flex';$('tras-s2').style.display='none';$('tras-s3').style.display='none';$('tras-sub').textContent='Selecciona el flujo';}
+function elegirFlujo(flujo){
+  FLUJO_ACTUAL=flujo;$('tras-s1').style.display='none';$('tras-s2').style.display='flex';$('tras-s3').style.display='none';
+  $('tras-label').textContent='🔄 '+FLUJO_LABELS[flujo];$('tras-sub').textContent=FLUJO_LABELS[flujo];
+  var items=flujo==='cbb-barra'?INSUMOS['cbb'].filter(function(i){return i.b;}):INSUMOS['rc'].filter(function(i){return!i.b;});
+  var lista=$('tras-lista');lista.innerHTML='';
+  items.forEach(function(item,idx){var row=document.createElement('div');row.className='tras-item';row.innerHTML='<span class="tras-nombre">'+item.n+'</span><span class="tras-unidad">'+item.u+'</span><input class="tras-input" type="number" min="0" step="0.5" value="0" inputmode="decimal" id="tri-'+idx+'">';lista.appendChild(row);});
+}
+function enviarTraslado(){
+  var items=FLUJO_ACTUAL==='cbb-barra'?INSUMOS['cbb'].filter(function(i){return i.b;}):INSUMOS['rc'].filter(function(i){return!i.b;});
+  var movs=[];items.forEach(function(item,idx){var v=parseFloat($('tri-'+idx).value)||0;if(v>0)movs.push({n:item.n,u:item.u,q:v});});
+  if(!movs.length){alert('Ingresa al menos una cantidad mayor a 0');return;}
+  enviarASheets('traslado',{flujo:FLUJO_ACTUAL,flujo_label:FLUJO_LABELS[FLUJO_ACTUAL],items:JSON.stringify(movs),total:movs.length}).then(function(){$('tras-s2').style.display='none';$('tras-s3').style.display='flex';});
+}
+
+function enviarASheets(tipo,datos){
+  datos.tipo=tipo;datos.usuario=USER?USER.nombre:'?';
+  if(location.protocol!=='https:'){console.log('Envío deshabilitado en archivo local — usar GitHub Pages');return Promise.resolve({ok:true});}
+  return new Promise(function(resolve){
+    try{
+      var iid='kf_'+Date.now();
+      var iframe=document.createElement('iframe');iframe.name=iid;iframe.style.cssText='display:none;width:0;height:0;position:absolute;left:-9999px;';document.body.appendChild(iframe);
+      var form=document.createElement('form');form.method='POST';form.action=SCRIPT_URL;form.target=iid;form.style.display='none';
+      var inp=document.createElement('input');inp.type='hidden';inp.name='payload';inp.value=JSON.stringify(datos);
+      form.appendChild(inp);document.body.appendChild(form);
+      setTimeout(function(){try{document.body.removeChild(form);}catch(e){}setTimeout(function(){try{document.body.removeChild(iframe);}catch(e){}},500);resolve({ok:true});},5000);
+      form.submit();
+    }catch(err){resolve({ok:false});}
+  });
+}
+
+function enviarFormulario(form){
+  var datos={},suc=USER?(USER.suc==='cbb'?'Clinica Bio Bio':'Ramon Carrasco'):'';
+  if(form==='bitacora'){
+    var done=document.querySelectorAll('#bit-s2 .check-item.done').length;
+    var hora=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+    datos={sucursal:suc,turno:opts['bit-turno']||'',hb_sale:$('bit-sale').value||'',hb_entra:$('bit-entra').value||'',formularios:done+'/'+BIT_CHECKS.length+' completados',novedad:opts['bit-nov']==='Con novedad'?($('bit-novedad').value||'Con novedad'):(opts['bit-nov']||''),hora:hora};
+  }else if(form==='caja'){
+    var c=parseFloat($('caj-contado').value)||0,s=parseFloat($('caj-sumup').value)||0,t=parseFloat($('caj-tarjeta').value)||0;
+    datos={sucursal:suc,turno:opts['caj-turno']||'',hb:$('caj-hb').value||'',efectivo_contado:c,sumup_efectivo:s,diferencia:c-s,debito_credito:t,total_ventas:c+t,sencillo:getCalcTotal()};
+  }else if(form==='limpieza'){
+    var li=document.querySelectorAll('#limp-s2 .check-item'),tot=li.length,done2=document.querySelectorAll('#limp-s2 .check-item.done').length;
+    var crit=document.querySelectorAll('#limp-s2 .check-item.critica').length,critDone=document.querySelectorAll('#limp-s2 .check-item.critica.done').length;
+    datos={sucursal:suc,hb:$('limp-hb').value||'',momento:opts['limp-momento']||'',completadas:done2,total:tot,porcentaje:tot>0?Math.round(done2/tot*100):100,criticas_pendientes:crit-critDone};
+  }else if(form==='mermas'){
+    var prodN=getMerProducto(),cant=parseFloat($('mer-cant').value)||0,cu=parseFloat($('mer-costo').value)||0;
+    datos={sucursal:suc,quien:$('mer-quien').value||'',turno:opts['mer-turno']||'',producto:prodN,cantidad:cant,costo_unit:cu,costo_total:cant*cu,causa:opts['mer-causa']||''};
+  }else if(form==='stock'){
+    var b=BODEGA_SELECCIONADA||{id:'sb',label:'--',suc:USER?USER.suc:'cbb',bodega:false};
+    var sitems=INSUMOS[b.suc]?INSUMOS[b.suc].filter(function(i){return b.bodega?i.b:!i.b;}):[];
+    var prefix=b.id.replace('-','_');
+    var arr=sitems.map(function(item,idx){return{n:item.n,u:item.u,cantidad:qtys[prefix+'-'+idx]||0};});
+    datos={sucursal:b.suc==='cbb'?'Clinica Bio Bio':'Ramon Carrasco',bodega:b.label,hb:$('stk-hb').value||'',momento:opts['stk-momento']||'',contados:arr.filter(function(i){return i.cantidad>0;}).length,items:JSON.stringify(arr)};
+  }else if(form==='pedido'){
+    var pitems=INSUMOS['cbb'];
+    var ped=pitems.map(function(item,i){var q=qtys['pp-'+i]||0;return q>0?{n:item.n,u:item.u,q:q}:null;}).filter(Boolean);
+    datos={quien:$('ped-quien').value||'',total_items:ped.length,items:JSON.stringify(ped)};
+  }
+  enviarASheets(form,datos);
+}
+
+function fetchJSONP(url){return fetch(url,{method:'GET',mode:'cors'}).then(function(r){return r.json();}).catch(function(){return{ok:true,filas:[]};});}
+
+var CONS_COLS={bitacora:['Timestamp','Sucursal','Turno','HB Saliente','HB Entrante','Formularios','Novedad','Hora','Usuario'],caja:['Timestamp','Sucursal','Turno','HB','Efectivo','SumUp','Diferencia','Débito','Total','Sencillo','Usuario'],limpieza:['Timestamp','Sucursal','HB','Momento','Completadas','Total','%','Críticas','Usuario'],mermas:['Timestamp','Sucursal','Quien','Turno','Producto','Cantidad','Costo Unit','Costo Total','Causa','Usuario'],stock:['Timestamp','Sucursal','HB','Momento','Items','Detalle','Usuario'],pedido:['Timestamp','Quien','Items','Detalle','Usuario'],traslado:['Timestamp','Flujo','Items','Detalle','Usuario']};
+var CONS_LABELS={bitacora:'Bitácora',caja:'Caja',limpieza:'Limpieza',mermas:'Mermas',stock:'Stock',pedido:'Pedido',traslado:'Traslado'};
+
+function buscarRegistros(){
+  var tipo=$('cons-tipo').value,suc=$('cons-suc').value,desde=$('cons-desde').value,hasta=$('cons-hasta').value;
+  var persona=$('cons-persona').value.toLowerCase();
+  var el=$('cons-results');el.innerHTML='<div class="cons-empty"><div style="font-size:30px">⏳</div><div>Buscando...</div></div>';
+  var tipos=tipo?[tipo]:Object.keys(CONS_COLS);
+  Promise.all(tipos.map(function(t){return fetchJSONP(SCRIPT_URL+'?action=leer&tipo='+t).then(function(d){return{tipo:t,filas:d.filas||[]};}).catch(function(){return{tipo:t,filas:[]};});})).then(function(results){
+    var todos=[];results.forEach(function(r){r.filas.forEach(function(f){todos.push({tipo:r.tipo,fila:f});});});
+    var filtrados=todos.filter(function(item){
+      var f=item.fila,ts=f[0]||'';
+      if(desde||hasta){var parts=ts.split(/[\-\s,:]/);var tsDate=null;if(parts.length>=3){try{tsDate=new Date(parts[2]+'-'+parts[1]+'-'+parts[0]);}catch(e){}}if(!tsDate||isNaN(tsDate.getTime()))tsDate=new Date(ts);if(desde&&tsDate<new Date(desde))return false;if(hasta){var hd=new Date(hasta);hd.setDate(hd.getDate()+1);if(tsDate>hd)return false;}}
+      if(suc&&f[1]&&f[1].indexOf(suc==='Bio Bio'?'Bio':'Ramon')<0)return false;
+      if(persona){var ok=[1,2,3,4,10].some(function(c){return f[c]&&f[c].toString().toLowerCase().indexOf(persona)>=0;});if(!ok)return false;}
+      return true;
+    });
+    filtrados.sort(function(a,b){return new Date(b.fila[0])-new Date(a.fila[0]);});
+    if(!filtrados.length){el.innerHTML='<div class="cons-empty"><div style="font-size:40px">📭</div><div>Sin registros para estos filtros</div></div>';return;}
+    var h='<div class="cons-count">'+filtrados.length+' registro(s) encontrado(s)</div>';
+    filtrados.forEach(function(item){
+      var cols=CONS_COLS[item.tipo]||[],label=CONS_LABELS[item.tipo]||item.tipo,fila=item.fila,rows='';
+      for(var i=1;i<cols.length&&i<fila.length;i++){
+        var val=fila[i];if(!val&&val!==0)continue;var style='';
+        if(item.tipo==='caja'&&cols[i]==='Diferencia'){var n=parseFloat(String(val).replace(/[^0-9-]/g,''));style=n===0?'color:var(--ok)':Math.abs(n)<=2000?'color:var(--warn)':'color:var(--danger)';}
+        if(item.tipo==='stock'&&cols[i]==='Detalle'){var si=String(val).split(' | ').filter(Boolean);rows+='<div class="cons-srow"><span class="cons-sl">Detalle stock</span></div><div class="cons-stock-detalle">';si.slice(0,25).forEach(function(x){var p=x.split(': ');var rawQty=(p[1]||'').trim();var esQ=rawQty===''||rawQty==='0'||rawQty.indexOf('0 ')===0;rows+='<div class="cons-stock-item'+(esQ?' quiebre':'')+'"><span class="cons-stock-nombre">'+(p[0]||x)+'</span><span class="cons-stock-qty">'+(p[1]||'')+'</span></div>';});if(si.length>25)rows+='<div style="font-size:11px;color:var(--txt2);padding:4px 8px">...y '+(si.length-25)+' más</div>';rows+='</div>';continue;}
+        rows+='<div class="cons-srow"><span class="cons-sl">'+cols[i]+'</span><span class="cons-sv" style="'+style+'">'+val+'</span></div>';
+      }
+      h+='<div class="cons-card '+item.tipo+'"><div class="cons-card-header"><span class="cons-card-tipo">'+label+'</span><span class="cons-card-fecha">'+fila[0]+'</span></div>'+rows+'</div>';
+    });
+    el.innerHTML=h;
+  }).catch(function(){el.innerHTML='<div class="cons-empty">⚠️ Error al consultar.</div>';});
+}
+
+// ================================================================
+// INICIALIZACIÓN — UNA SOLA VEZ
+// ================================================================
+(function(){
+  document.querySelectorAll('.view').forEach(function(v){if(v.id!=='login'){v.style.display='none';v.classList.remove('active');}});
+  document.querySelectorAll('.step-dots,.bottom-nav').forEach(function(el){el.style.display='none';});
+  initCalc();
+  showView('login');
+})();
+
+</script>
+</body>
+</html>
