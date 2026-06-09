@@ -859,20 +859,18 @@ window.addEventListener('popstate',function(e){
   try{history.pushState({view:'home'},'',location.href);}catch(ex){}
 });
 
-// localStorage con fallback a memoria (iOS Safari seguro)
-var _memStore={};
-function _lsGet(k){try{var v=localStorage.getItem(k);return v;}catch(e){return _memStore[k]||null;}}
-function _lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){_memStore[k]=v;}}
-function _lsRem(k){try{localStorage.removeItem(k);}catch(e){delete _memStore[k];}}
-function getPIN(n){try{return _lsGet(PIN_PFX+n)||null;}catch(e){return null;}}
-function setPIN(n,p){try{_lsSet(PIN_PFX+n,p);}catch(e){}}
-function getInt(n){try{return parseInt(_lsGet(INT_PFX+n)||'0');}catch(e){return 0;}}
-function setInt(n,v){try{_lsSet(INT_PFX+n,String(v));}catch(e){}}
-function resetInt(n){try{_lsRem(INT_PFX+n);}catch(e){}}
+// Almacenamiento en memoria pura — sin localStorage ni sessionStorage
+// Compatible 100% con iOS Safari sin importar configuración de privacidad
+var _store={};
+function getPIN(n){return _store[PIN_PFX+n]||null;}
+function setPIN(n,p){_store[PIN_PFX+n]=p;}
+function getInt(n){return parseInt(_store[INT_PFX+n]||'0');}
+function setInt(n,v){_store[INT_PFX+n]=String(v);}
+function resetInt(n){delete _store[INT_PFX+n];}
 
 function resetearPIN(){
   var q=$('reset-quien').value;if(!q){alert('Elige un usuario');return;}
-  try{localStorage.removeItem(PIN_PFX+q);}catch(e){}
+  delete _store[PIN_PFX+q];
   resetInt(q);showMsg('PIN de '+q+' reseteado. Podrá crear uno nuevo.',false);
 }
 
