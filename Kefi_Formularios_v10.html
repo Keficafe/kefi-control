@@ -1435,13 +1435,14 @@ function enviarASheets(tipo,datos){
     console.log('Envío deshabilitado en archivo local — usar GitHub Pages');
     return Promise.resolve({ok:true});
   }
-  // fetch() con no-cors: envía los datos sin esperar respuesta
-  // Funciona en iOS Safari sin errores cross-origin
+  // FormData con no-cors — única forma que funciona en iOS Safari
+  // El Apps Script lee los datos via e.parameter
+  var form=new FormData();
+  form.append('payload', JSON.stringify(datos));
   return fetch(SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(datos)
+    body: form
   })
   .then(function(){ return {ok:true}; })
   .catch(function(err){ console.log('Error envío:', err); return {ok:false}; });
