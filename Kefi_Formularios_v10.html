@@ -1435,17 +1435,36 @@ function enviarASheets(tipo,datos){
     console.log('Envío deshabilitado en archivo local — usar GitHub Pages');
     return Promise.resolve({ok:true});
   }
-  // FormData con no-cors — única forma que funciona en iOS Safari
-  // El Apps Script lee los datos via e.parameter
-  var form=new FormData();
-  form.append('payload', JSON.stringify(datos));
-  return fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: form
-  })
-  .then(function(){ return {ok:true}; })
-  .catch(function(err){ console.log('Error envío:', err); return {ok:false}; });
+  // iframe + form submit — funciona en iOS Safari con window.onerror
+  return new Promise(function(resolve){
+    try{
+      var iid='kf_'+Date.now();
+      var iframe=document.createElement('iframe');
+      iframe.name=iid;
+      iframe.style.cssText='display:none;position:absolute;left:-9999px;width:0;height:0;';
+      document.body.appendChild(iframe);
+      var form=document.createElement('form');
+      form.method='POST';
+      form.action=SCRIPT_URL;
+      form.target=iid;
+      form.style.display='none';
+      var inp=document.createElement('input');
+      inp.type='hidden';
+      inp.name='payload';
+      inp.value=JSON.stringify(datos);
+      form.appendChild(inp);
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(function(){
+        try{document.body.removeChild(form);}catch(e){}
+        setTimeout(function(){try{document.body.removeChild(iframe);}catch(e){}},1000);
+        resolve({ok:true});
+      },3000);
+    }catch(err){
+      console.log('Error envío:',err);
+      resolve({ok:false});
+    }
+  });
 }
 
 function enviarFormulario(form){
@@ -1556,8 +1575,10 @@ function cargarDashboard(){
           var parts=item.split(': ');
           if(parts.length<2)return;
           var nombre=parts[0].trim();
-          var qty=parseFloat(parts[1])||0;
-          if(!stockMap[nombre])stockMap[nombre]=qty; // solo tomar el más reciente
+          var valorStr=String(parts[1]||'');
+          if(valorStr.indexOf('undefined')>=0)return;
+          var qty=parseFloat(valorStr)||0;
+          if(!stockMap.hasOwnProperty(nombre)||stockMap[nombre]===0)stockMap[nombre]=qty;
         });
       });
 
