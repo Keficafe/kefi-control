@@ -1329,7 +1329,7 @@ function buildMermaResumen(){
 function semLabel(s){var cls=s==='diario'?'d':s==='semanal'?'s':'q';var txt=s==='diario'?'Diario':s==='semanal'?'Semanal':'Quincenal';return '<span class="sem-tag '+cls+'">'+txt+'</span>';}
 
 function makeQtyRow(item,prefix,idx){
-  var id=prefix+'-'+idx,d=document.createElement('div');d.className='qty-row';
+  var id=prefix+'-'+(typeof idx==='string'?idx.replace(/[^a-zA-Z0-9]/g,'_'):idx),d=document.createElement('div');d.className='qty-row';
   var left=document.createElement('div');left.className='qty-left';
   left.innerHTML='<div class="qty-name">'+item.n+'</div><div class="qty-unit">'+item.u+'</div>'+semLabel(item.s)+(item.b?'<span class="bodega-tag">Bodega</span>':'');
   var ctrl=document.createElement('div');ctrl.className='qty-ctrl';
@@ -1370,7 +1370,7 @@ function renderStockItems(){
     var gItems=items.filter(function(i){return i.s===g.key;});if(!gItems.length)return;
     var grp=document.createElement('div');grp.className='stk-grupo';
     var tit=document.createElement('div');tit.className='stk-grupo-titulo';tit.textContent=g.label+' ('+gItems.length+')';grp.appendChild(tit);
-    gItems.forEach(function(item){grp.appendChild(makeQtyRow(item,prefix,items.indexOf(item)));});sec.appendChild(grp);
+    gItems.forEach(function(item,gi){grp.appendChild(makeQtyRow(item,prefix,item.n));});sec.appendChild(grp);
   });
   if(!sec.children.length){var grp2=document.createElement('div');grp2.className='stk-grupo';items.forEach(function(item,i){grp2.appendChild(makeQtyRow(item,prefix,i));});sec.appendChild(grp2);}
   return true;
@@ -1385,7 +1385,7 @@ function buildStockResumen(){
   var catRows='';
   cats.forEach(function(cat){
     var catItems=allItems.filter(function(i){return i.s===cat.key;});if(!catItems.length)return;
-    var contados=catItems.filter(function(item){var idx=allItems.indexOf(item);return(qtys[prefix+'-'+idx]||0)>0;}).length;
+    var contados=catItems.filter(function(item){var keyN=prefix+'-'+item.n.replace(/[^a-zA-Z0-9]/g,'_');var keyI=prefix+'-'+allItems.indexOf(item);return(qtys[keyN]||qtys[keyI]||0)>0;}).length;
     var pct=Math.round(contados/catItems.length*100);
     var color=pct===100?'var(--ok)':pct>50?'var(--warn)':'var(--danger)';
     catRows+='<div class="srow"><span class="sl">'+cat.label+'</span><span class="sv" style="color:'+color+'">'+contados+'/'+catItems.length+' ('+pct+'%)</span></div>';
@@ -1467,7 +1467,7 @@ function enviarFormulario(form){
     var b=BODEGA_SELECCIONADA||{id:'sb',label:'--',suc:USER?USER.suc:'cbb',bodega:false};
     var sitems=INSUMOS[b.suc]?INSUMOS[b.suc].filter(function(i){return b.bodega?i.b:!i.b;}):[];
     var prefix=b.id.replace('-','_');
-    var arr=sitems.map(function(item,idx){return{n:item.n,u:item.u,cantidad:qtys[prefix+'-'+idx]||0};});
+    var arr=sitems.map(function(item){var keyNombre=prefix+'-'+item.n.replace(/[^a-zA-Z0-9]/g,'_');var keyIdx=prefix+'-'+sitems.indexOf(item);return{n:item.n,u:item.u,cantidad:qtys[keyNombre]||qtys[keyIdx]||0};});
     datos={sucursal:b.suc==='cbb'?'Clinica Bio Bio':'Ramon Carrasco',bodega:b.label,hb:$('stk-hb').value||'',momento:opts['stk-momento']||'',contados:arr.filter(function(i){return i.cantidad>0;}).length,items:JSON.stringify(arr)};
   }else if(form==='pedido'){
     var pitems=INSUMOS['cbb'];
