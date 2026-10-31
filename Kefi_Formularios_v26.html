@@ -384,10 +384,35 @@ select{min-height:44px;padding:10px 12px;-webkit-appearance:menulist;appearance:
         <div class="mtile-ic">⚠️</div><div class="mtile-t">Mermas</div>
       </div>
     </div>
-    <div class="fcard-sub">Verificación de tareas realizadas</div></div>
-      <span>›</span>
-    </div>
     
+    <div class="sec-label">INVENTARIO</div>
+    <div class="inv-grid">
+      <div class="inv-tile" style="--tc:#2C7A7A;--tcl:#E0F0F0" onclick="showForm('stock')">
+        <div class="inv-tile-ic">📦</div>
+        <div class="inv-tile-t">Agregar stock</div>
+        <div class="inv-tile-s">Conteo o ingreso de mercadería</div>
+      </div>
+      <div class="inv-tile" style="--tc:#9B1C35;--tcl:#F5E6EA" onclick="showView('dashboard')">
+        <div class="inv-tile-ic">🔍</div>
+        <div class="inv-tile-t">Revisar stock</div>
+        <div class="inv-tile-s">Ver qué se está por acabar</div>
+      </div>
+      <div class="inv-tile" id="tile-traslado" style="--tc:#1565C0;--tcl:#E3F0FC;display:none" onclick="showView('traslado')">
+        <div class="inv-tile-ic">🚚</div>
+        <div class="inv-tile-t">Trasladar</div>
+        <div class="inv-tile-s">Mover productos entre bodegas</div>
+      </div>
+      <div class="inv-tile" id="tile-solicitud" style="--tc:#6B3C8C;--tcl:#F0E8FC;display:none" onclick="showView('solicitud')">
+        <div class="inv-tile-ic">📝</div>
+        <div class="inv-tile-t">Solicitar</div>
+        <div class="inv-tile-s">Pedir productos a Bodega RC</div>
+      </div>
+      <div class="inv-tile" id="tile-pedido" style="--tc:#B8860B;--tcl:#FBF3E0;display:none" onclick="showForm('pedido')">
+        <div class="inv-tile-ic">🧾</div>
+        <div class="inv-tile-t">Pedido a RC</div>
+        <div class="inv-tile-s">Solicitar insumos desde CBB</div>
+      </div>
+    </div>
     <div class="sec-label">REPORTES</div>
     <div class="fcard" onclick="showView('dashboard')" style="border-left-color:#1A4B8C">
       <div class="fcard-icon" style="background:var(--bluel)">📊</div>
