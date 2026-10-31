@@ -374,9 +374,6 @@ select{min-height:44px;padding:10px 12px;-webkit-appearance:menulist;appearance:
       <div class="mtile" style="--mc:#B8860B;--mcl:#FBF3E0" onclick="showForm('caja')">
         <div class="mtile-ic">💰</div><div class="mtile-t">Arqueo de caja</div>
       </div>
-      <div class="mtile" style="--mc:#2C7A7A;--mcl:#E0F0F0" onclick="showForm('limpieza')">
-        <div class="mtile-ic">🧹</div><div class="mtile-t">Limpieza</div>
-      </div>
       <div class="mtile" style="--mc:#1565C0;--mcl:#E3F0FC" onclick="showForm('stock')">
         <div class="mtile-ic">📦</div><div class="mtile-t">Stock</div>
       </div>
@@ -402,11 +399,7 @@ select{min-height:44px;padding:10px 12px;-webkit-appearance:menulist;appearance:
         <div class="inv-tile-t">Trasladar</div>
         <div class="inv-tile-s">Mover productos entre bodegas</div>
       </div>
-      <div class="inv-tile" id="tile-solicitud" style="--tc:#6B3C8C;--tcl:#F0E8FC;display:none" onclick="showView('solicitud')">
-        <div class="inv-tile-ic">📝</div>
-        <div class="inv-tile-t">Solicitar</div>
-        <div class="inv-tile-s">Pedir productos a Bodega RC</div>
-      </div>
+      
       <div class="inv-tile" id="tile-pedido" style="--tc:#B8860B;--tcl:#FBF3E0;display:none" onclick="showForm('pedido')">
         <div class="inv-tile-ic">🧾</div>
         <div class="inv-tile-t">Pedido a RC</div>
@@ -1512,7 +1505,6 @@ function doLogin(){
   var tPed=$('tile-pedido');if(tPed)tPed.style.display=suc==='cbb'?'flex':'none';
   $('tile-traslado').style.display='flex'; // Traslados para todo el equipo
   // Solicitud: visible para CBB (piden a RC) y directores
-  var tSol=$('tile-solicitud');if(tSol)tSol.style.display=(suc==='cbb'||rol==='dir')?'flex':'none';
   var rs=$('reset-section');if(rs)rs.style.display=rol==='dir'?'flex':'none';
   var fSup=$('fcard-supervision');if(fSup)fSup.style.display=rol==='dir'?'flex':'none';
   var fInf=$('fcard-informes');if(fInf)fInf.style.display=rol==='dir'?'flex':'none';
