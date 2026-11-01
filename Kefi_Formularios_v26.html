@@ -1885,11 +1885,12 @@ function makeQtyRow(item,prefix,idx){
   var ctrl=document.createElement('div');ctrl.className='qty-ctrl';
   var bm=document.createElement('div');bm.className='qb';bm.textContent='−';bm.onclick=function(){changeQty(id,-0.5);};
   var inp=document.createElement('input');
-  inp.className='qv';inp.id=id+'-v';inp.type='number';inp.min='0';inp.step='0.5';inp.value='0';inp.setAttribute('inputmode','decimal');
+  inp.className='qv';inp.id=id+'-v';inp.type='number';inp.min='0';inp.step='0.5';inp.placeholder='0';inp.setAttribute('inputmode','decimal');
   // Equivalencia: si la unidad dice "caja X ud" o similar, mostrar cálculo
   var equiv=parseEquivalencia(item.u);
-  inp.onchange=function(){setQty(id,this.value);actualizarEquiv(id,equiv);};inp.onfocus=function(){this.select();};
-  inp.oninput=function(){actualizarEquiv(id,equiv);};
+  inp.oninput=function(){if(this.value===''){delete qtys[id];var e=$(id+'-v');if(e)e.className='qv';}else{setQty(id,this.value);}actualizarEquiv(id,equiv);};
+  inp.onchange=function(){if(this.value===''){delete qtys[id];var e=$(id+'-v');if(e)e.className='qv';}else{setQty(id,this.value);}actualizarEquiv(id,equiv);};
+  inp.onfocus=function(){this.select();};
   var bp=document.createElement('div');bp.className='qb';bp.textContent='+';bp.onclick=function(){changeQty(id,0.5);setTimeout(function(){actualizarEquiv(id,equiv);},10);};
   bm.onclick=function(){changeQty(id,-0.5);setTimeout(function(){actualizarEquiv(id,equiv);},10);};
   ctrl.appendChild(bm);ctrl.appendChild(inp);ctrl.appendChild(bp);d.appendChild(left);d.appendChild(ctrl);
@@ -1911,8 +1912,8 @@ function actualizarEquiv(id,equiv){
   if(cajas>0){eq.textContent='= '+(cajas*equiv.num)+' '+equiv.uni+' en total';}
   else{eq.textContent='';}
 }
-function changeQty(id,delta){if(!qtys[id])qtys[id]=0;qtys[id]=Math.round((Math.max(0,qtys[id]+delta))*10)/10;var el=$(id+'-v');if(el){el.value=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}}
-function setQty(id,val){qtys[id]=Math.max(0,Math.round((parseFloat(val)||0)*10)/10);var el=$(id+'-v');if(el){el.value=qtys[id];el.className='qv'+(qtys[id]>0?' has':'');}}
+function changeQty(id,delta){if(!qtys[id])qtys[id]=0;qtys[id]=Math.round((Math.max(0,qtys[id]+delta))*10)/10;var el=$(id+'-v');if(el){el.value=qtys[id];el.className='qv has';}}
+function setQty(id,val){qtys[id]=Math.max(0,Math.round((parseFloat(val)||0)*10)/10);var el=$(id+'-v');if(el){el.className='qv has';}}
 
 function getBodegasDisponibles(){
   if(!USER)return[];var suc=USER.suc,rol=USER.rol,bodegas=[];
