@@ -1511,8 +1511,6 @@ function doLogin(){
   showView('home');
   // Mostrar resumen bitácora anterior al entrar
   if(rol!=='dir') setTimeout(cargarResumenBitacora, 500);
-  // Alerta de stock crítico al entrar
-  setTimeout(checkStockCritico, 800);
   // Aviso de revisión según periodicidad
   renderAvisoPeriodicidad();
 }
@@ -2107,7 +2105,7 @@ function enviarFormulario(form){
     var b=BODEGA_SELECCIONADA||{id:'sb',label:'--',suc:USER?USER.suc:'cbb',bodega:false};
     var sitems=itemsParaBodega(b);
     var prefix=b.id.replace('-','_');
-    var arr=sitems.map(function(item){var keyNombre=prefix+'-'+item.n.replace(/[^a-zA-Z0-9]/g,'_');var keyIdx=prefix+'-'+sitems.indexOf(item);if(!qtys.hasOwnProperty(keyNombre)&&!qtys.hasOwnProperty(keyIdx))return null;return{n:item.n,u:item.u,cantidad:qtys[keyNombre]||qtys[keyIdx]||0};}).filter(function(x){return x!==null;});
+    var arr=sitems.map(function(item){var keyNombre=prefix+'-'+item.n.replace(/[^a-zA-Z0-9]/g,'_');var keyIdx=prefix+'-'+sitems.indexOf(item);var tieneNombre=qtys.hasOwnProperty(keyNombre);var tieneIdx=qtys.hasOwnProperty(keyIdx);if(!tieneNombre&&!tieneIdx)return null;var cant=tieneNombre?qtys[keyNombre]:qtys[keyIdx];return{n:item.n,u:item.u,cantidad:cant};}).filter(function(x){return x!==null;});
     datos={sucursal:b.suc==='cbb'?'Clinica Bio Bio':'Ramon Carrasco',bodega:b.label,hb:$('stk-hb').value||'',momento:opts['stk-momento']||'',modo:_modoStock,contados:arr.filter(function(i){return i.cantidad>0;}).length,items:JSON.stringify(arr)};
   }else if(form==='pedido'){
     var pitems=INSUMOS['cbb'];
